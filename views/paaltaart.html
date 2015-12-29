@@ -1,0 +1,84 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/paaltaart.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/paaltaart">
+		<input hidden name="aArt" id="aArt" value="{{ articulos }}">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Articulo</td>
+				<td>
+					<select class="form-control" id="articulo" name="articulo">
+						{% for a in articulos %}
+							<option value="{{ a.id }}">{{ a.Nombre }}</option>
+						{% endfor %}
+					</select>	
+				</td>
+			</tr>
+			<tr>
+				<td>Cantidad:</td>
+				<td><input type="text" id="cantidad" name="cantidad" required onkeyup="checkInput(this)" class="form-control"></td>
+			</tr>
+			<tr>
+				<td>Fecha Necesidad:</td>
+				<td><input id="fecha_necesidad" name="fecha_necesidad" class="datepicker form-control" readonly></td>
+			</tr>
+			<tr>
+				<td>Responsable:</td>
+				<td>	
+					<select class="form-control" id="responsable" name="responsable">
+						{% for e in emples %}
+							<option value="{{ e.id }}">{{ e.nombre }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Centro de Costos:</td>
+				<td>	
+					<select class="form-control" id="centrocosto" name="centrocosto">
+						{% for c in centros %}
+							<option value="{{ c.id }}">{{ c.nombre }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Urgente:</td>
+				<td>
+					<select class="form-control" id="urgente" name="urgente">
+						<option value="0">No</option>
+						<option value="1">Si</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Atras" onclick="history.back()"></td>
+				<td><input type="submit" value="Agregar"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	function checkInput(ob) {
+	  	var invalidChars = /[^0-9]/gi
+	  	if(invalidChars.test(ob.value)) {
+	        ob.value = ob.value.replace(invalidChars,"");
+	    }
+	}
+	$(".datepicker").datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'ES'
+	});
+</script>
+
+{% endblock %}

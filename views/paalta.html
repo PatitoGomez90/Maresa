@@ -1,0 +1,88 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/paalta.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
+				<td><a href="/paaltaart"><button type="button" class="btn btn-success">Agregar Art.</button></a></td>
+				<td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
+				<td><button type="button" class="btn btn-warning">Descartar</button></a></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+			</tr>	
+		</table>
+	</div>
+	<div class="panel-body">
+		<form>
+			<input hidden >
+			<table>
+				<tr>
+					<td>
+						<table>
+							<tr>
+								<td>Fecha:</td>
+								<td><input id="fecha_generacion" name="fecha_generacion" class="datepicker form-control" style="width: 180px;" readonly></td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>Sector:</td>
+								<td>
+									<select class="form-control" id="sector" name="sector">
+										{% for s in sectores %}
+											<option value="{{ s.id }}">{{ s.nombre }}</option>
+										{% endfor %}
+									</select>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<table align="center" class="table table-striped">
+		<thead>
+  			<tr>				
+				<th>Articulo</th>
+				<th>Cantidad</th>
+				<th>Centro de Costo</th>
+				<th>Urgente</th>
+				<th>Estado</th>
+			</tr>
+  		</thead>
+  		<tbody>
+  			{% for pa in articulos %}
+				<tr>
+					<td>{{ pa.id_articulo_fk}}</td>
+					<td>{{ pa.cantidad}}</td>
+					<td>{{ pa.id_centrocosto_fk}}</td>
+					<td>{{ pa.urgente}}</td>
+					<td>{{ pa.estado}}</td>
+				</tr>
+			{% endfor %}
+  		</tbody>
+	</table>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+	$(".datepicker").datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'ES'
+	});
+</script>
+
+{% endblock %}
