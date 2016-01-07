@@ -42,6 +42,7 @@
 		  		<thead>
 		  			<tr> 
 						<th>ID</th>
+						<th>Codigo</th>
 						<th>Nombre</th>
 						<th colspan="2">Opciones</th>
 					</tr>
@@ -50,6 +51,7 @@
 		  			{% for c in centroscosto %}
 						<tr>
 							<td>{{ c.id }}</td>
+							<td>{{ c.codigo }}</td>
 							<td>{{ c.nombre }}</td>
 							<td><a href="/ccmodificar/{{ c.id }}"><button class="btn btn-warning">Modificar</button></a></td>
 							<td><a href='/ccborrar/{{ c.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>

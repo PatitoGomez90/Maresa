@@ -21,6 +21,7 @@ app.use(cookieParser('algodificil'));
 app.use(session({
 	secret: 'algodificil'
 }));
+
 app.use(function(req, res, next) {
 	if (req.session.user != null) {
 		//req.session.user.locura = moment(req.session.user.alta).format("YYYY-MM-DD HH:MM");
@@ -29,6 +30,7 @@ app.use(function(req, res, next) {
 	}
 	next();
 });
+
 app.use(express.static(__dirname+'/public'));
 
 routes(app);

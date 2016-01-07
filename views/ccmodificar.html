@@ -12,6 +12,10 @@
 		<input hidden id="ccid" name="ccid" value="{{ centrocosto.id }}">
 		<table align="center" class="table table-striped">
 			<tr>
+				<td>Codigo:</td>
+				<td><input type="text" id="codigo" name="codigo" required value="{{ centrocosto.codigo }}" class="form-control"><div class="aviso">Quedan <span id="charsLeftCodigo"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
 				<td>Nombre:</td>
 				<td><input type="text" id="nombre" name="nombre" required class="form-control" value="{{ centrocosto.nombre }}"><div class="aviso">Quedan <span id="charsLeftNombre"></span> caraceteres.</div></td>
 			</tr>
@@ -26,6 +30,7 @@
 <script src="/js/jquery.limit-1.2.js"></script>
 <script type="text/javascript">
 	$('#nombre').limit('100','#charsLeftNombre');
+	$('#codigo').limit('45','#charsLeftCodigo');
 </script>
 
 {% endblock %}

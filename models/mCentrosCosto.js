@@ -16,12 +16,12 @@ function getById(id, cb){
 	conn("select * from centro_costos where id = "+id, cb);
 }
 
-function insert(nombre, cb){
-	conn("insert into centro_costos(nombre) values('"+nombre+"')", cb);
+function insert(codigo, nombre, cb){
+	conn("insert into centro_costos(codigo, nombre) values('"+codigo+"', '"+nombre+"')", cb);
 }
 
-function update(id, nombre, cb){
-	conn("update centro_costos set nombre = '"+nombre+"' where id ="+id, cb);
+function update(id, codigo, nombre, cb){
+	conn("update centro_costos set nombre = '"+nombre+"', codigo = '"+codigo+"' where id ="+id, cb);
 }
 
 function del(id, cb){

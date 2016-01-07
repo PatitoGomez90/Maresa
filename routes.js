@@ -36,7 +36,8 @@ var cTurnos = require('./controllers/cTurnos');
 var cCategorias = require('./controllers/cCategorias');
 var cReportes = require('./controllers/cReportes');
 var cPlanti = require('./controllers/cPlantillas');
-
+var cCentrosCostos = require('./controllers/cCentrosCosto');
+var cPedidosAbastecimiento = require('./controllers/cPedidosAbastecimiento');
 
 var cPruebaSQL = require('./controllers/cPruebaSQL');
 var cRandom = require('./controllers/cRandom');
@@ -341,7 +342,6 @@ module.exports = function(app) {
 	app.get('/resumenempleado/:id_sector/:id_emple/:desde/:hasta', auth, cReportes.getResumenEmpleado);
 	app.get("/resumendownload/:id_emple/:desde/:hasta", auth, cReportes.getResumenDownload);
 
-
 	//plantillas
 	app.get("/planti1lista", auth, cPlanti.getLista);
 	app.get("/planti1alta", auth, cPlanti.getAlta);
@@ -353,7 +353,25 @@ module.exports = function(app) {
 	app.get('/planti2lista/:id_planti1', auth, cPlanti.getListap2);
 	app.get('/planti2alta/:id_planti1', auth, cPlanti.getAltap2);
 	app.post('/planti2alta', auth, cPlanti.postAltap2);
-	app.get('/planti2borrar/:id_p2/:id_p1', auth, cPlanti.getDelp2)
+	app.get('/planti2borrar/:id_p2/:id_p1', auth, cPlanti.getDelp2);
+
+	//centros de costos
+	app.get('/cclista', auth, cCentrosCostos.getLista);
+	app.get('/ccalta', auth, cCentrosCostos.getAlta);
+	app.post('/ccalta', auth, cCentrosCostos.postAlta);
+	app.get('/ccmodificar/:id', auth, cCentrosCostos.getModificar);
+	app.post('/ccmodificar', auth, cCentrosCostos.postModificar);
+	app.get('/ccborrar/:id', auth, cCentrosCostos.getDel);
+	//pedidos abastecimiento
+	app.get('/palista', auth, cPedidosAbastecimiento.getLista);
+	app.get('/paalta', auth, cPedidosAbastecimiento.getAlta);
+	// app.post('/paalta', auth, cPedidosAbastecimiento.postAlta);
+	app.get('/paaltaart', auth, cPedidosAbastecimiento.getAltaArt);
+	app.post('/paaltaart', auth, cPedidosAbastecimiento.postAltaArt);
+	// app.get('/pamodificar/:id', auth, cPedidosAbastecimiento.getModificar);
+	// app.post('/pamodificar', auth, cPedidosAbastecimiento.postModificar);
+	// app.get('/paborrar/:id', auth, cPedidosAbastecimiento.getDel);
+
 	//pruebasql
 	app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
 	//random

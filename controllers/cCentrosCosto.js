@@ -32,9 +32,10 @@ function getAlta(req, res){
 
 function postAlta(req, res){
 	params = req.body;
+	codigo = params.codigo;
 	nombre = params.nombre;
 
-	mCC.insert(nombre, function (){
+	mCC.insert(codigo, nombre, function (){
 		res.redirect('cclista');
 	});
 }
@@ -54,9 +55,10 @@ function getModificar(req, res){
 function postModificar(req, res){
 	params = req.body;
 	id = params.ccid;
+	codigo = params.codigo;
 	nombre = params.nombre;
 
-	mCC.update(id, nombre, function (){
+	mCC.update(id, codigo, nombre, function (){
 		res.redirect('cclista');
 	});
 }
