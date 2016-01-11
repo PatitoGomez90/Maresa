@@ -140,25 +140,6 @@ function updateFichadas(cb){
 					}
 					//console.log(rows.length)
 					if (rows.length == 0){
-						//aca va el if para ver que no ingrese muchas fichadas del mismo empleado, con la misma E o S, misma fecha
-						// if (data.id == 0) {
-						// 	mFichadas.MySqlInsert(latestfic[data.id], function (){
-						// 		console.log(data.id)
-						// 		callback();
-						// 	});
-						// }else{
-						// 	if (latestfic[data.id-1].FIC_ENTSAL != latestfic[data.id].FIC_ENTSAL){
-						// 		mFichadas.MySqlInsert(latestfic[data.id], function (){
-						// 			console.log(data.id)
-						// 			callback();
-						// 		});
-						// 	}else{
-						// 		if (latestfic[data.id-1].FIC_RELOJ == latestfic[data.id].FIC_RELOJ && latestfic[data.id-1].LEG_TARJETA == latestfic[data.id].LEG_TARJETA) {
-						// 			console.log("No insertar fichada "+latestfic[data.id].FIC_ID);
-						// 			callback();
-						// 		}
-						// 	}
-						// }
 						mFichadas.MySqlInsert(latestfic[data.id], function (){
 							console.log(data.id)
 							callback();

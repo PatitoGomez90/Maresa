@@ -8,7 +8,7 @@
 <link href="/css/paaltaart.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
 <div class="panel panel-default">
-	<form method="post" id="formalta" action="/paaltaart">
+	<!-- <form method="post" id="formalta" action="/paaltaart"> -->
 		<input hidden name="aArt" id="aArt" value="{{ articulos }}">
 		<table align="center" class="table table-striped">
 			<tr>
@@ -60,10 +60,10 @@
 			</tr>
 			<tr>
 				<td><input type="button" value="Atras" onclick="history.back()"></td>
-				<td><input type="submit" value="Agregar"></td>
+				<td><input type="button" id="btnAgregar" value="Agregar"></td>
 			</tr>
 		</table>
-	</form>
+	<!-- </form> -->
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap-datepicker.js"></script>
@@ -74,6 +74,40 @@
 	        ob.value = ob.value.replace(invalidChars,"");
 	    }
 	}
+
+	$("#btnAgregar").on("click", function(){
+		console.log("dentro de agregar")
+		var id_articulo = $("#articulo").val();
+		var cantidad = $("#cantidad").val();
+		var fecha_necesidad = $("#fecha_necesidad").val();
+		var id_responsable = $("#responsable").val();
+		var id_centro_costo = $("#centrocosto").val();
+		var urgente = $("#urgente").val();
+		
+		objArt = {
+			'id_articulo_fk': id_articulo,
+			'cantidad': cantidad,
+			'fecha_necesidad': fecha_necesidad,
+			'id_responsable_fk': id_responsable,
+			'id_centrocosto_fk': id_centro_costo,
+			'urgente': urgente
+		}
+		
+		console.log("obj creado..");
+
+		var storage = sessionStorage;
+		var aArticulos = storage.getItem('aArticulos');
+		console.log(aArticulos);
+		aArticulos2 = JSON.parse(aArticulos);
+		console.log(aArticulos2);
+
+		aArticulos2.push(objArt);
+		console.log("obj pusheado..");
+		sessionStorage.aArticulos = JSON.stringify(aArticulos);
+		console.log("art guardado");
+		window.location = '/paalta';
+	});
+
 	$(".datepicker").datepicker({
 		format: 'dd/mm/yyyy',
 		autoclose: true,

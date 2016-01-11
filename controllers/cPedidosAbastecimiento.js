@@ -32,14 +32,16 @@ function getAlta(req, res){
 			res.render('paalta', {
 				pagename: "Alta de Pedidos de Abastecimiento",
 				ultimocodigo: ultimocodigo[0].codigo+1,
-				sectores: sectores,
-				articulos: aArt
+				sectores: sectores
 			});
 		});
 	});		
 }
 
 function getAltaArt(req, res){
+	params = req.params;
+	aArt = params.aArt;
+
 	mCC.getAll(function (centros){
 		mEmple.getAllActivos(function (emples){
 			mArt.getAll(function (articulos){
@@ -62,6 +64,7 @@ function postAltaArt(req, res){
 	id_responsable = params.responsable;
 	id_centro_costo = params.centrocosto;
 	urgente = params.urgente;
+	aArt = params.aArt;
 
 	objArt = {
 		'id_articulo_fk': id_articulo,

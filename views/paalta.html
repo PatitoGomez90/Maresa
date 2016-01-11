@@ -7,6 +7,7 @@
 {% block content %}
 <link href="/css/paalta.css" rel="stylesheet">
 <h2>{{ pagename }}</h2>
+<input hidden name="aArt" id="aArt" value="{{ articulos }}">
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
@@ -14,9 +15,9 @@
 		<table>
 			<tr>	
 				<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
-				<td><a href="/paaltaart"><button type="button" class="btn btn-success">Agregar Art.</button></a></td>
-				<td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
-				<td><button type="button" class="btn btn-warning">Descartar</button></a></td>
+				<td><!-- <a href="/paaltaart"> --><button type="button" id="addArt" name="addArt"class="btn btn-success">Agregar Art.</button><!-- </a> --></td>
+				<!-- <td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
+				<td><button type="button" class="btn btn-warning">Descartar</button></a></td> -->
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 			</tr>	
 		</table>
@@ -74,6 +75,18 @@
 			{% endfor %}
   		</tbody>
 	</table>
+	<div class="panel-footer">
+		<table  align="center">
+			<tr>	
+				<!-- <td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
+				<td><a href="/paaltaart"><button type="button" class="btn btn-success">Agregar Art.</button></a></td> -->
+				<td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
+				<td style="width: 50px;"></td>
+				<td><button type="button" class="btn btn-warning">Descartar</button></a></td>
+				<!-- <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td> -->
+			</tr>	
+		</table>
+	</div>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap-datepicker.js"></script>
@@ -83,6 +96,37 @@
 		autoclose: true,
 		language: 'ES'
 	});
+
+	$("#addArt").on("click", function (){
+		// aArt = $("#aArt").val();
+		// console.log(aArt);
+		// if(aArt.length = 0)
+		// 	aArt = [];
+
+		window.location = '/paaltaart/';
+	});
+
+	if('sessionStorage' in window && window['sessionStorage'] !== null) {
+		console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+		var storage = sessionStorage;
+		console.log(storage.length);
+		objArt = {
+			'id_articulo_fk': 0,
+			'cantidad': 0,
+			'fecha_necesidad': '2015-01-05',
+			'id_responsable_fk': 3,
+			'id_centrocosto_fk': 1,
+			'urgente': 1
+		}
+		var objArt = JSON.stringify(objArt);
+
+		if (storage.length == 0){
+			storage.setItem('aArticulos', objArt);
+		}
+	} else { 
+		alert('No soporta LocalStorage. Actualize el navegador !!'); 
+	}
+
 </script>
 
 {% endblock %}

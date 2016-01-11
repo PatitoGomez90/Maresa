@@ -10,6 +10,8 @@ var mTurnos = require('../models/mTurnos');
 var mEmple = require('../models/mEmple');
 var mPlanti = require('../models/mPlantillas');
 var mFichadas = require('../models/mFichadas');
+
+var mysql = require("mysql");
 var async = require('async');
 
 module.exports = {
@@ -135,6 +137,7 @@ function getAlta(req, res){
 }
 
 function postAlta(req, res){
+
 	params = req.body;
 	fecha = params.fecha;
 	fecha = changeDate(fecha);
@@ -163,37 +166,103 @@ function postAlta(req, res){
 	imputacion11 = params.imputacion11;
 	imputacion12 = params.imputacion12;
 
+	var connection = mysql.createConnection({
+		user: 'root',
+		password: '',
+		host: '127.0.0.1',
+		port: '3306',
+		database: 'Maresa',
+		dateStrings : true
+	});
+
 	mPartediario1.insert(fecha, contrato, idsector, idlugar, turno, estado, clasificacion1, clasificacion2, clasificacion3, clasificacion4, clasificacion5, clasificacion6, imputacion1, imputacion2, imputacion3, imputacion4, imputacion5, imputacion6, imputacion7, imputacion8, imputacion9, imputacion10, imputacion11, imputacion12, function(){
 		mPartediario1.getLastId(function (pdultimoid){
 			//console.log(pdultimoid)
 			var ultimoid = pdultimoid[0].id;
+
+			connection.connect();
+
 			if (id_plantilla != 0){
 				mPlanti.getAll_planti2(id_plantilla, function (planti2){
-					for (var x = 0 ; x < planti2.length ; x++){
-						//acá agregar la columna 'Numero' de empleado en los Partes Diarios
-						var y = x+1;
-						mPartediario2.insertNewEmpleado(ultimoid, planti2[x].id_emple_fk, y, function (){
-							bandera = true;
+
+					// for (var x = 0 ; x < planti2.length ; x++){
+					// 	//acá agregar la columna 'Numero' de empleado en los Partes Diarios
+					// 	var y = x+1;
+					// 	mPartediario2.insertNewEmpleado(ultimoid, planti2[x].id_emple_fk, y, function (){
+					// 		bandera = true;
+					// 	});
+					// }
+					var index = -1;
+					async.eachSeries(planti2, function (planti, callback) {
+						// console.log(data.query)
+						index++;
+						// var x = planti2.indexOf(planti);
+						var numero = index+1;
+						var query= "insert into partediario2(id_partediario1_fk, id_emple_fk, numero) "+
+							"values("+ultimoid+", "+planti.id_emple_fk+", "+numero+")"
+						connection.query(query, function(err, rows, fields) {
+							if (err){
+								throw err;
+								console.log(err)
+							}else{
+								console.log("No errors in the query.");
+								callback();
+							}
+							//console.log(rows.length)							
 						});
-					}
+					}, function (err) {						
+						if (err) 
+							throw err; 
+						
+						console.log("Redirigiendo a ParteDiario1 Lista..")
+						res.redirect('partediario1lista');
+						connection.end();				
+						// return cb();
+					});
 				});
 			}else{			
 				mEmple.getByTurno(turno, function (emplesbyturno){
-					//console.log(emplesbyturno.length)
+					console.log(emplesbyturno.length)
 					var bandera = false;
-					for (var x = 0 ; x < emplesbyturno.length ; x++){
-						//acá agregar la columna 'Numero' de empleado en los Partes Diarios
-						var y = x+1;
-						mPartediario2.insertNewEmpleado(ultimoid, emplesbyturno[x].codigo, y, function (){
-							bandera = true;
+					// for (var x = 0 ; x < emplesbyturno.length ; x++){
+					// 	//acá agregar la columna 'Numero' de empleado en los Partes Diarios
+					// 	var y = x+1;
+					// 	mPartediario2.insertNewEmpleado(ultimoid, emplesbyturno[x].codigo, y, function (){
+					// 		bandera = true;
+					// 	});
+					// }
+					var index = -1;
+					async.eachSeries(emplesbyturno, function (emple, callback) {
+						// console.log(data.query)
+						index++;
+						// var x = planti2.indexOf(planti);
+						var numero = index+1;
+						var query= "insert into partediario2(id_partediario1_fk, id_emple_fk, numero) "+
+							"values("+ultimoid+", "+emple.codigo+", "+numero+")"
+						connection.query(query, function(err, rows, fields) {
+							if (err){
+								throw err;
+								console.log(err)
+							}else{
+								console.log("No errors in the query.");
+								callback();
+							}
+							//console.log(rows.length)							
 						});
-					}
+					}, function (err) {						
+						if (err)
+							throw err; 
+						
+						console.log("Redirigiendo a ParteDiario1 Lista..")
+						res.redirect('partediario1lista');
+						connection.end();
+						// return cb();
+					});
 				});
 			}
+			
 			// if (bandera)
-			// 	console.log("Ingresados "+emplesbyturno.length+" empleados.");
-			console.log("Redirigiendo a ParteDiario1 Lista..")
-			res.redirect('partediario1lista');
+			// 	console.log("Ingresados "+emplesbyturno.length+" empleados.");			
 		});		
 	});
 }
