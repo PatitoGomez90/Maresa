@@ -75,37 +75,66 @@
 	    }
 	}
 
-	$("#btnAgregar").on("click", function(){
-		console.log("dentro de agregar")
-		var id_articulo = $("#articulo").val();
-		var cantidad = $("#cantidad").val();
-		var fecha_necesidad = $("#fecha_necesidad").val();
-		var id_responsable = $("#responsable").val();
-		var id_centro_costo = $("#centrocosto").val();
-		var urgente = $("#urgente").val();
-		
-		objArt = {
-			'id_articulo_fk': id_articulo,
-			'cantidad': cantidad,
-			'fecha_necesidad': fecha_necesidad,
-			'id_responsable_fk': id_responsable,
-			'id_centrocosto_fk': id_centro_costo,
-			'urgente': urgente
-		}
-		
-		console.log("obj creado..");
+	$(function() {
+		var objDatos = localStorage.getItem('objDatos');
+		console.log(objDatos);
 
-		var storage = sessionStorage;
-		var aArticulos = storage.getItem('aArticulos');
-		console.log(aArticulos);
-		aArticulos2 = JSON.parse(aArticulos);
-		console.log(aArticulos2);
 
-		aArticulos2.push(objArt);
-		console.log("obj pusheado..");
-		sessionStorage.aArticulos = JSON.stringify(aArticulos);
-		console.log("art guardado");
-		window.location = '/paalta';
+		$("#btnAgregar").on("click", function(){
+			console.log("dentro de agregar")
+			var id_articulo = $("#articulo").val();
+			var txtarticulo = $('#articulo option:selected').text();
+			var cantidad = $("#cantidad").val();
+			var fecha_necesidad = $("#fecha_necesidad").val();
+			var id_responsable = $("#responsable").val();
+			var txtresponsable = $('#responsable option:selected').text();
+			var id_centro_costo = $("#centrocosto").val();
+			var txtcentrodecosto = $('#centrocosto option:selected').text();
+			var urgente = $("#urgente").val();
+			
+			objArt = {
+				'id_articulo_fk': id_articulo,
+				'txtarticulo': txtarticulo,
+				'cantidad': cantidad,
+				'fecha_necesidad': fecha_necesidad,
+				'id_responsable_fk': id_responsable,
+				'txtresponsable': txtresponsable,
+				'id_centrocosto_fk': id_centro_costo,
+				'txtcentrodecosto': txtcentrodecosto,
+				'urgente': urgente
+			}
+			
+			console.log("obj creado..");
+			console.log(objArt);
+
+			// var storage = localStorage;
+			var objDatos = localStorage.getItem('objDatos');
+			// console.log(aArticulos);
+			objDatos_parseado = JSON.parse(objDatos);
+			console.log("objDatos_parseado");
+			console.log(objDatos_parseado);
+
+			aArt = objDatos_parseado.aArticulos;
+			console.log("art guardado");
+			console.log("aArt.length: "+aArt.length);
+
+			// if (aArt.length == 0){
+			aArt.push(objArt);
+			console.log("obj pusheado..");
+			// }else{
+			// 	console.log("length mayor a 0")
+			// }
+
+			objDatos_stringified = JSON.stringify(objDatos_parseado);
+
+			localStorage.objDatos = objDatos_stringified
+
+			// aArticulos2.push(objArt);
+			
+			// localStorage.aArticulos = JSON.stringify(aArticulos);
+			
+			window.location = '/paalta';
+		});
 	});
 
 	$(".datepicker").datepicker({

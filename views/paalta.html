@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<link href="/css/paalta.css" rel="stylesheet">
+<!-- <link href="/css/paalta.css" rel="stylesheet"> -->
 <h2>{{ pagename }}</h2>
 <input hidden name="aArt" id="aArt" value="{{ articulos }}">
 <div class="panel panel-default">
@@ -15,9 +15,7 @@
 		<table>
 			<tr>	
 				<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
-				<td><!-- <a href="/paaltaart"> --><button type="button" id="addArt" name="addArt"class="btn btn-success">Agregar Art.</button><!-- </a> --></td>
-				<!-- <td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
-				<td><button type="button" class="btn btn-warning">Descartar</button></a></td> -->
+				<td><button type="button" id="addArt" name="addArt"class="btn btn-success">Agregar Art.</button></td>
 				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
 			</tr>	
 		</table>
@@ -53,7 +51,7 @@
 			</table>
 		</form>
 	</div>
-	<table align="center" class="table table-striped">
+	<table align="center" id="tableArt" class="table table-striped">
 		<thead>
   			<tr>				
 				<th>Articulo</th>
@@ -63,27 +61,16 @@
 				<th>Estado</th>
 			</tr>
   		</thead>
-  		<tbody>
-  			{% for pa in articulos %}
-				<tr>
-					<td>{{ pa.id_articulo_fk}}</td>
-					<td>{{ pa.cantidad}}</td>
-					<td>{{ pa.id_centrocosto_fk}}</td>
-					<td>{{ pa.urgente}}</td>
-					<td>{{ pa.estado}}</td>
-				</tr>
-			{% endfor %}
+  		<tbody id="tbody">
+  			
   		</tbody>
 	</table>
 	<div class="panel-footer">
 		<table  align="center">
 			<tr>	
-				<!-- <td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
-				<td><a href="/paaltaart"><button type="button" class="btn btn-success">Agregar Art.</button></a></td> -->
 				<td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
 				<td style="width: 50px;"></td>
 				<td><button type="button" class="btn btn-warning">Descartar</button></a></td>
-				<!-- <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td> -->
 			</tr>	
 		</table>
 	</div>
@@ -92,40 +79,91 @@
 <script src="/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 	$(".datepicker").datepicker({
-		format: 'dd/mm/yyyy',
+	    format: 'dd/mm/yyyy',
 		autoclose: true,
 		language: 'ES'
+	}).on("changeDate", function (e) {
+	    if('localStorage' in window && window['localStorage'] !== null) {
+			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+			objDatos = localStorage.getItem('objDatos');
+			objDatos = JSON.parse(objDatos);
+			// console.log("tipo de objDatos: "+ typeof objDatos);
+			// console.log("Fecha a guardaR: "+ $("#fecha_generacion").val());
+			fecha_generacion = $("#fecha_generacion").val();
+ 			objDatos.fecha = fecha_generacion;
+ 			// console.log(objDatos); //hasta aca guarda bien
+			objDatos_stringified = JSON.stringify(objDatos);
+			// console.log(objDatos_stringified)
+			localStorage.setItem('objDatos', objDatos_stringified);
+			console.log("Fecha actualizada en localStorage");
+			// console.log(localStorage.objDatos.fecha);
+		} else { 
+			alert('No soporta LocalStorage. Actualize el navegador !!'); 
+		}
 	});
 
 	$("#addArt").on("click", function (){
-		// aArt = $("#aArt").val();
-		// console.log(aArt);
-		// if(aArt.length = 0)
-		// 	aArt = [];
-
 		window.location = '/paaltaart/';
 	});
 
-	if('sessionStorage' in window && window['sessionStorage'] !== null) {
-		console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-		var storage = sessionStorage;
-		console.log(storage.length);
-		objArt = {
-			'id_articulo_fk': 0,
-			'cantidad': 0,
-			'fecha_necesidad': '2015-01-05',
-			'id_responsable_fk': 3,
-			'id_centrocosto_fk': 1,
-			'urgente': 1
-		}
-		var objArt = JSON.stringify(objArt);
+	$(function() {
+	    console.log( "doc ready!" );
+	    $("#sector").change(function () {
+	    	if('localStorage' in window && window['localStorage'] !== null) {
+				console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+				objDatos = localStorage.getItem('objDatos');
+				objDatos = JSON.parse(objDatos);
+				id_sector = $("#sector").val();
 
-		if (storage.length == 0){
-			storage.setItem('aArticulos', objArt);
+				objDatos.sector = id_sector;
+				objDatos_stringified = JSON.stringify(objDatos);
+				localStorage.setItem('objDatos', objDatos_stringified);
+				console.log("Sector actualizada en localStorage");
+			}else { 
+				alert('No soporta LocalStorage. Actualize el navegador !!'); 
+			}
+	    });
+
+
+	    if('localStorage' in window && window['localStorage'] !== null) {
+			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+			//localStorage
+
+			objDatos = localStorage.getItem('objDatos');
+			objDatos = JSON.parse(objDatos);
+			console.log(objDatos)
+			if (objDatos.fecha != ''){
+				fecha_gen = objDatos.fecha;
+				$("#fecha_generacion").val(fecha_gen);
+			}else{
+				console.log("fecha no cargada aun");
+			}
+
+			if (objDatos.sector != ''){
+				$("#sector#elem").val(objDatos.sector);
+			}else{
+				console.log("sector no elegido aun")
+			}
+
+			aArt = objDatos.aArticulos;
+			console.log(aArt.length);
+
+			var string = "";
+
+			for (var i = 0; i < aArt.length; i++) {
+				string = string + "<tr><td>"+aArt[i].id_articulo_fk+"</td><td>"+aArt[i].cantidad+"</td><td>"+aArt[i].id_centrocosto_fk+"</td><td>"
+				+aArt[i].urgente+"</td><td>"+aArt[i].estado+"</td></tr>"
+			}
+
+			$("#tableArt > tbody").append(string);
+			
+		} else { 
+			alert('No soporta LocalStorage. Actualize el navegador !!'); 
 		}
-	} else { 
-		alert('No soporta LocalStorage. Actualize el navegador !!'); 
-	}
+
+	});
+
+	
 
 </script>
 

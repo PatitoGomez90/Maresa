@@ -40,7 +40,7 @@
           <ul class="dropdown-menu" role="menu">
             <li><a href="/cclista">Centro Costos [ABM]</a></li> <!-- ex-Maquinas, estaba en mant. -->
             <li class="divider"></li>
-            <li><a href="/paalta">Nuevo Pedido de Abastecimiento</a></li>
+            <li><a href="/paalta" id="btnNuevoPedidoDeAbastecimiento">Nuevo Pedido de Abastecimiento</a></li>
 <!--             <li><a href="/articulosalta">Alta de Articulos</a></li>
             <li><a href="/articulosconsulta">Consulta de Articulos</a></li>
             <li class="divider"></li>
@@ -160,6 +160,34 @@
     <script src="/js/ie10-viewport-bug-workaround.js"></script>
     <script type="text/javascript">
       $('.submenu').submenupicker();
+
+      //btnNuevoPedidoDeAbastecimiento
+      $(function() {
+            $("#btnNuevoPedidoDeAbastecimiento").on("click", function(){
+                if('localStorage' in window && window['localStorage'] !== null) {
+                    console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                    var storage = localStorage;
+                    console.log(storage.length);
+                    
+                    
+                    localStorage.clear();
+                    aArt=[];
+                    objDatos = {
+                        'fecha': '',
+                        'sector': '',
+                        'aArticulos': aArt
+                    }
+
+                    var objDatos_stringified = JSON.stringify(objDatos);
+
+                    if (storage.length == 0){
+                        storage.setItem('objDatos', objDatos_stringified);
+                    }
+                } else { 
+                    alert('No soporta LocalStorage. Actualize el navegador !!'); 
+                }
+            });
+        });
     </script>
 </body>
 </html>
