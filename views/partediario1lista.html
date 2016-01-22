@@ -73,9 +73,9 @@
 								</td>
 								<td>{{ p.id}}</td>
 								<td>{{ p.fechaf }}</td>
-								<td>{{ p.sectortxt }}</td>
-								<td>{{ p.lugartxt }}</td>
-								<td>{{ p.turnotxt }}
+								<td>{% if p.id_sector_fk != 0 %}{{ p.sectortxt }}{% else %}-{% endif %}</td>
+								<td>{% if p.id_lugar_fk != 0 %}{{ p.lugartxt }}{% else %}-{% endif %}</td>
+								<td>{% if p.id_turno_fk != 0 %}{{ p.turnotxt }}{% else %}-{% endif %}
 								<td>{% if p.estado == 1 %}Abierto{% else %}Cerrado{% endif %}</td>
 							</tr>
 						{% endfor %}

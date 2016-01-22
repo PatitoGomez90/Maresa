@@ -39,7 +39,7 @@ function getAllAbiertos(cb){
 		"left join sectores on sectores.id = partediario1.id_sector_fk "+
 		"left join turnos on turnos.id = partediario1.id_turno_fk "+
 		"left join contratos on contratos.id = partediario1.id_contrato_fk "+
-		"where partediario1.estado = 1 order by fecha desc", cb);
+		"where partediario1.estado = 1 order by fecha desc, id desc", cb);
 }
 
 function getAllCerrados(cb){

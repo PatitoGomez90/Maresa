@@ -32,11 +32,11 @@
 			</tr>
 			<tr>
 				<td>Fecha de alta:</td>
-				<td><input type="text" id="alta" name="alta" class="datepicker" readonly class="form-control" value="{{ usuario.alta|date('d/m/Y') }}"></td>
+				<td><input type="text" id="alta" name="alta" class="datepicker form-control" readonly value="{{ usuario.altaf }}"></td>
 			</tr>
 			<tr>
 				<td>Fecha de baja:</td>
-				<td><input type="text" id="baja" name="baja" class="datepicker" readonly class="form-control" value="{{ usuario.baja|date('d/m/Y') }}"></td>
+				<td><input type="text" id="baja" name="baja" class="datepicker form-control" readonly value="{{ usuario.bajaf }}"></td>
 			</tr>
 			<tr>
 				<td>Activo:</td>
@@ -57,7 +57,11 @@
 <script src="/js/bootstrap-datepicker.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script type="text/javascript">
-	$('.datepicker').datepicker()
+	$('.datepicker').datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'es'
+	});
 	$('#usuario').limit('20','#charsLeftUsuario');
 	$('#clave').limit('20','#charsLeftClave');
 	$('#mail').limit('80','#charsLeftMail');

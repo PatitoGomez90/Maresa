@@ -16,6 +16,7 @@ app.engine('html', cons.swig);
 app.set('view engine', 'html');
 app.set('views', __dirname+'/views');
 app.use(bodyParser());
+// app.use(bodyParser.json());
 app.use(methodoverride());
 app.use(cookieParser('algodificil'));
 app.use(session({

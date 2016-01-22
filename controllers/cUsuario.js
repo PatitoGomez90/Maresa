@@ -70,8 +70,8 @@ function postUsuarioModificar(req, res){
     activa = 1
   else
     activa = 0
-  alta2 = changeDate(alta);
-  baja2 = changeDate(baja);
+  var alta2 = changeDate(alta);
+  var baja2 = changeDate(baja);
 
   mUsuarios.updateUsuario(id, usuario, clave, mail, niveles, alta2, baja2, activa, function(){
     res.redirect('/usuarioslista');

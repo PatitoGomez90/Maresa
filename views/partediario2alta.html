@@ -40,19 +40,25 @@
 				</td>
 			</tr>
 			<tr>
-				<td><input type="button" value="Atras" onclick="history.back()"></td>
-				<td><input type="submit" value="Agregar"></td>
+				<td><input type="button" value="Atras" onclick="history.back();"></td>
+				<td><input type="submit" value="Agregar" id="submitt"></td>
 			</tr>
 		</table>
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script type="text/javascript">
-	$("#formalta").submit(function(event) {
-	  if ( $("#empleado").val() != 0 ) {
-	    return;
-	  }
-	  event.preventDefault();
+	$(function() {
+	    console.log( "ready!" );
+	    actualizarAviso();
+		$("#formalta").submit(function(event) {
+		  if ( $("#empleado").val() != 0 ) {
+		  	$('#submitt').prop('disabled', true);
+		  	//  $(this).find("button[type='submit']").prop('disabled',true);
+		    return;	    
+		  }
+		  event.preventDefault();	  
+		});
 	});
 
 	function actualizarAviso(){
@@ -73,7 +79,7 @@
 			});				
 		}
 	}
-
+		
 	function actualizarEmple(){
 		sector = $('#sector').val();
 		console.log(sector)
@@ -108,11 +114,6 @@
 			});
 		}
 	}
-
-	$(function() {
-	    console.log( "ready!" );
-	    actualizarAviso();
-	});
 
 	$("#sector").on("change", function() {
 		actualizarEmple();

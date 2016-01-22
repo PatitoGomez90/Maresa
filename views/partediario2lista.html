@@ -10,7 +10,7 @@
 <b>Fecha:</b> {{ partediario1.fechaf }}<br>
 <b>Sector:</b> {{ partediario1.sectortxt }}<br>
 <b>Lugar:</b> {% if partediario1.id_lugar_fk != 0 %}{{ partediario1.lugartxt }}{% endif %}<br>
-<b>Turno</b> {{ partediario1.turnotxt }}<br>
+<b>Turno</b> {% if partediario1.id_turno_fk != 0 %}{{ partediario1.turnotxt }}{% endif %}<br>
 <b>Contrato:</b>{{ partediario1.contratotxt }}<br>
 <div class="panel panel-default">
   <!-- Default panel contents -->

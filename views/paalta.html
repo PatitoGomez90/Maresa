@@ -6,101 +6,81 @@
 
 {% block content %}
 <!-- <link href="/css/paalta.css" rel="stylesheet"> -->
+
+<!-- este html es la vista intentando guardar el PA con post desde el form -->
+
 <h2>{{ pagename }}</h2>
 <input hidden name="aArt" id="aArt" value="{{ articulos }}">
+<form method="post" id="formalta" action="/paalta">	
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
   	<!-- Table -->
-		<table>
+		<table style="width: 100%;">
 			<tr>	
-				<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
-				<td><button type="button" id="addArt" name="addArt"class="btn btn-success">Agregar Art.</button></td>
-				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="width: 46px;"><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
+				<td style="width: 90px;"><button type="button" id="addArt" name="addArt" class="btn btn-success">Agregar Art.</button></td>
+				<td style="width: 52px;"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td style="min-width:350px; width:auto;">
+					<table style="float: right;">
+						<tr>
+							<td style="width: 110px;">
+								<table>
+									<tr>
+										<td>Fecha:</td>
+										<td><input type="text" id="fecha_generacion" name="fecha_generacion" class="datepicker form-control" style="width: 180px;" readonly></td>
+									</tr>
+								</table>
+							</td>
+							<td style="width: 3px;">&nbsp;&nbsp;</td>
+							<td>
+								<table>
+									<tr>
+										<td>Sector:</td>
+										<td>
+											<select class="form-control" id="sector" name="sector">
+												{% for s in sectores %}
+													<option value="{{ s.id }}">{{ s.nombre }}</option>
+												{% endfor %}
+											</select>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
 			</tr>	
 		</table>
 	</div>
-	<div class="panel-body">
-		<form>
-			<input hidden >
-			<table>
-				<tr>
-					<td>
-						<table>
-							<tr>
-								<td>Fecha:</td>
-								<td><input id="fecha_generacion" name="fecha_generacion" class="datepicker form-control" style="width: 180px;" readonly></td>
-							</tr>
-						</table>
-					</td>
-					<td>
-						<table>
-							<tr>
-								<td>Sector:</td>
-								<td>
-									<select class="form-control" id="sector" name="sector">
-										{% for s in sectores %}
-											<option value="{{ s.id }}">{{ s.nombre }}</option>
-										{% endfor %}
-									</select>
-								</td>
-							</tr>
-						</table>
-					</td>
+	
+		<input hidden id="objDatos" name="objDatos">
+		<table align="center" id="tableArt" class="table table-striped">
+			<thead>
+					<tr>				
+					<th>Articulo</th>
+					<th>Cantidad</th>
+					<th>Centro de Costo</th>
+					<th>Urgente</th>
+					<th>Estado</th>
 				</tr>
-			</table>
-		</form>
-	</div>
-	<table align="center" id="tableArt" class="table table-striped">
-		<thead>
-  			<tr>				
-				<th>Articulo</th>
-				<th>Cantidad</th>
-				<th>Centro de Costo</th>
-				<th>Urgente</th>
-				<th>Estado</th>
-			</tr>
-  		</thead>
-  		<tbody id="tbody">
-  			
-  		</tbody>
-	</table>
-	<div class="panel-footer">
-		<table  align="center">
-			<tr>	
-				<td><button type="button" class="btn btn-primary">Guardar PA.</button></a></td>
-				<td style="width: 50px;"></td>
-				<td><button type="button" class="btn btn-warning">Descartar</button></a></td>
-			</tr>	
+				</thead>
+				<tbody id="tbody">
+					
+				</tbody>
 		</table>
-	</div>
+		<div class="panel-footer">
+			<table  align="center">
+				<td><button type="submit" id="guardar" class="btn btn-primary">Guardar PA.</button></td>
+				<td style="width: 50px;"></td>
+				<td><button type="button" id="descartar" class="btn btn-warning">Descartar</button></td>
+			</table>
+		</div>		
+	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-	$(".datepicker").datepicker({
-	    format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'ES'
-	}).on("changeDate", function (e) {
-	    if('localStorage' in window && window['localStorage'] !== null) {
-			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-			objDatos = localStorage.getItem('objDatos');
-			objDatos = JSON.parse(objDatos);
-			// console.log("tipo de objDatos: "+ typeof objDatos);
-			// console.log("Fecha a guardaR: "+ $("#fecha_generacion").val());
-			fecha_generacion = $("#fecha_generacion").val();
- 			objDatos.fecha = fecha_generacion;
- 			// console.log(objDatos); //hasta aca guarda bien
-			objDatos_stringified = JSON.stringify(objDatos);
-			// console.log(objDatos_stringified)
-			localStorage.setItem('objDatos', objDatos_stringified);
-			console.log("Fecha actualizada en localStorage");
-			// console.log(localStorage.objDatos.fecha);
-		} else { 
-			alert('No soporta LocalStorage. Actualize el navegador !!'); 
-		}
-	});
 
 	$("#addArt").on("click", function (){
 		window.location = '/paaltaart/';
@@ -108,6 +88,86 @@
 
 	$(function() {
 	    console.log( "doc ready!" );
+	    var objDatos = localStorage.getItem('objDatos');
+		console.log(objDatos);
+
+		parsed = JSON.parse(objDatos);
+		console.log(parsed)
+
+	    $(".datepicker").datepicker({
+	    format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'ES'
+		}).on("changeDate", function (e) {
+		    if('localStorage' in window && window['localStorage'] !== null) {
+				console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+				objDatos = localStorage.getItem('objDatos');
+				objDatos = JSON.parse(objDatos);
+				fecha_generacion = $("#fecha_generacion").val();
+	 			objDatos.fecha = fecha_generacion;
+				objDatos_stringified = JSON.stringify(objDatos);
+				$("#objDatos").val(objDatos);
+				localStorage.setItem('objDatos', objDatos_stringified);
+				console.log("Fecha actualizada en localStorage");
+			} else { 
+				alert('No soporta LocalStorage. Actualize el navegador !!'); 
+			}
+		});
+
+		if('localStorage' in window && window['localStorage'] !== null) {
+			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+			//localStorage
+
+			objDatos = localStorage.getItem('objDatos');
+			objDatos = JSON.parse(objDatos);
+			// console.log(objDatos)
+			if (objDatos.fecha != ''){
+				fecha_gen = objDatos.fecha;
+				$("#fecha_generacion").val(fecha_gen);
+			}else{
+				console.log("fecha no cargada aun");
+			}
+
+			if (objDatos.sector != ''){
+				$("#sector").val(objDatos.sector);
+			}else{
+				console.log("sector no elegido aun")
+			}
+
+			aArt = objDatos.aArticulos;
+			// console.log(aArt.length);
+
+			var string = "";
+			var urgente ="-";
+
+			for (var i = 0; i < aArt.length; i++) {
+				if (aArt[i].urgente == 1)
+					urgente = "Si";
+				else if (aArt[i].urgente == 0)
+					urgente = "No";
+
+				string = string + "<tr><td><input hidden class='id_articulo_fk' id='id_articulo_fk' value='"+aArt[i].id_articulo_fk+"'>"
+				+aArt[i].txtarticulo+"</td>"
+				+"<td>"+aArt[i].cantidad+"</td>"
+				+"<td><input hidden class='id_centrocosto_fk' id='id_centrocosto_fk' value='"+aArt[i].id_centrocosto_fk+"'>"
+				+aArt[i].txtcentrodecosto+"</td>"
+				+"<td>"+urgente+"</td><td>"+aArt[i].estado+"</td></tr>"
+			}
+
+			$("#tableArt > tbody").append(string);
+			
+		} else { 
+			alert('No soporta LocalStorage. Actualize el navegador !!'); 
+		}
+
+	    if('localStorage' in window && window['localStorage'] !== null) {
+			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+			objDatos = localStorage.getItem('objDatos');
+    		$("#objDatos").val(objDatos);
+    		// console.log("consoleee")
+    		// console.log(objDatos)
+    	}
+
 	    $("#sector").change(function () {
 	    	if('localStorage' in window && window['localStorage'] !== null) {
 				console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
@@ -118,52 +178,14 @@
 				objDatos.sector = id_sector;
 				objDatos_stringified = JSON.stringify(objDatos);
 				localStorage.setItem('objDatos', objDatos_stringified);
+				$("#objDatos").val(objDatos_stringified);
 				console.log("Sector actualizada en localStorage");
+				// console.log(objDatos)
 			}else { 
 				alert('No soporta LocalStorage. Actualize el navegador !!'); 
 			}
 	    });
-
-
-	    if('localStorage' in window && window['localStorage'] !== null) {
-			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-			//localStorage
-
-			objDatos = localStorage.getItem('objDatos');
-			objDatos = JSON.parse(objDatos);
-			console.log(objDatos)
-			if (objDatos.fecha != ''){
-				fecha_gen = objDatos.fecha;
-				$("#fecha_generacion").val(fecha_gen);
-			}else{
-				console.log("fecha no cargada aun");
-			}
-
-			if (objDatos.sector != ''){
-				$("#sector#elem").val(objDatos.sector);
-			}else{
-				console.log("sector no elegido aun")
-			}
-
-			aArt = objDatos.aArticulos;
-			console.log(aArt.length);
-
-			var string = "";
-
-			for (var i = 0; i < aArt.length; i++) {
-				string = string + "<tr><td>"+aArt[i].id_articulo_fk+"</td><td>"+aArt[i].cantidad+"</td><td>"+aArt[i].id_centrocosto_fk+"</td><td>"
-				+aArt[i].urgente+"</td><td>"+aArt[i].estado+"</td></tr>"
-			}
-
-			$("#tableArt > tbody").append(string);
-			
-		} else { 
-			alert('No soporta LocalStorage. Actualize el navegador !!'); 
-		}
-
 	});
-
-	
 
 </script>
 

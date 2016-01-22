@@ -365,7 +365,7 @@ module.exports = function(app) {
 	//pedidos abastecimiento
 	app.get('/palista', auth, cPedidosAbastecimiento.getLista);
 	app.get('/paalta', auth, cPedidosAbastecimiento.getAlta);
-	// app.post('/paalta', auth, cPedidosAbastecimiento.postAlta);
+	app.post('/paalta', auth, cPedidosAbastecimiento.postAlta);
 	app.get('/paaltaart', auth, cPedidosAbastecimiento.getAltaArt);
 	app.post('/paaltaart', auth, cPedidosAbastecimiento.postAltaArt);
 	// app.get('/pamodificar/:id', auth, cPedidosAbastecimiento.getModificar);

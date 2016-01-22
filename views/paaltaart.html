@@ -34,7 +34,7 @@
 				<td>	
 					<select class="form-control" id="responsable" name="responsable">
 						{% for e in emples %}
-							<option value="{{ e.id }}">{{ e.nombre }}</option>
+							<option value="{{ e.codigo }}">{{ e.nombre }}</option>
 						{% endfor %}
 					</select>
 				</td>
@@ -91,7 +91,7 @@
 			var id_centro_costo = $("#centrocosto").val();
 			var txtcentrodecosto = $('#centrocosto option:selected').text();
 			var urgente = $("#urgente").val();
-			
+			// alert(id_responsable)			
 			objArt = {
 				'id_articulo_fk': id_articulo,
 				'txtarticulo': txtarticulo,
@@ -102,37 +102,16 @@
 				'id_centrocosto_fk': id_centro_costo,
 				'txtcentrodecosto': txtcentrodecosto,
 				'urgente': urgente
-			}
-			
-			console.log("obj creado..");
-			console.log(objArt);
+			}			
 
-			// var storage = localStorage;
 			var objDatos = localStorage.getItem('objDatos');
-			// console.log(aArticulos);
 			objDatos_parseado = JSON.parse(objDatos);
-			console.log("objDatos_parseado");
-			console.log(objDatos_parseado);
-
 			aArt = objDatos_parseado.aArticulos;
-			console.log("art guardado");
-			console.log("aArt.length: "+aArt.length);
-
-			// if (aArt.length == 0){
 			aArt.push(objArt);
-			console.log("obj pusheado..");
-			// }else{
-			// 	console.log("length mayor a 0")
-			// }
-
+			objDatos_parseado.aArticulos = aArt;
 			objDatos_stringified = JSON.stringify(objDatos_parseado);
+			localStorage.setItem('objDatos', objDatos_stringified);
 
-			localStorage.objDatos = objDatos_stringified
-
-			// aArticulos2.push(objArt);
-			
-			// localStorage.aArticulos = JSON.stringify(aArticulos);
-			
 			window.location = '/paalta';
 		});
 	});
