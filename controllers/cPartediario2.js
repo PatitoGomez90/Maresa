@@ -142,38 +142,40 @@ function getAlta(req, res){
 }
 
 function postAlta(req, res){
+	console.time('controlador')
 	params = req.body;
 	idempleado = params.empleado;
 	idpartediario1 = params.idpartediario1;
 
 	//acá corregir para que agrege bien el Numero de empleado en el PArte Diario
 	//se va a agregar el campo numero en la funcion insertNewEmpleado
-	console.log(idpartediario1+".1");
+	// console.log(idpartediario1+".1");
 	if( idempleado != 0){
 		console.log(idpartediario1+".2");
 		mPartediario2.getLastNumerobyPd1(idpartediario1, function (lastnumero){
-			console.log(idpartediario1+".3");
+			// console.log(idpartediario1+".3");
 			lastnumero = lastnumero[0].ultnumero;
-			console.log(idpartediario1+".4");
+			// console.log(idpartediario1+".4");
 			if (lastnumero != null){
 				lastnumeroInt = parseInt(lastnumero);
 				var proxnro = lastnumeroInt +1;	
 			}else{
 				var proxnro = 1;
 			}
-			console.log(idpartediario1+".5");
+			// console.log(idpartediario1+".5");
 			mPartediario2.insertNewEmpleado(idpartediario1, idempleado, proxnro, function(){
-				console.log(idpartediario1+".6");
+				// console.log(idpartediario1+".6");
 				res.redirect('partediario2lista/'+idpartediario1);
-				console.log(idpartediario1+".7");
+				// console.log(idpartediario1+".7");
 			});
-			console.log(idpartediario1+".8");
+			// console.log(idpartediario1+".8");
 		});
 	}else{
-		console.log("11");
+		// console.log("11");
 		res.redirect('partediario2lista/'+idpartediario1);
-		console.log("22");
+		// console.log("22");
 	}
+	console.timeEnd('controlador')
 }
 
 function getModificar(req, res){

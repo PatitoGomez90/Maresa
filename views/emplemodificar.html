@@ -90,6 +90,7 @@
 				<td>Turno:</td>
 				<td>
 					<select class="form-control" name="turno" id="turno">
+						<option value="0">Sin turno?</option>
 						{% for t in turnos %}
 							{% if emple.id_turno_fk == t.id %}
 								<option value="{{ t.id }}" selected>{{ t.codigo }}</option>

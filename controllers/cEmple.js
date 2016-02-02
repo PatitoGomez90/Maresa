@@ -223,17 +223,25 @@ function postModificar(req, res){
 	contrato = params.contrato;
 
 	mEmple.getEmplePorLegajo(legajo, function (empleporlegajo){
-		mEmple.getEmplePorLegajoConIdDistinto(empleporlegajo[0].codigo, legajo, function (empleporlegajocondistintoid){
-			if (empleporlegajocondistintoid[0] != null){
-				res.render('error',{
-					error: "El número de legajo no puede repetirse."
-				});
-			}else{
-				mEmple.update(codigo, nombre, falta, fbaja, cargo, sector, activo, legajo, cuil, fnac, domicilio, cp, telefono, tarjeta, sexo, categoria, turno, condicion, contrato, function(){
-					res.redirect('/emplelista');
-				})
-			}
-		});
+		// console.log(empleporlegajo)
+		// console.log()
+		if (empleporlegajo.length != 0){
+			mEmple.getEmplePorLegajoConIdDistinto(empleporlegajo[0].codigo, legajo, function (empleporlegajocondistintoid){
+				if (empleporlegajocondistintoid[0] != null){
+					res.render('error',{
+						error: "El número de legajo no puede repetirse."
+					});
+				}else{
+					mEmple.update(codigo, nombre, falta, fbaja, cargo, sector, activo, legajo, cuil, fnac, domicilio, cp, telefono, tarjeta, sexo, categoria, turno, condicion, contrato, function(){
+						res.redirect('/emplelista');
+					});
+				}
+			});
+		}else{
+			mEmple.update(codigo, nombre, falta, fbaja, cargo, sector, activo, legajo, cuil, fnac, domicilio, cp, telefono, tarjeta, sexo, categoria, turno, condicion, contrato, function(){
+				res.redirect('/emplelista');
+			});
+		}
 	});
 }
 

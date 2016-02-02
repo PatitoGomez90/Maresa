@@ -47,8 +47,21 @@ function getById(id, cb){
 }
 
 function insertNewEmpleado(idpartediario1, idempleado, numero, cb){
-	conn("insert into partediario2(id_partediario1_fk, id_emple_fk, numero) "+
-		"values("+idpartediario1+", "+idempleado+", "+numero+")", cb);
+	beg(function(){
+		conn("insert into partediario2(id_partediario1_fk, id_emple_fk, numero) "+
+		"values("+idpartediario1+", "+idempleado+", "+numero+");", function(){
+			com(cb);
+		});
+	});
+	
+}
+
+function beg(cb){
+	conn("START TRANSACTION;", cb);
+}
+
+function com(cb){
+	conn("COMMIT;", cb);
 }
 
 function update(id, codigohora, entrada, salida, total, hr_total_n, hr_total_50, hr_total_100, adicional1_n, adicional1_50, adicional1_100, adicional2_n, adicional2_50, adicional2_100, adicional3_n, adicional3_50, adicional3_100, adicional4_n, adicional4_50, adicional4_100, adicional5_n, adicional5_50, adicional5_100, adicional6_n, adicional6_50, adicional6_100, item1_n, item1_50, item1_100, item2_n, item2_50, item2_100, item3_n, item3_50, item3_100, item4_n, item4_50, item4_100, item5_n, item5_50, item5_100, item6_n, item6_50, item6_100, item7_n, item7_50, item7_100, item8_n, item8_50, item8_100, item9_n, item9_50, item9_100, item10_n, item10_50, item10_100, item11_n, item11_50, item11_100, item12_n, item12_50, item12_100, cb){
