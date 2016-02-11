@@ -39,7 +39,6 @@ function getLista(req, res) {
 
 function getAlta(req, res){
 	var aArt =[];
-	// aca tengo q ver como traer el array de objetos para seguir agregandole e intercambiandolo en las vistas
 	mSectores.getAll(function (sectores){
 		mPA.getUltimoCodigo(function (ultimocodigo){
 			res.render('paalta', {
@@ -61,15 +60,14 @@ function postAlta(req, res){
 	console.log(tipo_de_objDatos);
 	// console.log(typeof tipo_de_objDatos);
 
-	if (tipo_de_objDatos == "string"){		
+    if (tipo_de_objDatos === "string"){
 		objDatosParsed = JSON.parse(objDatos);			
-	}else if (tipo_de_objDatos == "object"){
-		stringiii = JSON.stringify(objDatos);
+	}else if (tipo_de_objDatos === "object"){
+		var stringiii = JSON.stringify(objDatos);
 		objDatosParsed = JSON.parse(stringiii);	
 	} else {
 		console.log("No es ni string ni object, es: "+tipo_de_objDatos);
 	}
-
     
 	// console.log("Type de objDatosParsed: "+typeof objDatosParsed);	
 	var aArt = objDatosParsed.aArticulos;
@@ -77,7 +75,7 @@ function postAlta(req, res){
 	var fecha_generacion = params.fecha_generacion;
 	var id_sector = params.sector;
 
-	console.log(fecha_generacion);
+	// console.log(fecha_generacion);
 
 	var connection = mysql.createConnection({
 		user: 'root',
@@ -122,16 +120,19 @@ function postAlta(req, res){
 				if (err){
 					throw err;
 					console.log(err)
+					console.log(query);
 				}else{
 					console.log("No errors in the query.");
 					console.log(query);
+					connection.end();
 					callback();
 				}
 			});
-
 		}, function (err) {
-			localStorage.clear();			
-			connection.end();
+			// localStorage.clear();
+			//connection.end();
+			// req.session.limpar = 1;
+			// req.session.save();
 			res.redirect('paalta');
 		});		
 	});		

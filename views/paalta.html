@@ -6,9 +6,9 @@
 
 {% block content %}
 <!-- <link href="/css/paalta.css" rel="stylesheet"> -->
-
+<link href="/css/toastr.css" rel="stylesheet"/>
 <!-- este html es la vista intentando guardar el PA con post desde el form -->
-
+<!-- esta vista es la que se utiliza, la v1 es la version anterior, esta seria la "v2" -->
 <h2>{{ pagename }}</h2>
 <input hidden name="aArt" id="aArt" value="{{ articulos }}">
 <form method="post" id="formalta" action="/paalta">	
@@ -62,7 +62,7 @@
 					<th>Cantidad</th>
 					<th>Centro de Costo</th>
 					<th>Urgente</th>
-					<th>Estado</th>
+					<th>Opciones</th>
 				</tr>
 				</thead>
 				<tbody id="tbody">
@@ -80,19 +80,113 @@
 </div>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/toastr.js"></script>
 <script type="text/javascript">
 
 	$("#addArt").on("click", function (){
 		window.location = '/paaltaart/';
 	});
 
+	if('localStorage' in window && window['localStorage'] !== null) {
+    	var objDatos = localStorage.getItem('objDatos');
+    	var objDatos = JSON.parse(objDatos);
+    	if (objDatos.limpiar == '1'){
+    		toastr.options = {
+				  "closeButton": false,
+				  "debug": false,
+				  "newestOnTop": false,
+				  "progressBar": true,
+				  "positionClass": "toast-top-right",
+				  "preventDuplicates": false,
+				  "onclick": null,
+				  "showDuration": "300",
+				  "hideDuration": "1000",
+				  "timeOut": "3000",
+				  "extendedTimeOut": "1000",
+				  "showEasing": "swing",
+				  "hideEasing": "linear",
+				  "showMethod": "fadeIn",
+				  "hideMethod": "fadeOut"
+				}
+
+			// toastr.info('Nuevo pedido de Abastecimiento agregado.', "Exito!");
+			toastr["success"]("El pedido de abastecimiento ha sido creado con exito.", "Exito!");
+    		// alert("limpiar = 1 !!!");
+
+    		localStorage.clear();
+
+    		aArt=[];
+            objDatos = {
+                'fecha': '',
+                'sector': '1',
+                'limpiar':'0',
+                'aArticulos': aArt
+            }
+
+            var objDatos_stringified = JSON.stringify(objDatos);
+            $("#objDatos").val(objDatos_stringified);
+            if (localStorage.length == 0){
+                localStorage.setItem('objDatos', objDatos_stringified);
+            }
+    	}
+    } else { 
+		alert('No soporta LocalStorage. Actualize el navegador !!'); 
+	}
+
+	$("#objDatos").change(function (){
+		objDatos = $("#objDatos").val();
+		console.log(objDatos);
+	});
+
+	
+
 	$(function() {
 	    console.log( "doc ready!" );
+
+	    
+
+		$("#formalta").submit(function( event ) {
+			console.log("en on submit");		
+			// alert("en on submit");
+			var objDatos = localStorage.getItem('objDatos');
+			// alert(objDatos);
+			var objDatos_parsed = JSON.parse(objDatos);
+			// alert(objDatos_parsed)
+
+			var fecha = objDatos_parsed.fecha;
+			var sector = objDatos_parsed.sector;
+			var aArt = objDatos_parsed.aArticulos;
+			
+			// alert(fecha)
+			// alert(sector)
+			// alert(aArt)//undefined
+			// alert(aArt.length)
+			if (fecha != '0000-00-00' && fecha != '' && fecha.length != 0 && sector != '' && aArt.length > 0){
+				// alert("if true!!")
+				var objDatos = localStorage.getItem('objDatos');
+				var objDatos = JSON.parse(objDatos);
+				objDatos.limpiar = 1;
+				var objDatos_stringified = JSON.stringify(objDatos);
+				$("#objDatos").val(objDatos_stringified);
+				
+				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
+				// console.log("1");
+				// console.log(objDatos);
+
+				localStorage.setItem('objDatos', objDatos_stringified);
+				// 
+				
+			}else{
+				event.preventDefault();
+				alert("Por favor cargue todos los datos necesarios para dar de alta.");				
+			}
+		});
+
 	    var objDatos = localStorage.getItem('objDatos');
-		console.log(objDatos);
+		// console.log(objDatos);
 
 		parsed = JSON.parse(objDatos);
-		console.log(parsed)
+		// console.log(parsed)
 
 	    $(".datepicker").datepicker({
 	    format: 'dd/mm/yyyy',
@@ -100,13 +194,18 @@
 		language: 'ES'
 		}).on("changeDate", function (e) {
 		    if('localStorage' in window && window['localStorage'] !== null) {
-				console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+				// console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
 				objDatos = localStorage.getItem('objDatos');
 				objDatos = JSON.parse(objDatos);
 				fecha_generacion = $("#fecha_generacion").val();
 	 			objDatos.fecha = fecha_generacion;
 				objDatos_stringified = JSON.stringify(objDatos);
-				$("#objDatos").val(objDatos);
+				$("#objDatos").val(objDatos_stringified);
+
+				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
+				// console.log("2");
+				// console.log(objDatos);
+
 				localStorage.setItem('objDatos', objDatos_stringified);
 				console.log("Fecha actualizada en localStorage");
 			} else { 
@@ -114,63 +213,102 @@
 			}
 		});
 
-		if('localStorage' in window && window['localStorage'] !== null) {
-			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-			//localStorage
+		//para poner los valores en los inputs (fecha gen o sector), o la lista de articulos
+			if('localStorage' in window && window['localStorage'] !== null) {
+				// console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+				//localStorage
 
-			objDatos = localStorage.getItem('objDatos');
-			objDatos = JSON.parse(objDatos);
-			// console.log(objDatos)
-			if (objDatos.fecha != ''){
-				fecha_gen = objDatos.fecha;
-				$("#fecha_generacion").val(fecha_gen);
-			}else{
-				console.log("fecha no cargada aun");
+				objDatos = localStorage.getItem('objDatos');
+				objDatos = JSON.parse(objDatos);
+				// console.log(objDatos)
+				if (objDatos.fecha != ''){
+					fecha_gen = objDatos.fecha;
+					$("#fecha_generacion").val(fecha_gen);
+				}else{
+					console.log("fecha no cargada aun");
+				}
+
+				if (objDatos.sector != ''){
+					$("#sector").val(objDatos.sector);
+				}else{
+					console.log("sector no elegido aun")
+				}
+
+				aArt = objDatos.aArticulos;
+				// console.log(aArt.length);
+
+				var string = "";
+				var urgente ="-";
+
+				for (var i = 0; i < aArt.length; i++) {
+					if (aArt[i].urgente == 1)
+						urgente = "Si";
+					else if (aArt[i].urgente == 0)
+						urgente = "No";
+
+					string = string + "<tr><td><input hidden class='id_articulo_fk' id='id_articulo_fk' value='"+aArt[i].id_articulo_fk+"'>"
+					+aArt[i].txtarticulo+"</td>"
+					+"<td>"+aArt[i].cantidad+"</td>"
+					+"<td><input hidden class='id_centrocosto_fk' id='id_centrocosto_fk' value='"+aArt[i].id_centrocosto_fk+"'>"
+					+aArt[i].txtcentrodecosto+"</td>"
+					+"<td>"+urgente+"</td><td><button type='button' name='borrar' id='borrar' class='borrar btn btn-danger' data-index="+i+" >Borrar</button></td></tr>"
+					// +"<td>"+urgente+"</td><td><button type='button' name='borrar' id='borrar' class='btn btn-danger' data-id_art="+aArt[i].id_articulo_fk+" data-cantidad="+aArt[i].cantidad+" data-id_centrocosto="+aArt[i].id_centrocosto_fk+">Borrar</button></td></tr>"
+				}
+				$("#tableArt > tbody").append(string);			
+			} else { 
+				alert('No soporta LocalStorage. Actualize el navegador !!'); 
 			}
 
-			if (objDatos.sector != ''){
-				$("#sector").val(objDatos.sector);
-			}else{
-				console.log("sector no elegido aun")
-			}
+		$(".borrar").on("click", function(){
+	    	alert("clic")
+	    	// id_art = $(this).data('id_art');
+	    	// cantidad = $(this).data('cantidad');
+	    	// id_centrocosto = $(this).data('id_centrocosto');
+	    	var index = $(this).data('index');
+	    	alert("index: "+index)
 
-			aArt = objDatos.aArticulos;
-			// console.log(aArt.length);
+	    	var objDatos = localStorage.getItem('objDatos');
+	    	alert("objDatos de LS")
+	    	alert(objDatos)
+	    	objDatos_parsed = JSON.parse(objDatos);
+	    	alert("objDatos_parsed de LS")
+	    	alert(objDatos_parsed)
+	    	var aArt = objDatos_parsed.aArticulos;
+	    	alert("aArt de LS")
+	    	alert(aArt)
+	    	aArt.splice(index, 1); alert("BORRADOOOO0000")
+	    	alert("aArt 2 'spliceado'")
+	    	alert(aArt)
+	    	//hasta aca funca
+	    	//meterle aArt a objDatos y despues guardarlo en el LS
+	    	alert("objDatos 2 'modificado?'")
+	    	alert(objDatos)
+	    	alert("objDatos_parsed 2 'modificado?'")
+	    	alert(objDatos_parsed)
+	    	//ver si stringifiar o guardar asi 'aArt' derecho
+	    	objDatos_stringified = JSON.stringify(objDatos);
+			localStorage.setItem('objDatos', objDatos_stringified);
+			$("#objDatos").val(objDatos_stringified);
+			window.location = '/paalta';
+	    });
 
-			var string = "";
-			var urgente ="-";
+		//para poner objDatos en el input hidden objDatos
+		    if('localStorage' in window && window['localStorage'] !== null) {
+				// console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+				objDatos = localStorage.getItem('objDatos');
+				objDatos = JSON.parse(objDatos);
+				objDatos_stringified = JSON.stringify(objDatos);
+	    		$("#objDatos").val(objDatos_stringified);
 
-			for (var i = 0; i < aArt.length; i++) {
-				if (aArt[i].urgente == 1)
-					urgente = "Si";
-				else if (aArt[i].urgente == 0)
-					urgente = "No";
+				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
+				// console.log("3");
+				// console.log(objDatos);
 
-				string = string + "<tr><td><input hidden class='id_articulo_fk' id='id_articulo_fk' value='"+aArt[i].id_articulo_fk+"'>"
-				+aArt[i].txtarticulo+"</td>"
-				+"<td>"+aArt[i].cantidad+"</td>"
-				+"<td><input hidden class='id_centrocosto_fk' id='id_centrocosto_fk' value='"+aArt[i].id_centrocosto_fk+"'>"
-				+aArt[i].txtcentrodecosto+"</td>"
-				+"<td>"+urgente+"</td><td>"+aArt[i].estado+"</td></tr>"
-			}
-
-			$("#tableArt > tbody").append(string);
-			
-		} else { 
-			alert('No soporta LocalStorage. Actualize el navegador !!'); 
-		}
-
-	    if('localStorage' in window && window['localStorage'] !== null) {
-			console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-			objDatos = localStorage.getItem('objDatos');
-    		$("#objDatos").val(objDatos);
-    		// console.log("consoleee")
-    		// console.log(objDatos)
-    	}
+	    	}
 
 	    $("#sector").change(function () {
 	    	if('localStorage' in window && window['localStorage'] !== null) {
-				console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+				// console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
 				objDatos = localStorage.getItem('objDatos');
 				objDatos = JSON.parse(objDatos);
 				id_sector = $("#sector").val();
@@ -179,7 +317,12 @@
 				objDatos_stringified = JSON.stringify(objDatos);
 				localStorage.setItem('objDatos', objDatos_stringified);
 				$("#objDatos").val(objDatos_stringified);
-				console.log("Sector actualizada en localStorage");
+
+				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
+				// console.log("4");
+				// console.log(objDatos);
+
+				console.log("Sector actualizado en localStorage");
 				// console.log(objDatos)
 			}else { 
 				alert('No soporta LocalStorage. Actualize el navegador !!'); 

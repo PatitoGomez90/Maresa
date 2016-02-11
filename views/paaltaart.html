@@ -91,28 +91,34 @@
 			var id_centro_costo = $("#centrocosto").val();
 			var txtcentrodecosto = $('#centrocosto option:selected').text();
 			var urgente = $("#urgente").val();
-			// alert(id_responsable)			
-			objArt = {
-				'id_articulo_fk': id_articulo,
-				'txtarticulo': txtarticulo,
-				'cantidad': cantidad,
-				'fecha_necesidad': fecha_necesidad,
-				'id_responsable_fk': id_responsable,
-				'txtresponsable': txtresponsable,
-				'id_centrocosto_fk': id_centro_costo,
-				'txtcentrodecosto': txtcentrodecosto,
-				'urgente': urgente
-			}			
+			// alert(id_responsable)
+			cant_int = parseInt(cantidad);
+			if(cantidad.length > 0 && cantidad != '' && cant_int > 0 && fecha_necesidad.length > 0 && fecha_necesidad != '0000-00-00' && fecha_necesidad != '00-00-0000' && fecha_necesidad != '00/00/0000'){
+				objArt = {
+					'id_articulo_fk': id_articulo,
+					'txtarticulo': txtarticulo,
+					'cantidad': cantidad,
+					'fecha_necesidad': fecha_necesidad,
+					'id_responsable_fk': id_responsable,
+					'txtresponsable': txtresponsable,
+					'id_centrocosto_fk': id_centro_costo,
+					'txtcentrodecosto': txtcentrodecosto,
+					'urgente': urgente
+				}			
 
-			var objDatos = localStorage.getItem('objDatos');
-			objDatos_parseado = JSON.parse(objDatos);
-			aArt = objDatos_parseado.aArticulos;
-			aArt.push(objArt);
-			objDatos_parseado.aArticulos = aArt;
-			objDatos_stringified = JSON.stringify(objDatos_parseado);
-			localStorage.setItem('objDatos', objDatos_stringified);
+				var objDatos = localStorage.getItem('objDatos');
+				objDatos_parseado = JSON.parse(objDatos);
+				aArt = objDatos_parseado.aArticulos;
+				aArt.push(objArt);
+				objDatos_parseado.aArticulos = aArt;
+				objDatos_stringified = JSON.stringify(objDatos_parseado);
+				localStorage.setItem('objDatos', objDatos_stringified);
 
-			window.location = '/paalta';
+				window.location = '/paalta';
+			}else{
+				alert("Ingrese todos los datos correspondientes para dar de alta un Articulo.")
+			}
+			
 		});
 	});
 
