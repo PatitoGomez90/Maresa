@@ -278,6 +278,30 @@
 				alert('No soporta LocalStorage. Actualize el navegador !!'); 
 			}
 	    });
+
+	    $("#descartar").on("click", function (){
+	    	if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                var storage = localStorage;
+                console.log(storage.length);                   
+                
+                localStorage.clear();
+                aArt=[];
+                objDatos = {
+                    'fecha': '',
+                    'sector': '1',
+                    'limpiar':'0',
+                    'aArticulos': aArt
+                }
+
+                var objDatos_stringified = JSON.stringify(objDatos);
+
+                if (storage.length == 0){
+                    storage.setItem('objDatos', objDatos_stringified);
+                }
+            }
+            window.location = '/paalta';
+	    });
 	});
 
 </script>
