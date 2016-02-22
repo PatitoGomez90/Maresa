@@ -52,8 +52,7 @@
 				</td>
 			</tr>	
 		</table>
-	</div>
-	
+	</div>	
 		<input hidden id="objDatos" name="objDatos">
 		<table align="center" id="tableArt" class="table table-striped">
 			<thead>
@@ -92,26 +91,24 @@
     	var objDatos = JSON.parse(objDatos);
     	if (objDatos.limpiar == '1'){
     		toastr.options = {
-				  "closeButton": false,
-				  "debug": false,
-				  "newestOnTop": false,
-				  "progressBar": true,
-				  "positionClass": "toast-top-right",
-				  "preventDuplicates": false,
-				  "onclick": null,
-				  "showDuration": "300",
-				  "hideDuration": "1000",
-				  "timeOut": "3000",
-				  "extendedTimeOut": "1000",
-				  "showEasing": "swing",
-				  "hideEasing": "linear",
-				  "showMethod": "fadeIn",
-				  "hideMethod": "fadeOut"
-				}
+			  	"closeButton": false,
+			  	"debug": false,
+			  	"newestOnTop": false,
+			  	"progressBar": true,
+			  	"positionClass": "toast-top-right",
+			  	"preventDuplicates": false,
+			  	"onclick": null,
+			  	"showDuration": "300",
+			  	"hideDuration": "1000",
+			  	"timeOut": "3000",
+			  	"extendedTimeOut": "1000",
+			  	"showEasing": "swing",
+			  	"hideEasing": "linear",
+			  	"showMethod": "fadeIn",
+			  	"hideMethod": "fadeOut"
+			}
 
-			// toastr.info('Nuevo pedido de Abastecimiento agregado.', "Exito!");
 			toastr["success"]("El pedido de abastecimiento ha sido creado con exito.", "Exito!");
-    		// alert("limpiar = 1 !!!");
 
     		localStorage.clear();
 
@@ -142,25 +139,17 @@
 
 	$(function() {
 	    console.log( "doc ready!" );
-
 	    
 
 		$("#formalta").submit(function( event ) {
-			console.log("en on submit");		
-			// alert("en on submit");
+			// console.log("en on submit");		
 			var objDatos = localStorage.getItem('objDatos');
-			// alert(objDatos);
 			var objDatos_parsed = JSON.parse(objDatos);
-			// alert(objDatos_parsed)
 
 			var fecha = objDatos_parsed.fecha;
 			var sector = objDatos_parsed.sector;
 			var aArt = objDatos_parsed.aArticulos;
 			
-			// alert(fecha)
-			// alert(sector)
-			// alert(aArt)//undefined
-			// alert(aArt.length)
 			if (fecha != '0000-00-00' && fecha != '' && fecha.length != 0 && sector != '' && aArt.length > 0){
 				// alert("if true!!")
 				var objDatos = localStorage.getItem('objDatos');
@@ -169,13 +158,7 @@
 				var objDatos_stringified = JSON.stringify(objDatos);
 				$("#objDatos").val(objDatos_stringified);
 				
-				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
-				// console.log("1");
-				// console.log(objDatos);
-
 				localStorage.setItem('objDatos', objDatos_stringified);
-				// 
-				
 			}else{
 				event.preventDefault();
 				alert("Por favor cargue todos los datos necesarios para dar de alta.");				
@@ -183,15 +166,12 @@
 		});
 
 	    var objDatos = localStorage.getItem('objDatos');
-		// console.log(objDatos);
-
 		parsed = JSON.parse(objDatos);
-		// console.log(parsed)
 
 	    $(".datepicker").datepicker({
-	    format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'ES'
+		    format: 'dd/mm/yyyy',
+			autoclose: true,
+			language: 'ES'
 		}).on("changeDate", function (e) {
 		    if('localStorage' in window && window['localStorage'] !== null) {
 				// console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
@@ -260,33 +240,13 @@
 			}
 
 		$(".borrar").on("click", function(){
-	    	alert("clic")
-	    	// id_art = $(this).data('id_art');
-	    	// cantidad = $(this).data('cantidad');
-	    	// id_centrocosto = $(this).data('id_centrocosto');
 	    	var index = $(this).data('index');
-	    	alert("index: "+index)
-
 	    	var objDatos = localStorage.getItem('objDatos');
-	    	alert("objDatos de LS")
-	    	alert(objDatos)
 	    	objDatos_parsed = JSON.parse(objDatos);
-	    	alert("objDatos_parsed de LS")
-	    	alert(objDatos_parsed)
 	    	var aArt = objDatos_parsed.aArticulos;
-	    	alert("aArt de LS")
-	    	alert(aArt)
-	    	aArt.splice(index, 1); alert("BORRADOOOO0000")
-	    	alert("aArt 2 'spliceado'")
-	    	alert(aArt)
-	    	//hasta aca funca
-	    	//meterle aArt a objDatos y despues guardarlo en el LS
-	    	alert("objDatos 2 'modificado?'")
-	    	alert(objDatos)
-	    	alert("objDatos_parsed 2 'modificado?'")
-	    	alert(objDatos_parsed)
-	    	//ver si stringifiar o guardar asi 'aArt' derecho
-	    	objDatos_stringified = JSON.stringify(objDatos);
+	    	aArt.splice(index, 1); 
+	    	objDatos_parsed.aArticulos = aArt;
+	    	objDatos_stringified = JSON.stringify(objDatos_parsed);
 			localStorage.setItem('objDatos', objDatos_stringified);
 			$("#objDatos").val(objDatos_stringified);
 			window.location = '/paalta';
@@ -299,11 +259,6 @@
 				objDatos = JSON.parse(objDatos);
 				objDatos_stringified = JSON.stringify(objDatos);
 	    		$("#objDatos").val(objDatos_stringified);
-
-				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
-				// console.log("3");
-				// console.log(objDatos);
-
 	    	}
 
 	    $("#sector").change(function () {
@@ -318,12 +273,7 @@
 				localStorage.setItem('objDatos', objDatos_stringified);
 				$("#objDatos").val(objDatos_stringified);
 
-				//CONSOLE PARA VERIFICAR COMO SE ESTA TRABAJANDO
-				// console.log("4");
-				// console.log(objDatos);
-
 				console.log("Sector actualizado en localStorage");
-				// console.log(objDatos)
 			}else { 
 				alert('No soporta LocalStorage. Actualize el navegador !!'); 
 			}

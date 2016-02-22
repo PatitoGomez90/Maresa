@@ -29,12 +29,9 @@ module.exports = {
 }
 
 function getLista(req, res) {
-	mPA.getAll(function (allPA){
-		res.render('palista', {
-        	pagename: 'Lista de Pedidos de Abastecimiento',
-        	PAs: allPA
-      	}); 
-	});
+	res.render('palista', {
+    	pagename: 'Bandeja de Recepcion de Pedidos de Abastecimiento'
+  	});
 }
 
 function getAlta(req, res){
@@ -122,15 +119,15 @@ function postAlta(req, res){
 					console.log(err)
 					console.log(query);
 				}else{
-					console.log("No errors in the query.");
+					console.log("No errors in the query:");
 					console.log(query);
-					connection.end();
+					// connection.end();
 					callback();
 				}
 			});
 		}, function (err) {
 			// localStorage.clear();
-			//connection.end();
+			connection.end();
 			// req.session.limpar = 1;
 			// req.session.save();
 			res.redirect('paalta');
