@@ -15,6 +15,25 @@
 			<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
 			<td><a href="/paalta"><button type="button" class="btn btn-success">Generar Nuevo PA</button></a></td>
 			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+			<td><!-- opciones -->
+				<select name="opciones" id="opciones" class="form-control">
+					<option value="0">Todas</option>
+					<option value="4">a Revisar</option>
+					<option value="2">a Aprobar</option>
+					<option value="1">Aprobadas</option>					
+					<option value="3">No Aprobadas</option>					
+				</select>
+			</td>
+			<td><input type="text" class="datepicker form-control" name="fecha_desde" id="fecha_desde" readonly style="width: 150px"></td>
+			<td><input type="text" class="datepicker form-control" name="fecha_hasta" id="fecha_hasta" readonly style="width: 150px"></td>
+			<td><!-- confeccion/necesidad/todas -->
+				<select name="tipo_fecha" id="tipo_fecha" class="form-control">
+					<option value="0">Confeccion</option>
+					<option value="1">Necesidad</option>
+					<option value="2">Todas</option>
+				</select>
+			</td>
+			<td><button type="button" name="filtrar" id="filtrar" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
 		</tr>	
 		</table>
 	</div>
@@ -26,10 +45,10 @@
 		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
 		      </div>
-		      <div class="modal-body">
+		      <div class="modal-body" id="modal-body">
 		        {{ ayuda.texto }}
 		      </div>
-		      <div class="modal-footer">
+		      <div class="modal-footer" id="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 		      </div>
 		    </div>
@@ -38,52 +57,290 @@
 	<!-- Fin Modal -->
 	<div class="row">
 		<div class="col-xs-12">
-			<table class="table table-striped">
-		  		<thead>
-		  			<tr> 
-						<th>ID</th>
-						<th>Nro PA</th>
-						<th>Centro de Costo</th>
-						<th>Sector</th>
-						<th>Responsable</th>
-						<th>Fecha Necesidad</th>
-						<th>Articulo</th>
-						<th>Cantidad</th>
-						<th>Urgente</th>
-						<th>Estado</th>
-						<th>Cant. Aprobada</th>
-						<th>Motivo Rechazo</th>
-						<th>Autorizó</th>
-						<th>Fecha Autorizado</th>
-						<th>Orden de compra</th>
-						<th>Fecha compra</th>
-					</tr>
-		  		</thead>
-		  		<tbody>
-		  			{% for pa in PAs %}
-						<tr>
-							<td>{{ pa.id }}</td>
-							<td>{{ pa.nro_pa}}</td>
-							<td>{{ pa.id_centrocosto_fk}}</td>
-							<td>{{ pa.id_sector_fk}}</td>
-							<td>{{ pa.id_responsable_fk}}</td>
-							<td>{{ pa.fecha_necesidad}}</td>
-							<td>{{ pa.id_articulo_fk}}</td>
-							<td>{{ pa.cantidad}}</td>
-							<td>{{ pa.urgente}}</td>
- 							<td>{{ pa.estado}}</td>
- 							<td>{{ pa.cantidad_aprobada}}</td>
- 							<td>{{ pa.motivo_rechazo}}</td>
- 							<td>{{ pa.id_autorizo_fk}}</td>
- 							<td>{{ pa.fecha_autorizado}}</td>
- 							<td>{{ pa.orden_compra}}</td>
- 							<td>{{ pa.fecha_compra}}</td>
+			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th colspan="5">Opciones</th> 
+							<th>ID</th>						
+							<th><div style="width: 180px">Centro de Costo</div></th>
+							<th>Confeccionó</th>
+							<th>Fecha Necesidad</th>	
+							<th>Urgente</th>
+							<th>Cantidad Requerida</th>
+							<th>Unidad<!-- de medida --></th>
+							<th>Articulo</th>
+							<th><div style="width: 100px;">Estado</div></th>
+							<th>Cant. Aprobada</th>
+							<th>Motivo Rechazo</th>
+							<th>Autorizó</th>
+							<th>Fecha Autorizado</th>
 						</tr>
-					{% endfor %}
-		  		</tbody>
-			</table>				
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			
+			  		</tbody>
+			  		<script type="text/template" id="tablapas"/>
+			  			[[#.]]
+							<tr>
+								<td><button class="btn btn-warning modificar" id="modificar[[id]]" data-id="[[id]]" title="Modificar"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button></td>
+			  					<td><button class="btn btn-danger borrar" id="borrar[[id]]" data-id="[[id]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+								<td><button class="btn btn-primary revisado" id="revisado[[id]]" data-id="[[id]]" title="Marcar como Revisado"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
+			  					<td><button class="btn btn-success aprobado" id="aprobado[[id]]" data-id="[[id]]" data-cant="[[cantidad]]" title="Marcar como Aprobado"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button></td>
+			  					<td><button class="btn btn-danger rechazado" id="rechazado[[id]]" data-id="[[id]]" title="Marcar como Rechazado"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button></td>
+								<td>[[ id ]]</td>
+								<td>[[ id_centrocosto_fk ]] - [[ centrocostotxt ]]</td>
+								<td>[[ confeccionotxt ]]</td>
+								<td>[[ fecha_necf ]]</td>
+								<td style="text-align: center;">[[urgentetxt]]</td>
+								<td style="text-align: center;">[[ cantidad ]]</td>
+								<td>[[ umedtxt ]]</td>
+								<td>[[ articulotxt ]]</td>
+	 							<td>[[ estado ]]</td>
+	 							<td>[[ cantidad_aprobada ]]</td>
+	 							<td>
+	 								[[#motivo_rechazo]]
+	 									<span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="[[motivo_rechazo]]"></span>
+	 								[[/motivo_rechazo]]
+	 							</td>
+	 							<td>[[ autorizotxt ]]</td>
+	 							<td>[[ fecha_autorizadof ]]</td>
+							</tr>
+						[[/.]]
+			  		</script>
+				</table>
+			</div> 			
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/js/mustache.js"></script>
+<script type="text/javascript" src="/js/mustache-wax.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script type="text/javascript">
+	// $('#txtMotivo').limit('200','#charsLeftMotivo');
+	$(".datepicker").datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'es'
+	});
 
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	day = myDate.getDate();
+	if (day<10)
+		day = "0"+day;
+	month = myDate.getMonth()+1;
+	if (month<10)
+		month = "0"+month
+	Today = day + "/" + month + "/" + myDate.getFullYear();
+	PrimeroDeMes = "01/"+month+'/'+myDate.getFullYear();
+	$("#fecha_desde").val(PrimeroDeMes);
+	$("#fecha_hasta").val(Today);
+
+	$(function() {
+	    console.log( "ready!" );
+
+	    var opcion = $("#opciones").val();
+		var fecha_desde = $("#fecha_desde").val();
+		var fecha_hasta = $("#fecha_hasta").val();
+		var tipo_fecha = $("#tipo_fecha").val();
+
+		var desde = encodeURIComponent(fecha_desde)
+		var hasta = encodeURIComponent(fecha_hasta);
+
+	    $.getJSON('/getpasfiltrado/'+opcion+'/'+desde+"/"+hasta+"/"+tipo_fecha, function (data){
+			// console.log(data);
+			if (data.length != 0){
+				$('#tbodylisto > tr').remove();
+				var template = $('#tablapas').html();
+				Mustache.tags =['[[',']]'];
+				var html = Mustache.to_html(template, data);
+				//console.log(html);
+				$('#tbodylisto').html(html);
+			}else{
+				//hacer que aca muestre error de que no se encontro nada en la busqueda
+				console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+				$('#tbodylisto > tr').remove();					
+				$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+			}
+		});
+
+	    $("#filtrar").on("click", function (){
+	    	console.log("filtrar");
+	    	var opcion = $("#opciones").val();
+			var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
+			var tipo_fecha = $("#tipo_fecha").val();
+
+			var desde = encodeURIComponent(fecha_desde)
+			var hasta = encodeURIComponent(fecha_hasta);
+
+		    $.getJSON('/getpasfiltrado/'+opcion+'/'+desde+"/"+hasta+"/"+tipo_fecha, function (data){
+				console.log(data.length);
+				if (data.length != 0){
+					$('#tbodylisto > tr').remove();
+					var template = $('#tablapas').html();
+					Mustache.tags =['[[',']]'];
+					var html = Mustache.to_html(template, data);
+					//console.log(html);
+					$('#tbodylisto').html(html);
+				}else{
+					//hacer que aca muestre error de que no se encontro nada en la busqueda
+					console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+					$('#tbodylisto > tr').remove();					
+					$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+				}
+			});
+	    });
+
+		$(document).on("click",".revisado",function(){ 
+			// console.log('click');
+			var id_pa = $(this).data("id");
+			// console.log(id_pa);
+			var opcion = $("#opciones").val();
+			var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
+			var tipo_fecha = $("#tipo_fecha").val();
+
+			var desde = encodeURIComponent(fecha_desde)
+			var hasta = encodeURIComponent(fecha_hasta);
+
+			$.post('/pamarcarrevisado/'+id_pa, function(data, textStatus, xhr) {
+				/*optional stuff to do after success */
+				console.log(textStatus);
+				$.getJSON('/getpasfiltrado/'+opcion+'/'+desde+"/"+hasta+"/"+tipo_fecha, function (data){
+					// console.log(data.length);
+					if (data.length != 0){
+						$('#tbodylisto > tr').remove();
+						var template = $('#tablapas').html();
+						Mustache.tags =['[[',']]'];
+						var html = Mustache.to_html(template, data);
+						//console.log(html);
+						$('#tbodylisto').html(html);
+					}else{
+						//hacer que aca muestre error de que no se encontro nada en la busqueda
+						console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+						$('#tbodylisto > tr').remove();					
+						$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+					}
+				});
+			});			
+		});
+
+		$(document).on("click",".aprobado",function(){ 
+			// console.log('click');
+			var id_pa = $(this).data("id");
+			var cant_pedida = $(this).data("cant");
+			// console.log(id_pa);
+			var opcion = $("#opciones").val();
+			var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
+			var tipo_fecha = $("#tipo_fecha").val();
+
+			var desde = encodeURIComponent(fecha_desde)
+			var hasta = encodeURIComponent(fecha_hasta);
+			//abrir modal y pedir cantidad aprobada
+			$("#myModalLabel").text("Cargar cantidad a aprobar");
+			$('#modal-body').empty();
+			$('#modal-body').append("<table><tr><td>Cantidad requerida:</td><td>"+cant_pedida+"</td></tr><tr><td><div style='width:150px'>Cantidad a aprobar:</div></td><td><input type='text' id='txtCantAprobada' required onKeyPress='return soloNumeros(event)' class='form-control'></td></tr></table>");
+			$("#modal-footer").empty();
+			$("#modal-footer").append("<button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button><button type='button' class='btn btn-primary' id='btnAprobarPedido' data-dismiss='modal'>Aprobar Pedido</button>");
+			$('#myModal').modal('toggle');
+
+			$("#btnAprobarPedido").click(function() {				
+				var cant_aprobado = $("#txtCantAprobada").val();				
+
+				$.post('/pamarcaraprobado/'+id_pa+'/'+cant_aprobado, function(data, textStatus, xhr) {
+					/*optional stuff to do after success */
+					console.log(textStatus);
+					$.getJSON('/getpasfiltrado/'+opcion+'/'+desde+"/"+hasta+"/"+tipo_fecha, function (data){
+						// console.log(data.length);
+						if (data.length != 0){
+							$('#tbodylisto > tr').remove();
+							var template = $('#tablapas').html();
+							Mustache.tags =['[[',']]'];
+							var html = Mustache.to_html(template, data);
+							//console.log(html);
+							$('#tbodylisto').html(html);
+						}else{
+							//hacer que aca muestre error de que no se encontro nada en la busqueda
+							console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+							$('#tbodylisto > tr').remove();					
+							$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+						}
+					});//fin getjson
+				});//fin post ajax
+			});//fin btnAprobarPedido.click						
+		});//fin boton aprobado.clic on document.ready
+
+		$(document).on("click",".rechazado",function(){ 
+			// console.log('click');
+			var id_pa = $(this).data("id");
+			// console.log(id_pa);
+			var opcion = $("#opciones").val();
+			var fecha_desde = $("#fecha_desde").val();
+			var fecha_hasta = $("#fecha_hasta").val();
+			var tipo_fecha = $("#tipo_fecha").val();
+
+			var desde = encodeURIComponent(fecha_desde)
+			var hasta = encodeURIComponent(fecha_hasta);
+
+			//abrir modal y pedir el motivo de rechazo
+			$("#myModalLabel").text("Ingresar el motivo de rechazo");
+			$('#modal-body').empty();
+			$('#modal-body').append("<textarea id='txtMotivo' rows='4' cols='80' maxlength='200'></textarea>");
+			// <div class='aviso'>Quedan <span id='charsLeftMotivo'></span> caraceteres.</div>
+			$("#modal-footer").empty();
+			$("#modal-footer").append("<button type='button' class='btn btn-default' data-dismiss='modal'>Cerrar</button><button type='button' class='btn btn-primary' id='btnRechazarPedido' data-dismiss='modal'>Rechazar Pedido</button>");
+			$('#myModal').modal('toggle');
+
+			$("#btnRechazarPedido").click(function() {				
+				var motivo = $("#txtMotivo").val();	
+
+				$.post('/pamarcarrechazado/'+id_pa+'/'+motivo, function(data, textStatus, xhr) {
+					/*optional stuff to do after success */
+					console.log(textStatus);
+					$.getJSON('/getpasfiltrado/'+opcion+'/'+desde+"/"+hasta+"/"+tipo_fecha, function (data){
+						// console.log(data.length);
+						if (data.length != 0){
+							$('#tbodylisto > tr').remove();
+							var template = $('#tablapas').html();
+							Mustache.tags =['[[',']]'];
+							var html = Mustache.to_html(template, data);
+							//console.log(html);
+							$('#tbodylisto').html(html);
+						}else{
+							//hacer que aca muestre error de que no se encontro nada en la busqueda
+							console.log("Data vacio!! no se han encontrado resultados para esta busqueda.");
+							$('#tbodylisto > tr').remove();					
+							$("#tbodylisto").append("<tr><td colspan='20'>No se han encontrado resultados para esta búsqueda.</td></tr>");
+						}
+					});
+				});
+			});	
+		});
+		
+		$(document).on("click",".borrar",function(){ 
+			var id_pa = $(this).data("id");
+			window.location = '/paborrar/'+id_pa;
+		});
+	
+		$(document).on("click",".modificar",function(){ 
+			var id_pa = $(this).data("id");
+			window.location = '/pamodificar/'+id_pa;
+		});
+
+		// falta hacer que el boton "ayuda" limpie el modal con 
+		// $("#ayuda").on("click", function (){
+
+		// });
+
+
+		// falta hacer para bloquear los botones segun el estado de cada item
+	});
+
+
+</script>
 {% endblock %}

@@ -39,7 +39,7 @@ function getAllActivos(cb){
 		"DATE_FORMAT(emple.fbaja, '%d/%m/%Y') as fbajaf, "+
 		"DATE_FORMAT(emple.falta, '%d/%m/%Y') as faltaf, "+
 		"contratos.nombre as contratotxt, "+
-		"turnos.codigo as turnotxt,	"+
+		"turnos.codigo as turnotxt, "+
 		"categorias.nombre as categoriatxt, "+
 		"condicion.nombre as condiciontxt "+
 		"from emple "+

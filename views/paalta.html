@@ -61,12 +61,13 @@
 					<th>Cantidad</th>
 					<th>Centro de Costo</th>
 					<th>Urgente</th>
+					<th>Fecha Nec.</th>
 					<th>Opciones</th>
 				</tr>
-				</thead>
-				<tbody id="tbody">
-					
-				</tbody>
+			</thead>
+			<tbody id="tbody">
+				
+			</tbody>
 		</table>
 		<div class="panel-footer">
 			<table  align="center">
@@ -231,7 +232,7 @@
 					+"<td>"+aArt[i].cantidad+"</td>"
 					+"<td><input hidden class='id_centrocosto_fk' id='id_centrocosto_fk' value='"+aArt[i].id_centrocosto_fk+"'>"
 					+aArt[i].txtcentrodecosto+"</td>"
-					+"<td>"+urgente+"</td><td><button type='button' name='borrar' id='borrar' class='borrar btn btn-danger' data-index="+i+" >Borrar</button></td></tr>"
+					+"<td>"+urgente+"</td><td>"+aArt[i].fecha_necesidad+"</td><td><button type='button' name='borrar' id='borrar' class='borrar btn btn-danger' data-index="+i+" >Borrar</button></td></tr>"
 					// +"<td>"+urgente+"</td><td><button type='button' name='borrar' id='borrar' class='btn btn-danger' data-id_art="+aArt[i].id_articulo_fk+" data-cantidad="+aArt[i].cantidad+" data-id_centrocosto="+aArt[i].id_centrocosto_fk+">Borrar</button></td></tr>"
 				}
 				$("#tableArt > tbody").append(string);			

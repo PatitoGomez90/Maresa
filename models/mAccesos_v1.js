@@ -5,11 +5,7 @@ module.exports = {
 	getMenues: getMenues,
 	getAccesos: getAccesos,
 	addAccesos: addAccesos,
-	insertAcceso: insertAcceso,
-	updateAcceso: updateAcceso,
-	cleanAccesos: cleanAccesos,
-	getLastMenuId: getLastMenuId,
-	getLastAccesoId: getLastAccesoId
+	insertAcceso: insertAcceso
 }
 
 function getAccesosPorUsuario(idusuario, cb){
@@ -27,10 +23,9 @@ function getAccesos(cb){
 function insertAcceso(idusuario, menu, cb){
 	conn("insert into secr2(unica, menu, a, b, c, m) values ("+idusuario+", "+menu+",0, 0, 0, 0);", cb)
 }
-
 function addAccesos(idusuario, accesos, cb){
 	//hacer un select de usuario filtrando por idusuario, si existe el usuario tengo que updatear, sino hacer el insert.
-	getAccesosPorUsuario(idusuario, function (docs){
+	getAccesosPorUsuario(idusuario, function(docs){
 		console.log("docs: "+docs);
 		if (docs != null){
 			//update
@@ -61,20 +56,4 @@ function addAccesos(idusuario, accesos, cb){
 			conn(query, cb);
 		}
 	});
-}
-
-function updateAcceso(id_usuario, id_menu, acceso_short, value, cb){
-	conn("UPDATE secr2 SET "+acceso_short+" = "+value+" WHERE unica = "+id_usuario+" AND menu = "+id_menu, cb);
-}
-
-function cleanAccesos(id_usuario, cb){
-	conn("DELETE FROM secr2 where unica = "+id_usuario, cb);
-}
-
-function getLastMenuId(cb){
-	conn("select max(id) as id from ayuda", cb);
-}
-
-function getLastAccesoId(id_usuario, cb){
-	conn("select max(menu) as menu from secr2 where unica = "+id_usuario, cb);
 }

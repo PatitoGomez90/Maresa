@@ -22,10 +22,14 @@ module.exports = {
 	getAlta: getAlta,
 	postAlta: postAlta,
 	getAltaArt: getAltaArt,
-	postAltaArt: postAltaArt
-	// getModificar: getModificar,
-	// postModificar: postModificar,
-	// getDel: getDel
+	postAltaArt: postAltaArt,
+	getPAsfiltrado: getPAsfiltrado,
+	postMarcarRevisado: postMarcarRevisado,
+	postMarcarAprobado: postMarcarAprobado,
+	postMarcarRechazado: postMarcarRechazado,
+	getModificar: getModificar,
+	postModificar: postModificar,
+	getDel: getDel
 }
 
 function getLista(req, res) {
@@ -49,13 +53,9 @@ function getAlta(req, res){
 
 function postAlta(req, res){
 	params = req.body;
-	console.log(params)
 	var objDatos = params.objDatos;
-	// console.log("Type de objDatos: "+typeof objDatos);
 	var objDatosParsed = "";
 	tipo_de_objDatos = typeof objDatos;
-	console.log(tipo_de_objDatos);
-	// console.log(typeof tipo_de_objDatos);
 
     if (tipo_de_objDatos === "string"){
 		objDatosParsed = JSON.parse(objDatos);			
@@ -65,14 +65,12 @@ function postAlta(req, res){
 	} else {
 		console.log("No es ni string ni object, es: "+tipo_de_objDatos);
 	}
-    
-	// console.log("Type de objDatosParsed: "+typeof objDatosParsed);	
+
 	var aArt = objDatosParsed.aArticulos;
-	// console.log("Type de aArt: "+typeof aArt);
 	var fecha_generacion = params.fecha_generacion;
 	var id_sector = params.sector;
-
-	// console.log(fecha_generacion);
+	console.log(req.session.user);
+	var id_usuario_logeado = req.session.user.unica;
 
 	var connection = mysql.createConnection({
 		user: 'root',
@@ -109,9 +107,9 @@ function postAlta(req, res){
 			fecha_necesidad = changeDate(fecha_necesidad);			
 
 			var query= "insert into pedidos_abastecimiento(nro_pa, fecha_gen, id_centrocosto_fk, id_responsable_fk, fecha_necesidad, "
-				+"id_articulo_fk, cantidad, urgente, id_sector_fk) "+
+				+"id_articulo_fk, cantidad, urgente, id_sector_fk, estado, id_confecciono_fk) "+
 				"values("+nro_pa+", '"+fecha_generacion+"', "+id_centro_costo+", "+id_responsable+", '"+fecha_necesidad+"', "
-					+id_articulo+", "+cantidad+", "+urgente+", "+id_sector+")"
+					+id_articulo+", "+cantidad+", "+urgente+", "+id_sector+", 'a Revisar', "+id_usuario_logeado+")"
 
 			connection.query(query, function (err, rows, fields) {
 				if (err){
@@ -183,5 +181,173 @@ function postAltaArt(req, res){
 				articulos: aArt
 			});
 		});
+	});
+}
+
+function getPAsfiltrado(req, res){
+	params = req.params;
+	opcion = params.opcion;
+	fecha_desde = params.desde;
+	fecha_hasta = params.hasta;
+	tipo_fecha = params.tipo_fecha;
+
+	fecha_desde = changeDate(fecha_desde);
+	fecha_hasta = changeDate(fecha_hasta);
+
+	// console.log(params)
+
+	var query = "SELECT pedidos_abastecimiento.*, centro_costos.nombre as centrocostotxt, secr.usuario as confeccionotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_necesidad, '%d/%m/%Y') as fecha_necf, "
+	+"(SELECT secr.usuario from secr where secr.unica = pedidos_abastecimiento.id_autorizo_fk ) as autorizotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_autorizado, '%d/%m/%Y') as fecha_autorizadof, "
+	+"CASE WHEN urgente = '0' THEN 'No' WHEN urgente = '1' THEN  'Si' ELSE '' END as urgentetxt, "
+	+"umed.nombre as umedtxt, "
+	+"articu.Nombre as articulotxt "
+	+"from pedidos_abastecimiento "
+	+"left join centro_costos on centro_costos.id = pedidos_abastecimiento.id_centrocosto_fk "
+	+"left join secr on secr.unica = pedidos_abastecimiento.id_confecciono_fk "
+	+"left join articu on articu.id = pedidos_abastecimiento.id_articulo_fk "
+	+"left join umed on umed.id = articu.IdUmed "
+	+"where ";
+
+	if (tipo_fecha == '0')
+		query = query + "fecha_gen >= '"+fecha_desde+"' and fecha_gen <= '"+fecha_hasta+"' ";
+	else if (tipo_fecha == '1')
+		query = query + "fecha_necesidad >= '"+fecha_desde+"' and fecha_necesidad <= '"+fecha_hasta+"' ";
+	else
+		query = query.slice(0, -6);
+
+	if (opcion == '0'){
+		query += "";
+	}else if (opcion == '1'){
+		if (tipo_fecha != 2)
+			query += "AND estado = 'Aprobado'";
+		else
+			query += "where estado = 'Aprobado'";
+	}else if (opcion == '2'){
+		if (tipo_fecha != 2)
+			query += "AND estado = 'a Aprobar'";
+		else
+			query += "where estado = 'a Aprobar'";
+	}else if (opcion == '3'){
+		if (tipo_fecha != 2)
+			query += "AND estado = 'No Aprobado'";
+		else
+			query += "where estado = 'No Aprobado'";
+	}else if (opcion == '4'){
+		if (tipo_fecha != 2)
+			query += "AND estado = 'a Revisar'";
+		else
+			query += "where estado = 'a Revisar'";
+	}
+	// console.log("query= "+ query);
+	mPA.getPAsfiltrados(query, function (pas){
+		// console.log(pas.length)
+		res.send(pas);
+	});
+}
+
+function postMarcarRevisado(req, res){
+	var params = req.params;
+	var id_pa = params.id;
+
+	mPA.postMarcarRevisado(id_pa, function (){
+		res.send("marcado como revisado! ")
+	});
+}
+
+function postMarcarAprobado(req, res){
+	var params = req.params;
+	var id_pa = params.id;
+	var cant = params.cant;
+	var id_aprobo = req.session.user.unica;
+
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	day = myDate.getDate();
+	if (day<10)
+		day = "0"+day;
+	month = myDate.getMonth()+1;
+	if (month<10)
+		month = "0"+month
+	Today = day + "/" + month + "/" + myDate.getFullYear();
+
+	var fecha_aprobado = changeDate(Today);
+
+	mPA.postMarcarAprobado(id_pa, cant, id_aprobo, fecha_aprobado, function (){
+		res.send("marcado como aprobado! ")
+	});
+}
+
+function postMarcarRechazado(req, res){
+	var params = req.params;
+	var id_pa = params.id;
+	var motivo = params.motivo;
+	var id_rechazo = req.session.user.unica;
+
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	day = myDate.getDate();
+	if (day<10)
+		day = "0"+day;
+	month = myDate.getMonth()+1;
+	if (month<10)
+		month = "0"+month
+	Today = day + "/" + month + "/" + myDate.getFullYear();
+
+	var fecha_rechazado = changeDate(Today);
+
+	mPA.postMarcarRechazado(id_pa, motivo, id_rechazo, fecha_rechazado, function (){
+		res.send("marcado como rechazado! ")
+	});
+}
+
+function getModificar(req, res){
+	var params = req.params;
+	var id_pa = params.id;
+
+	mPA.getItemById(id_pa, function (pa){
+		mArt.getAll(function (arts){
+			mEmple.getAllActivos(function (emples){
+				mSectores.getAll(function (sectores){
+					mCC.getAll(function (centros){
+						res.render("pamodificar", {
+							pagename: 'Modificar Registo de Pedido de Abastecimiento',
+							pa: pa[0],
+							articulos: arts,
+							emples: emples,
+							sectores: sectores,
+							centros: centros
+						});
+					});
+				});
+			});
+		});
+	});
+}
+
+function postModificar(req, res){
+	var params = req.body;
+	var id_pa = params.id_pa;
+	var id_art = params.articulo; 
+	var cant = params.cantidad;
+	var fecha_necf = params.fecha_necesidad;
+	var fecha_nec = changeDate(fecha_necf);
+	var id_responsable = params.responsable;
+	var id_centrocosto = params.centrocosto;
+	var urgente = params.urgente;
+	var id_sector = params.sector;
+
+	mPA.update(id_pa, id_art, cant, fecha_nec, id_responsable, id_centrocosto, urgente, id_sector, function (){
+		res.redirect("palista");
+	});
+}
+
+function getDel(req, res){
+	var params = req.params;
+	var id_pa = params.id;
+
+	mPA.del(id_pa, function(){
+		res.redirect('palista');
 	});
 }

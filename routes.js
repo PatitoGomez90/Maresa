@@ -88,6 +88,7 @@ module.exports = function(app) {
 	//configurar accesos
 	app.get('/accesoslista/:id', auth, cAccesos.getAccesos);
 	app.post('/accesoslista', auth, cAccesos.postAccesos);
+	app.post("/updateacceso/:id_usuario/:id_menu/:acceso_short/:value", auth, cAccesos.updateAcceso);
 	//empleados
 	app.get('/emplelista', auth, cEmple.getEmpleados);
 	app.get('/emplealta', auth, cEmple.getAlta);
@@ -368,9 +369,13 @@ module.exports = function(app) {
 	app.post('/paalta', auth, cPedidosAbastecimiento.postAlta);
 	app.get('/paaltaart', auth, cPedidosAbastecimiento.getAltaArt);
 	app.post('/paaltaart', auth, cPedidosAbastecimiento.postAltaArt);
-	// app.get('/pamodificar/:id', auth, cPedidosAbastecimiento.getModificar);
-	// app.post('/pamodificar', auth, cPedidosAbastecimiento.postModificar);
-	// app.get('/paborrar/:id', auth, cPedidosAbastecimiento.getDel);
+	app.get("/getpasfiltrado/:opcion/:desde/:hasta/:tipo_fecha", auth, cPedidosAbastecimiento.getPAsfiltrado);
+	app.post("/pamarcarrevisado/:id", auth, cPedidosAbastecimiento.postMarcarRevisado);
+	app.post("/pamarcaraprobado/:id/:cant", auth, cPedidosAbastecimiento.postMarcarAprobado);
+	app.post("/pamarcarrechazado/:id/:motivo", auth, cPedidosAbastecimiento.postMarcarRechazado);
+	app.get('/pamodificar/:id', auth, cPedidosAbastecimiento.getModificar);
+	app.post('/pamodificar', auth, cPedidosAbastecimiento.postModificar);
+	app.get('/paborrar/:id', auth, cPedidosAbastecimiento.getDel);
 
 	//pruebasql
 	app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

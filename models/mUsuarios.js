@@ -7,7 +7,8 @@ module.exports = {
 	updateUsuario: updateUsuario,
 	delUsuario: delUsuario,
 	getUsuarioPorUser: getUsuarioPorUser,
-	getUsuarioPorMail: getUsuarioPorMail
+	getUsuarioPorMail: getUsuarioPorMail,
+	getLastUnica: getLastUnica
 }
 
 function getAllUsuarios(cb){
@@ -38,3 +39,8 @@ function updateUsuario(id, usuario, clave, mail, niveles, alta, baja, activa, cb
 function delUsuario(id, cb) {
   conn("DELETE FROM secr where unica ="+ id, cb);
 }
+
+function getLastUnica(cb){
+	conn("select max(unica) as ultimoid from secr", cb);
+}
+

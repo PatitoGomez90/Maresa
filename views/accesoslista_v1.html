@@ -42,54 +42,31 @@
 							<!-- {{acceso.short}} -->
 								<td>
 									{% if usuario_accesos[menu.id - 1][acceso.short] == 1 %}
-										<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" checked="true" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
+										<input type="checkbox" name="{{menu.id + '-' + acceso.descripcion}}" checked="true">
 									{% else %}		
-										<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
+										<input type="checkbox" name="{{menu.id + '-' + acceso.descripcion}}">
 									{% endif %}
 								</td>
 							{% else %}
 								<td>
-									<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
+									<input type="checkbox" name="{{menu.id + '-' + acceso.descripcion}}">
 								</td>
 							{% endif %}
 						{% endfor %}
 					</tr>
 				{% endfor %}
 			</tbody>
-			<!-- <tfoot>
+			<tfoot>
 				<tr>
 					<td colspan="6">
 						<input type="submit" value="Guardar">
 					</td>
 				</tr>
-			</tfoot> -->
+			</tfoot>
 		  </table>
 		</form>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
-<script src="/js/jquery.min.js"></script>
-<script type="text/javascript">
-	$(".chk").on("change", function (){
-		var id_menu = $(this).data("menuid");
-		var acceso_short = $(this).data("acceso");
-		var id_usuario = $(this).data("idusuario");
 
-		// var $chk = $(this);
-	    // $this will contain a reference to the checkbox   
-	    if (this.checked) {
-	    	// console.log("checked "+id_menu+" "+acceso_short);
-	    	// the checkbox was checked
-	        $.post("/updateacceso/"+id_usuario+"/"+id_menu+"/"+acceso_short+"/1", function( data ) {
-				console.log(data)
-			});
-	    } else {
-	    	// console.log("unchecked "+id_menu+" "+acceso_short)
-	        // the checkbox was unchecked
-	        $.post("/updateacceso/"+id_usuario+"/"+id_menu+"/"+acceso_short+"/0", function( data ) {
-				console.log(data)
-			});
-	    }
-	});
-</script>
 {% endblock %}
