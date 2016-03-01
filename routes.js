@@ -42,6 +42,8 @@ var cPedidosAbastecimiento = require('./controllers/cPedidosAbastecimiento');
 var cPruebaSQL = require('./controllers/cPruebaSQL');
 var cRandom = require('./controllers/cRandom');
 
+var mAccesos = require('./models/mAccesos');
+
 function logout (req, res) {
 	fecha = new Date();
 	day = fecha.getDate();
@@ -66,6 +68,49 @@ function auth (req, res, next) {
 	}
 }
 
+function acceso (req, res, next){
+	// console.log("adentro")
+	// ver como hacer esta funcion para que sea ejecutada desdes de los "auth" como verificador de acceso,
+	// puede ser que se envien parametros con req y res, o que envie parametros comunes, más el NEXT
+	// se me ocurre hacer una sola funcion con parametro 'accion' o sino hacer 4 funciones, una para cada uno a,b,m,c
+	// console.log(req.session.user)
+	var id_usuario = req.session.user.unica;
+	var id_menu = req.session.user.id_menu;
+	var accion = req.session.user.accion;
+
+	mAccesos.verificarAcceso(id_usuario, id_menu, accion, function (acceso){
+		var acceso = acceso[0].c;
+		var acciontxt = "";
+		if (acceso == 1){
+			next();
+		}else{
+			var nombre_usuario = req.session.user.usuario;
+			if (accion == 'a'){
+				acciontxt = "al Alta";
+			}else{
+				if (accion == 'b'){
+					acciontxt = "a dar de Baja";
+				}else{
+					if (accion == 'm'){
+						acciontxt = "a Modificar";
+					}else{
+						if (accion == 'c'){
+							acciontxt = "a Consultar";
+						}else{
+							console.log("asd");
+						}
+					}
+				}
+			}
+			mAyuda.getAyuda(id_menu, function (ayuda){
+				res.render("error", {
+					error: nombre_usuario+": No tiene acceso "+acciontxt+" en el menú id "+id_menu+" llamado '"+ayuda[0].titulo+"'"
+				});
+			});
+		}
+	});
+}
+
 module.exports = function(app) {
 	app.get('/', cAdmin.getLogin);
 	app.get('/login', cAdmin.getLogin)
@@ -73,6 +118,7 @@ module.exports = function(app) {
 	app.get('/logout', logout);
 	app.get('/inicio', auth, cIndex.getInicio);
 	app.get('/error', cIndex.getError);
+	app.post('/updatemenuinfo/:id_menu/:accion', auth, cIndex.updateMenuInfo);
 	//ayuda
 	app.get('/ayuda', cIndex.getAyuda);
 	app.get('/ayudaver/:id', cIndex.AyudaVer);
@@ -115,8 +161,16 @@ module.exports = function(app) {
 	app.get('/umedmodificar/:id', auth, cUmed.getModificar);
 	app.post('/umedactualizar', auth, cUmed.postModificar);
 	app.get('/umedborrar/:id', auth, cUmed.getDelUmed);
+
+
+
 	//sectores
-	app.get('/sectoreslista', auth, cSectores.getAll);
+	app.get('/sectoreslista', auth, acceso, cSectores.getAll);
+
+
+
+
+
 	app.get('/sectoresalta', auth, cSectores.getAlta);
 	app.post('/sectoresalta', auth, cSectores.postAlta);
 	app.get('/sectoresmodificar/:id', auth, cSectores.getModificar);
@@ -376,7 +430,7 @@ module.exports = function(app) {
 	app.get('/pamodificar/:id', auth, cPedidosAbastecimiento.getModificar);
 	app.post('/pamodificar', auth, cPedidosAbastecimiento.postModificar);
 	app.get('/paborrar/:id', auth, cPedidosAbastecimiento.getDel);
-
+	app.get('/paprint/:nro_pa', auth, cPedidosAbastecimiento.getPrintPA);
 	//pruebasql
 	app.get('/pruebasql', auth, cPruebaSQL.getPrueba);
 	//random

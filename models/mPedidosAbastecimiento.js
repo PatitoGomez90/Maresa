@@ -10,7 +10,8 @@ module.exports = {
 	postMarcarRechazado: postMarcarRechazado,
 	getItemById: getItemById,
 	update: update,
-	del: del
+	del: del,
+	getByNroPA: getByNroPA
 }
 
 function getAll(cb){
@@ -55,4 +56,20 @@ function update(id_pa, id_art, cant, fecha_nec, id_responsable, id_centrocosto, 
 
 function del(id_pa, cb){
 	conn("DELETE FROM maresa.pedidos_abastecimiento WHERE maresa.pedidos_abastecimiento.id = "+id_pa, cb)
+}
+
+function getByNroPA(nro_pa, cb){
+	conn("SELECT pedidos_abastecimiento.*, centro_costos.nombre as centrocostotxt, secr.usuario as confeccionotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_necesidad, '%d/%m/%Y') as fecha_necf, "
+	+"(SELECT secr.usuario from secr where secr.unica = pedidos_abastecimiento.id_autorizo_fk ) as autorizotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_autorizado, '%d/%m/%Y') as fecha_autorizadof, "
+	+"CASE WHEN urgente = '0' THEN 'No' WHEN urgente = '1' THEN  'Si' ELSE '' END as urgentetxt, "
+	+"umed.nombre as umedtxt, "
+	+"articu.Nombre as articulotxt "
+	+"from pedidos_abastecimiento "
+	+"left join centro_costos on centro_costos.id = pedidos_abastecimiento.id_centrocosto_fk "
+	+"left join secr on secr.unica = pedidos_abastecimiento.id_confecciono_fk "
+	+"left join articu on articu.id = pedidos_abastecimiento.id_articulo_fk "
+	+"left join umed on umed.id = articu.IdUmed "
+	+"where nro_pa ="+ nro_pa, cb);
 }

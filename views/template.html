@@ -93,7 +93,9 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">R.R.H.H.<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/sectoreslista">Sectores [ABM]</a></li>
+
+            <li><a href="/sectoreslista" class="menu" data-idmenu="5" data-accion="c">Sectores [ABM]</a></li>
+
             <li><a href="/lugareslista">Lugares [ABM]</a></li>
             <li class="divider"></li>
             <li><a href="/emplelista">Empleados [ABM]</a></li>
@@ -150,46 +152,57 @@
       </footer>
   </div> <!-- /container -->
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->    
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/js/main.js"></script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/bootstrap-datepicker.js"></script>
-    <script src="/js/bootstrap-submenu.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="/js/ie10-viewport-bug-workaround.js"></script>
-    <script type="text/javascript">
-      $('.submenu').submenupicker();
+<!-- Bootstrap core JavaScript
+================================================== -->    
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/js/main.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/bootstrap-submenu.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+<script type="text/javascript">
+  $('.submenu').submenupicker();
 
-      //btnNuevoPedidoDeAbastecimiento
-      $(function() {
-            $("#btnNuevoPedidoDeAbastecimiento").on("click", function(){
-                if('localStorage' in window && window['localStorage'] !== null) {
-                    console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
-                    var storage = localStorage;
-                    console.log(storage.length);                   
-                    
-                    localStorage.clear();
-                    aArt=[];
-                    objDatos = {
-                        'fecha': '',
-                        'sector': '1',
-                        'limpiar':'0',
-                        'aArticulos': aArt
-                    }
-
-                    var objDatos_stringified = JSON.stringify(objDatos);
-
-                    if (storage.length == 0){
-                        storage.setItem('objDatos', objDatos_stringified);
-                    }
-                } else { 
-                    alert('No soporta LocalStorage. Actualize el navegador !!'); 
+  //btnNuevoPedidoDeAbastecimiento
+  $(function() {
+        $("#btnNuevoPedidoDeAbastecimiento").on("click", function(){
+            if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                var storage = localStorage;
+                console.log(storage.length);                   
+                
+                localStorage.clear();
+                aArt=[];
+                objDatos = {
+                    'fecha': '',
+                    'sector': '1',
+                    'limpiar':'0',
+                    'aArticulos': aArt
                 }
-            });
+
+                var objDatos_stringified = JSON.stringify(objDatos);
+
+                if (storage.length == 0){
+                    storage.setItem('objDatos', objDatos_stringified);
+                }
+            } else { 
+                alert('No soporta LocalStorage. Actualize el navegador !!'); 
+            }
         });
-    </script>
+    });
+
+    $(".menu").on("click", function (){
+        var id_menu = $(this).data("idmenu");
+        var accion = $(this).data("accion");
+        $.post("/updatemenuinfo/"+id_menu+"/"+accion, function(data, textStatus, xhr) {
+            /*optional stuff to do after success */
+            console.log(data)
+            console.log(textStatus)
+            console.log(xhr)
+        });
+    });
+</script>
 </body>
 </html>

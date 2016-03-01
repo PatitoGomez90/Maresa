@@ -9,7 +9,8 @@ module.exports = {
 	updateAcceso: updateAcceso,
 	cleanAccesos: cleanAccesos,
 	getLastMenuId: getLastMenuId,
-	getLastAccesoId: getLastAccesoId
+	getLastAccesoId: getLastAccesoId,
+	verificarAcceso: verificarAcceso
 }
 
 function getAccesosPorUsuario(idusuario, cb){
@@ -77,4 +78,8 @@ function getLastMenuId(cb){
 
 function getLastAccesoId(id_usuario, cb){
 	conn("select max(menu) as menu from secr2 where unica = "+id_usuario, cb);
+}
+
+function verificarAcceso(id_usuario, id_menu, permiso, cb){
+	conn("select "+permiso+" from secr2 where unica = "+id_usuario+" AND menu = "+id_menu, cb);
 }

@@ -29,7 +29,8 @@ module.exports = {
 	postMarcarRechazado: postMarcarRechazado,
 	getModificar: getModificar,
 	postModificar: postModificar,
-	getDel: getDel
+	getDel: getDel,
+	getPrintPA: getPrintPA
 }
 
 function getLista(req, res) {
@@ -349,5 +350,17 @@ function getDel(req, res){
 
 	mPA.del(id_pa, function(){
 		res.redirect('palista');
+	});
+}
+
+function getPrintPA(req, res){
+	var params = req.params;
+	var nro_pa = params.nro_pa;
+
+	mPA.getByNroPA(nro_pa, function (pa){
+		res.render("paprint", {
+			pagename: "Listado de elementos de Pedido de Abastecimiento N° "+nro_pa+".",
+			pa: pa
+		});
 	});
 }

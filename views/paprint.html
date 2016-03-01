@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>Print Selection</title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<button class="btn btn-warning" onclick="javascript:print()" title="Imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button>
+<br>
+<div style="text-align: right;">
+	<img src="/uploads/gmaresalogo.jpg">
+</div>
+<br>
+<p>Por la presente se solicita la aprobacion de compra de la siguiente lista de articulos:</p>
+<div class="panel panel-primary">
+	<!-- Default panel contents -->
+	<div class="panel-heading"><p>{{pagename}}</p></div>
+	<table class="table table-striped">
+		<tr>
+			<th>Articulo</th>
+			<th>Cantidad Requerida</th>
+			<th>Unidad</th>
+			<th>Centro de Costos</th>
+			<th>Fecha Necesidad</th>
+			<th>Confeccionó</th>
+			<th>Urgente?</th>
+		</tr>
+		{% for a in pa %}
+			<tr>
+				<td>{{ a.articulotxt }}</td>
+				<td>{{ a.cantidad }}</td>
+				<td>{{ a.umedtxt }}</td>
+				<td>{{ a.centrocostotxt }}</td>
+				<td>{{ a.fecha_necf }}</td>
+				<td>{{ a.confeccionotxt }}</td>
+				<td>{{ a.urgentetxt }}</td>
+			</tr>
+		{% endfor %}
+	</table>	
+</div>
+
+<div style="text-align: right; position: fixed; bottom: 10; width:100%;">
+	<p>_ _ _ _ _ _ _ _ _ _ _</p>
+	<p>Firma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+</div>
+</body>
+<script src="/js/jquery-1.10.2.js"></script>
+<script src="/js/bootstrap.js"></script>
+</html>

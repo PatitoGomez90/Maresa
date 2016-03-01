@@ -10,12 +10,11 @@
   <!-- Default panel contents -->
   	<div class="panel-heading">
   	<!-- Table -->
-
 		<table>
-		<tr>	
-			<td><a href="/usuarioslista"> <button type="button" class="btn btn-primary">Atras</button></a></td>
-			
-		</tr>	
+			<tr>	
+				<td><a href="/usuarioslista"> <button type="button" class="btn btn-primary">Atras</button></a></td>
+				
+			</tr>	
 		</table>
 	</div>
 	<div class="row">
@@ -33,28 +32,28 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for menu in menues %}
-					<tr>
-						<td>{{ menu.id }}</td>
-						<td>{{ menu.titulo }}</td>
-						{% for acceso in accesos %}
-							{% if usuario_accesos.length %}
-							<!-- {{acceso.short}} -->
-								<td>
-									{% if usuario_accesos[menu.id - 1][acceso.short] == 1 %}
-										<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" checked="true" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
-									{% else %}		
-										<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
-									{% endif %}
-								</td>
-							{% else %}
-								<td>
+			{% for menu in menues %}
+				<tr>
+					<td>{{ menu.id }}</td>
+					<td>{{ menu.titulo }}</td>
+					{% for acceso in accesos %}
+						{% if usuario_accesos.length %}
+						<!-- {{acceso.short}} -->
+							<td>
+								{% if usuario_accesos[menu.id - 1][acceso.short] == 1 %}
+									<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" checked="true" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
+								{% else %}		
 									<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
-								</td>
-							{% endif %}
-						{% endfor %}
-					</tr>
-				{% endfor %}
+								{% endif %}
+							</td>
+						{% else %}
+							<td>
+								<input type="checkbox" class="chk" name="{{menu.id + '-' + acceso.descripcion}}" data-menuid="{{menu.id}}" data-acceso="{{acceso.short}}" data-idusuario="{{idUsuario}}">
+							</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			{% endfor %}
 			</tbody>
 			<!-- <tfoot>
 				<tr>

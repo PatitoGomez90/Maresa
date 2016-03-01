@@ -1,5 +1,6 @@
 var mSectores = require('../models/mSectores');
 var mAyuda = require('../models/mAyuda');
+var mAccesos = require('../models/mAccesos');
 
 module.exports = {
 	getAll: getAll,
@@ -18,10 +19,10 @@ function getAll(req, res) {
 	        	pagename: 'Archivo de Sectores',
 	        	sectores: allsectores,
 	        	ayuda: ayuda[0]
-	      	}); 
-		});    
+	      	});
+		});
 	});
-};
+}
 
 function getAlta(req, res){
 	mSectores.getUltimoCodigo(function (ultimocodigo){
@@ -29,7 +30,7 @@ function getAlta(req, res){
 			pagename: "Alta de sectores",
 			ultimocodigo: ultimocodigo[0].codigo+1
 		});
-	});	
+	});
 }
 
 function postAlta(req, res){
