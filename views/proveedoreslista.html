@@ -1,0 +1,70 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+		<tr>	
+			<td><button type="button" class="btn btn-primary" onclick="history.back();">Atras</button></td>
+			<td><a href="/proveedoresalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a></td>
+			<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+		</tr>	
+		</table>
+	</div>
+	<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+		      </div>
+		      <div class="modal-body">
+		        {{ ayuda.texto }}
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	<!-- Fin Modal -->
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+		  		<thead>
+		  			<tr> 
+						<th>N°</th>
+						<th>Razon Social</th>
+						<th>Telefono</th>
+						<th>Celular</th>
+						<th>CUIT</th>
+						<th colspan="3">Opciones</th>
+					</tr>
+		  		</thead>
+		  		<tbody>
+		  			{% for p in proveedores %}
+						<tr>
+							<td>{{ p.numero }}</td>
+							<td>{{ p.razonsocial }}</td>
+							<td>{{ p.telefono }}</td>
+							<td>{{ p.celular }}</td>
+							<td>{{ p.cuit }}</td>
+							<td><a href="/proveedoresver/{{ p.id }}"><button class="btn btn-default">Ver</button></a></td>
+							<td><a href="/proveedoresmodificar/{{ p.id }}"><button class="btn btn-warning">Modificar</button></a></td>
+							<td><a href='/proveedoresborrar/{{ p.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
+						</tr>
+						{% endfor %}
+		  		</tbody>
+			</table>				
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/proveedoresmodificar.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">
+	<form method="post" id="formalta" action="/proveedoresmodificar">
+		<input hidden id="id" name="id" value="{{ proveedor.id }}">
+		<table align="center" class="table table-striped">
+			<tr>
+				<td>Numero:</td>
+				<td><input type="text" id="numero" name="numero" readonly class="form-control" value="{{ proveedor.numero }}"><div class="aviso">Quedan <span id="charsLeftNumero"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Razon Social:</td>
+				<td><input type="text" id="razonsocial" name="razonsocial" required class="form-control" value="{{ proveedor.razonsocial }}"><div class="aviso">Quedan <span id="charsLeftRazonSocial"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Direccion:</td>
+				<td><input type="text" id="direccion" name="direccion" class="form-control" value="{{ proveedor.direccion }}"><div class="aviso">Quedan <span id="charsLeftDireccion"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Localidad:</td>
+				<td><input type="text" id="localidad" name="localidad" class="form-control" value="{{ proveedor.localidad }}"><div class="aviso">Quedan <span id="charsLeftLocalidad"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Provincia:</td>
+				<td>
+					<select id="provincia" name="provincia" class="form-control" >
+						{% for p in provincias %}
+							{% if p.id == proveedor.id_provincia_fk %}
+								<option selected value="{{ p.id }}">{{ p.descripcion }}</option>
+							{% else %}
+								<option value="{{ p.id }}">{{ p.descripcion }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Codigo Postal:</td>
+				<td><input type="text" id="codigopostal" name="codigopostal" class="form-control" onKeyPress="return soloNumeros(event)" value="{{ proveedor.codigopostal }}"><div class="aviso">Quedan <span id="charsLeftCodigoPostal"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Telefono:</td>
+				<td><input type="text" id="telefono" name="telefono" class="form-control" onKeyPress="return soloNumeros(event)" value="{{ proveedor.telefono }}"><div class="aviso" value="{{ proveedor.id }}">Quedan <span id="charsLeftTelefono"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Fax:</td>
+				<td><input type="text" id="fax" name="fax" class="form-control" onKeyPress="return soloNumeros(event)" value="{{ proveedor.fax }}"><div class="aviso">Quedan <span id="charsLeftFax"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>CUIT:</td>
+				<td><table style="display: inline-block;">
+					<tr>
+						<td><input type="text" id="cuit1" name="cuit1" maxlength="2" style="width:45px;" class="cuit form-control" onKeyPress="return soloNumeros(event)" value="{{ cuit1 }}"></td>
+						<td><input type="text" id="cuit2" name="cuit2" maxlength="8" style="width:90px;" class="cuit form-control" onKeyPress="return soloNumeros(event)" value="{{ cuit2 }}"></td>
+						<td><input type="text" id="cuit3" name="cuit3" maxlength="1" style="width:35px;" class="cuit form-control" onKeyPress="return soloNumeros(event)" value="{{ cuit3 }}"></td>
+					</tr>
+				</table></td>
+			</tr>
+			<tr>
+				<td>Ganancias:</td>
+				<td>
+					<select id="ganancias" name="ganancias" class="form-control" >
+						{% if proveedor.ganancias == 'S' %}
+							<option selected value="S">Si</option>
+							<option value="N">No</option>
+						{% else %}
+							<option value="S">Si</option>
+							<option selected value="N">No</option>
+						{% endif %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Iva:</td>
+				<td>
+					<select id="iva" name="iva" class="form-control" >
+						{% for i in iva %}
+							{% if proveedor.id_iva_fk == i.id %}
+								<option selected value="{{ i.id }}">{{ i.descripcion }}</option>
+							{% else %}
+								<option value="{{ i.id }}">{{ i.descripcion }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+					<!-- <input type="text" id="iva" name="iva" required class="form-control"> -->
+				</td>
+			</tr>
+			<tr>
+				<td>Celular:</td>
+				<td><input type="text" id="celular" name="celular" class="form-control" onKeyPress="return soloNumeros(event)" value="{{ proveedor.celular }}"><div class="aviso">Quedan <span id="charsLeftCelular"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Mail:</td>
+				<td><input type="email" id="mail" name="mail" class="form-control" value="{{ proveedor.mail }}"><div class="aviso">Quedan <span id="charsLeftMail"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Contacto:</td>
+				<td><input type="text" id="contacto" name="contacto" class="form-control" value="{{ proveedor.contacto }}"><div class="aviso">Quedan <span id="charsLeftContacto"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Dias/Horario:</td>
+				<td><input type="text" id="diashorarios" name="diashorarios" class="form-control" value="{{ proveedor.diashorario }}"><div class="aviso">Quedan <span id="charsLeftDiasHorarios"></span> caraceteres.</div></td>
+			</tr>
+			<tr>
+				<td>Calificacion:</td>
+				<td>
+					<select id="calificacion" name="calificacion" class="form-control" >
+						{% if proveedor.calificacion == 'A' %}
+							<option selected value="A">Apto</option>
+							<option value="N">No Apto</option>
+							<option value="S">Potencial</option>
+						{% elseif proveedor.calificacion == 'N' %}
+							<option value="A">Apto</option>
+							<option selected value="N">No Apto</option>
+							<option value="S">Potencial</option>
+						{% else %}
+							<option value="A">Apto</option>
+							<option value="N">No Apto</option>
+							<option selected value="S">Potencial</option>
+						{% endif %}						
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="button" class="btn btn-default" value="Atras" onclick="history.back()"></td>
+				<td><input type="submit" class="btn btn-default" value="Agregar"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery.limit-1.2.js"></script>
+<script src="/js/jquery.autotab.min.js"></script>
+<script type="text/javascript">
+	$('#numero').limit('3','#charsLeftNumero');
+	$('#razonsocial').limit('35','#charsLeftRazonSocial');
+	$('#direccion').limit('30','#charsLeftDireccion');
+	$('#localidad').limit('20','#charsLeftLocalidad');
+	$('#provincia').limit('15','#charsLeftProvincia');
+	$('#codigopostal').limit('5','#charsLeftCodigoPostal');
+	$('#telefono').limit('15','#charsLeftTelefono');
+	$('#fax').limit('15','#charsLeftFax');
+	// $('#cuit').limit('13','#charsLeftCuit');
+	// $('#ganancias').limit('15','#charsLeftNombre');
+	// $('#iva').limit('15','#charsLeftNombre');
+	$('#celular').limit('25','#charsLeftCelular');
+	$('#mail').limit('50','#charsLeftMail');
+	$('#contacto').limit('30','#charsLeftContacto');
+	$('#diashorarios').limit('25','#charsLeftDiasHorarios');
+	// $('#calificacion').limit('15','#charsLeftNombre');
+	$('#cuit1').autotab({ maxlength: 2, target: '#cuit2'});
+	$('#cuit2').autotab({ maxlength: 8, target: '#cuit3'});
+	$('#cuit3').autotab({ maxlength: 1, target: '#ganancias'});
+</script>
+
+{% endblock %}

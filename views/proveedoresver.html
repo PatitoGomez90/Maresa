@@ -1,0 +1,87 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<link href="/css/proveedoresmodificar.css" rel="stylesheet">
+<h2>{{ pagename }}</h2>
+<div class="panel panel-default">		
+	<table align="center" class="table table-striped">
+		<tr>
+			<td>Numero:</td>
+			<td>{{ proveedor.numero }}</td>
+		</tr>
+		<tr>
+			<td>Razon Social:</td>
+			<td>{{ proveedor.razonsocial }}</td>
+		</tr>
+		<tr>
+			<td>Direccion:</td>
+			<td>{{ proveedor.direccion }}</td>
+		</tr>
+		<tr>
+			<td>Localidad:</td>
+			<td>{{ proveedor.localidad }}</td>
+		</tr>
+		<tr>
+			<td>Provincia:</td>
+			<td>{{ proveedor.txtprovincia }}</td>
+		</tr>
+		<tr>
+			<td>Codigo Postal:</td>
+			<td>{{ proveedor.codigopostal }}</td>
+		</tr>
+		<tr>
+			<td>Telefono:</td>
+			<td>{{ proveedor.telefono }}</td>
+		</tr>
+		<tr>
+			<td>Fax:</td>
+			<td>{{ proveedor.fax }}</td>
+		</tr>
+		<tr>
+			<td>CUIT:</td>
+			<td>{% if cuit1 != '' and cuit2 != '' and cuit3 != '' %}{{ cuit1 }}-{{ cuit2 }}-{{ cuit3 }}{% endif %}</td>
+		</tr>
+		<tr>
+			<td>Ganancias:</td>
+			<td>{% if proveedor.ganancias == 'S' %}Si{% else %}No{% endif %}</td>
+		</tr>
+		<tr>
+			<td>Iva:</td>
+			<td>{% if proveedor.id_iva_fk != 0 %}{{ proveedor.txtiva }}{% endif %}</td>
+		</tr>
+		<tr>
+			<td>Celular:</td>
+			<td>{{ proveedor.celular }}</td>
+		</tr>
+		<tr>
+			<td>Mail:</td>
+			<td>{{ proveedor.mail }}</td>
+		</tr>
+		<tr>
+			<td>Contacto:</td>
+			<td>{{ proveedor.contacto }}</td>
+		</tr>
+		<tr>
+			<td>Dias/Horario:</td>
+			<td>{{ proveedor.diashorario }}</td>
+		</tr>
+		<tr>
+			<td>Calificacion:</td>
+			<td>{% if proveedor.calificacion == 'A' %}Apto{% elseif proveedor.calificacion == 'N' %}No Apto{% else %}Potencial{% endif %}</td>
+		</tr>
+		<tr>
+			<td><input type="button" value="Atras" class="btn btn-default" onclick="history.back()"></td>
+			<td></td>
+		</tr>
+	</table>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}
