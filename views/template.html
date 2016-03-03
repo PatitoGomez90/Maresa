@@ -44,6 +44,7 @@
                         <li class="divider"></li>
                         <li><a href="/paalta" id="btnNuevoPedidoDeAbastecimiento">Nuevo Pedido de Abastecimiento</a></li>
                         <li><a href="/palista">Bandeja de Recepcion</a></li>
+                        <li><a href="/ordencompra_lista_items" id="btnNuevaOrdenDeCompra">Ordenes de Compra</a></li>    
                     <!--<li><a href="/articulosconsulta">Consulta de Articulos</a></li>
                         <li class="divider"></li>
                         <li><a href="/articulosimprimir">Imprimir Etiquetas de Articulos</a></li>
@@ -174,8 +175,8 @@
                 console.log(storage.length);                   
                 
                 localStorage.clear();
-                aArt=[];
-                objDatos = {
+                var aArt = [];
+                var objDatos = {
                     'fecha': '',
                     'sector': '1',
                     'limpiar':'0',
@@ -184,14 +185,38 @@
 
                 var objDatos_stringified = JSON.stringify(objDatos);
 
-                if (storage.length == 0){
-                    storage.setItem('objDatos', objDatos_stringified);
-                }
+                // if (storage.length == 0){
+                storage.setItem('objDatos', objDatos_stringified);
+                // }
             } else { 
                 alert('No soporta LocalStorage. Actualize el navegador !!'); 
             }
         });
     });
+
+    $("#btnNuevaOrdenDeCompra").on("click",function (){
+        if('localStorage' in window && window['localStorage'] !== null) {
+            console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+            var storage = localStorage;
+            console.log(storage.length);                   
+            
+            localStorage.clear();
+            var aItems = [];
+            var objOC ={
+                'limpiar': '0',
+                'aItems': aItems
+            }
+
+            var objOC_stringified = JSON.stringify(objOC);
+
+            // if (storage.length == 0){
+            storage.setItem('objOC', objOC_stringified);
+            // }
+        } else { 
+            alert('No soporta LocalStorage. Actualize el navegador !!'); 
+        }
+    });
+    
 
     $(".menu").on("click", function (){
         var id_menu = $(this).data("idmenu");

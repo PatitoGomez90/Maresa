@@ -7,8 +7,8 @@ var mCC = require('../models/mCentrosCosto');
 
 var mysql = require('mysql');
 var async = require('async');
-var LocalStorage = require('node-localstorage').LocalStorage,
-localStorage = new LocalStorage('./scratch');
+// var LocalStorage = require('node-localstorage').LocalStorage,
+// localStorage = new LocalStorage('./scratch');
 
 function changeDate(date){
 	// input: dd/mm/yyyy
@@ -70,7 +70,7 @@ function postAlta(req, res){
 	var aArt = objDatosParsed.aArticulos;
 	var fecha_generacion = params.fecha_generacion;
 	var id_sector = params.sector;
-	console.log(req.session.user);
+	// console.log(req.session.user);
 	var id_usuario_logeado = req.session.user.unica;
 
 	var connection = mysql.createConnection({

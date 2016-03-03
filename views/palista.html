@@ -84,13 +84,13 @@
 			  		<script type="text/template" id="tablapas"/>
 			  			[[#.]]
 							<tr>
-								<td><button class="btn btn-warning modificar" id="modificar[[id]]" data-id="[[id]]" title="Modificar"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button></td>
-			  					<td><button class="btn btn-danger borrar" id="borrar[[id]]" data-id="[[id]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
-								<td><button class="btn btn-primary revisado" id="revisado[[id]]" data-id="[[id]]" title="Marcar como Revisado"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
-								<td><button class="btn btn-default imprimir" id="imprimir[[id]]" data-id="[[id]]" data-nropa="[[nro_pa]]" title="Imprimir PA para autorizar"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></td>
-			  					<td><button class="btn btn-success aprobado" id="aprobado[[id]]" data-id="[[id]]" data-cant="[[cantidad]]" title="Marcar como Aprobado"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button></td>
-			  					<td><button class="btn btn-danger rechazado" id="rechazado[[id]]" data-id="[[id]]" title="Marcar como Rechazado"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button></td>
-								<td>[[ id ]]</td>
+								<td style="padding-right: 4px;"><button class="btn btn-warning modificar" id="modificar[[id]]" data-id="[[id]]" title="Modificar"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></button></td>
+			  					<td style="padding-right: 4px; padding-left: 0px;"><button class="btn btn-danger borrar" id="borrar[[id]]" data-id="[[id]]" onclick="if (!confirm('¿Seguro desea eliminar?')) return false;" title="Eliminar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td>
+								<td style="padding-right: 4px; padding-left: 0px;"><button class="btn btn-primary revisado" id="revisado[[id]]" data-id="[[id]]" title="Marcar como Revisado"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
+								<td style="padding-right: 4px; padding-left: 0px;"><button class="btn btn-default imprimir" id="imprimir[[id]]" data-id="[[id]]" data-nropa="[[nro_pa]]" title="Imprimir PA para autorizar"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></td>
+			  					<td style="padding-right: 4px; padding-left: 0px;"><button class="btn btn-success aprobado" id="aprobado[[id]]" data-id="[[id]]" data-cant="[[cantidad]]" title="Marcar como Aprobado"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button></td>
+			  					<td style="padding-left: 4px; padding-right: 0px;"><button class="btn btn-danger rechazado" id="rechazado[[id]]" data-id="[[id]]" title="Marcar como Rechazado"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button></td>
+								<td style="padding-left: 4px;">[[ id ]]</td>
 								<td>[[ nro_pa ]]</td>
 								<td>[[ id_centrocosto_fk ]] - [[ centrocostotxt ]]</td>
 								<td>[[ confeccionotxt ]]</td>

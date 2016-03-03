@@ -39,7 +39,7 @@ var cPlanti = require('./controllers/cPlantillas');
 var cCentrosCostos = require('./controllers/cCentrosCosto');
 var cPedidosAbastecimiento = require('./controllers/cPedidosAbastecimiento');
 var cProveedores = require('./controllers/cProveedores');
-
+var cOrdenesCompra = require('./controllers/cOrdenesCompra');
 
 
 var cPruebaSQL = require('./controllers/cPruebaSQL');
@@ -437,8 +437,11 @@ module.exports = function(app) {
 	app.post('/proveedoresmodificar', auth, cProveedores.postModificar);
 	app.get('/proveedoresborrar/:id', auth, cProveedores.getDel);
 	app.get('/proveedoresver/:id', auth, cProveedores.getVer);
-
-
+//ordenes de compra
+	app.get('/ordencompra_lista_items', auth, cOrdenesCompra.getLista);
+	app.get("/ordencompra_alta/:cant_items/:aItems", auth, cOrdenesCompra.getAlta);
+	app.post("/ordencompra_alta", auth, cOrdenesCompra.postAlta);
+	app.get("/ordencompra_print/:id_oc", auth, cOrdenesCompra.getPrint);
 // ETC
 //pruebasql
 	app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

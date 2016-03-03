@@ -11,7 +11,10 @@ module.exports = {
 	getItemById: getItemById,
 	update: update,
 	del: del,
-	getByNroPA: getByNroPA
+	getByNroPA: getByNroPA,
+	getItemsAprobadosSinOrden: getItemsAprobadosSinOrden,
+	getItemsByPAIdFromArray: getItemsByPAIdFromArray,
+	getAllBy_oc_id: getAllBy_oc_id
 }
 
 function getAll(cb){
@@ -72,4 +75,52 @@ function getByNroPA(nro_pa, cb){
 	+"left join articu on articu.id = pedidos_abastecimiento.id_articulo_fk "
 	+"left join umed on umed.id = articu.IdUmed "
 	+"where nro_pa ="+ nro_pa, cb);
+}
+
+function getItemsAprobadosSinOrden(cb){
+	conn("SELECT pedidos_abastecimiento.*, centro_costos.nombre as centrocostotxt, secr.usuario as confeccionotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_necesidad, '%d/%m/%Y') as fecha_necf, "
+	+"(SELECT secr.usuario from secr where secr.unica = pedidos_abastecimiento.id_autorizo_fk ) as autorizotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_autorizado, '%d/%m/%Y') as fecha_autorizadof, "
+	+"CASE WHEN urgente = '0' THEN 'No' WHEN urgente = '1' THEN  'Si' ELSE '' END as urgentetxt, "
+	+"umed.nombre as umedtxt, "
+	+"articu.Nombre as articulotxt "
+	+"from pedidos_abastecimiento "
+	+"left join centro_costos on centro_costos.id = pedidos_abastecimiento.id_centrocosto_fk "
+	+"left join secr on secr.unica = pedidos_abastecimiento.id_confecciono_fk "
+	+"left join articu on articu.id = pedidos_abastecimiento.id_articulo_fk "
+	+"left join umed on umed.id = articu.IdUmed "
+	+"where estado = 'Aprobado' AND id_orden_compra_fk = 0", cb)
+}
+
+function getItemsByPAIdFromArray(aItems, cb){
+	conn("SELECT pedidos_abastecimiento.*, centro_costos.nombre as centrocostotxt, secr.usuario as confeccionotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_necesidad, '%d/%m/%Y') as fecha_necf, "
+	+"(SELECT secr.usuario from secr where secr.unica = pedidos_abastecimiento.id_autorizo_fk ) as autorizotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_autorizado, '%d/%m/%Y') as fecha_autorizadof, "
+	+"CASE WHEN urgente = '0' THEN 'No' WHEN urgente = '1' THEN  'Si' ELSE '' END as urgentetxt, "
+	+"umed.nombre as umedtxt, "
+	+"articu.Nombre as articulotxt "
+	+"from pedidos_abastecimiento "
+	+"left join centro_costos on centro_costos.id = pedidos_abastecimiento.id_centrocosto_fk "
+	+"left join secr on secr.unica = pedidos_abastecimiento.id_confecciono_fk "
+	+"left join articu on articu.id = pedidos_abastecimiento.id_articulo_fk "
+	+"left join umed on umed.id = articu.IdUmed "
+	+"where pedidos_abastecimiento.id IN ("+aItems+")", cb);
+}
+
+function getAllBy_oc_id(id_oc, cb){
+	conn("SELECT pedidos_abastecimiento.*, centro_costos.nombre as centrocostotxt, secr.usuario as confeccionotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_necesidad, '%d/%m/%Y') as fecha_necf, "
+	+"(SELECT secr.usuario from secr where secr.unica = pedidos_abastecimiento.id_autorizo_fk ) as autorizotxt, "
+	+"DATE_FORMAT(pedidos_abastecimiento.fecha_autorizado, '%d/%m/%Y') as fecha_autorizadof, "
+	+"CASE WHEN urgente = '0' THEN 'No' WHEN urgente = '1' THEN  'Si' ELSE '' END as urgentetxt, "
+	+"umed.nombre as umedtxt, "
+	+"articu.Nombre as articulotxt "
+	+"from pedidos_abastecimiento "
+	+"left join centro_costos on centro_costos.id = pedidos_abastecimiento.id_centrocosto_fk "
+	+"left join secr on secr.unica = pedidos_abastecimiento.id_confecciono_fk "
+	+"left join articu on articu.id = pedidos_abastecimiento.id_articulo_fk "
+	+"left join umed on umed.id = articu.IdUmed "
+	+"where id_orden_compra_fk = "+id_oc, cb);
 }

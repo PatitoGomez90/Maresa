@@ -1,0 +1,184 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<!-- <link href="/css/paalta.css" rel="stylesheet"> -->
+<link href="/css/toastr.css" rel="stylesheet"/>
+<h2>{{ pagename }}</h2>
+<form method="post" id="formalta" action="/ordencompra_alta">
+	<input hidden name="cant_items" id="cant_items" value="{{ cant_items }}">
+	<div class="panel panel-default">
+	<!-- Default panel contents -->
+	  	<div class="panel-heading">
+	  	<!-- Table -->
+			<table>
+				<tr>	
+					<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></td>
+					<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				</tr>	
+			</table>
+		</div>
+		<table class="table table-striped">
+			<tr>
+				<td>Fecha Generacion:</td>
+				<td><input type="text" style="width: 100px" readonly class="form-control datepicker" name="fecha_generacion" id="fecha_generacion"></td>
+			</tr>
+			<tr>
+				<td>Fecha Necesidad:</td>
+				<td><input type="text" style="width: 100px" readonly required class="form-control datepicker" name="fecha_necesidad" id="fecha_necesidad"></td>
+			</tr>
+			<tr>
+				<td>Proveedor:</td>
+				<td>
+					<select class="form-control" name="proveedor" id="proveedor">
+						{% for p in proveedores %}
+							<option value="{{ p.id }}">{{ p.razonsocial }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Observaciones:</td>
+				<td><textarea class="form-control" name="observaciones" id="observaciones" rows="4" cols="30" style="resize: none;"></textarea></td>
+			</tr>
+		</table>
+		<table align="center" id="tableArt" class="table table-striped">
+			<thead>
+				<tr>				
+					<th>Articulo</th>
+					<th>Centro de Costo</th>
+					<th>Fecha Necesidad</th>
+					<th><div style="text-align: center;">Urgente?</div></th>
+					<th><div style="text-align: center;">Cantidad Aprobada</div></th>
+					<th>Cantidad a Comprar</th>
+					<th>Precio Unitario $</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+				{% for art in pa %}
+					<tr>
+						<td><input hidden name="id_art" id="id_art" value="{{ art.id_articulo_fk }}"><input hidden name="id_pa" id="id_pa" value="{{ art.id }}">{{ art.articulotxt }}</td>
+						<td>({{ art.id_centrocosto_fk }}) - {{ art.centrocostotxt }}</td>
+						<td>{{ art.fecha_necf }}</td>
+						<td><div style="text-align: center;">{{ art.urgentetxt }}</div></td>
+						<td><div style="text-align: center;">{{ art.cantidad_aprobada }}</div></td>
+						<td><input type="text" style="width:70px" class="form-control cant" name="cantidad_acomprar" id="cantidad_acomprar"></td>
+						<td><input type="text" style="width:70px" class="form-control" name="precio_unitario" id="precio_unitario"></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="panel-footer">
+			<p>Nota: Los artículos con 'cantidad a comprar' en '0' o vacías serán desestimados.</p>
+			<table  align="center">
+				<tr>
+					<td><button type="submit" id="guardar" class="btn btn-primary">Guardar Orden</button></td>
+					<td style="width: 50px;"></td>
+					<td><button type="button" id="descartar" class="btn btn-warning">Descartar Orden</button></td>
+				</tr>
+			</table>
+		</div>	
+	</div>
+</form>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/toastr.js"></script>
+<script type="text/javascript">
+
+	$(".datepicker").datepicker({
+	    format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'ES'
+	});	
+
+	$(function() {
+	    console.log( "doc ready!" );
+	    var myDate = new Date(); 
+		myDate.setFullYear(myDate.getFullYear());
+		day = myDate.getDate();
+		if (day<10)
+			day = "0"+day;
+		month = myDate.getMonth()+1;
+		if (month<10)
+			month = "0"+month
+		Today = day + "/" + month + "/" + myDate.getFullYear();
+		// PrimeroDeMes = "01/"+month+'/'+myDate.getFullYear();
+		$("#fecha_generacion").val(Today);
+
+		$("#formalta").submit(function( event ) {
+			// console.log("en on submit");
+			var fecha_necesidad = $("#fecha_necesidad").val();
+
+			if (fecha_necesidad != '' && fecha_necesidad.length != 0){
+				var cants_acomprar = $(".cant").map(function() {
+				    return this.value;
+				}).get();
+
+				var todos_vacios = false;
+				var cant_items = $("#cant_items").val();
+				var i_cant_items = parseInt(cant_items);
+
+				if (i_cant_items > 1){
+					// bandera todos_vacios para muchos items
+					for (var i = 0; i < cants_acomprar.length; i++) {
+						console.log(cants_acomprar[i])
+						alert(cants_acomprar[i]);
+						if (cants_acomprar[i].trim() == '' || cants_acomprar[i].trim() == '0')
+							todos_vacios = true;
+						else{
+							todos_vacios = false;
+							break;
+						}
+					};
+				}else{
+					//bandera todos_vacios para un solo item
+					if (cants_acomprar == '' || cants_acomprar == '0')
+						todos_vacios = true;
+					else
+						todos_vacios = false;
+				}				
+
+				if (todos_vacios == false){
+					var objOC = localStorage.getItem('objOC');
+					var objOC_parsed = JSON.parse(objOC);
+					objOC_parsed.limpiar = 1;
+					var objOC_stringified = JSON.stringify(objOC_parsed);				
+					localStorage.setItem('objOC', objOC_stringified);
+				}else{
+					event.preventDefault();
+					alert("Si todos los campos 'cantidad' estan en 0 o vacios no se guardará la Orden ya que se considera que se desestiman los artículos.");
+				}				
+			}else{
+				event.preventDefault();
+				alert("Por favor seleccione una fecha de necesidad. Es un campo requerido.")
+			}			
+		});
+	    
+	    $("#descartar").on("click", function (){
+	    	if('localStorage' in window && window['localStorage'] !== null) {
+                console.log('Genial, tenemos un navegador decente que soporta LocalStorage');
+                var storage = localStorage;                 
+                
+                localStorage.clear();
+                var aItems = [];
+                var objOC = {
+                    'limpiar':'0',
+                    'aItems': aItems
+                }
+
+                var aItems_stringified = JSON.stringify(aItems);
+
+                if (storage.length == 0){
+                    storage.setItem('aItems', aItems_stringified);
+                }
+                window.location = '/ordencompra_alta';
+            }           
+	    });
+	});
+
+</script>
+
+{% endblock %}

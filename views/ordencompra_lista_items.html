@@ -1,0 +1,216 @@
+{% extends 'template.html' %}
+
+{% block title %}
+	{{ pagename }}
+{% endblock %}
+
+{% block content %}
+<h2>{{ pagename }}</h2>
+<link href="/css/toastr.css" rel="stylesheet"/>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  	<div class="panel-heading">
+  	<!-- Table -->
+		<table>
+			<tr>	
+				<td><button type="button" onclick="history.back();"class="btn btn-primary">Atras</button></a></td>
+				<td><button type="button" name="btnNuevaOrdenCompra" id="btnNuevaOrdenCompra" class="btn btn-success">Generar Nueva Orden</button></td>
+				<td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></td>
+				<td><p style="margin-bottom: -10px;">Cantidad de items listados: <b>{{ cantidad_items }}</b></p></td>
+			</tr>	
+		</table>
+	</div>
+	<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+		      </div>
+		      <div class="modal-body" id="modal-body">
+		        {{ ayuda.texto }}
+		      </div>
+		      <div class="modal-footer" id="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	<!-- Fin Modal -->
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr>
+			  				<th colspan="1">Seleccionar</th> 
+							<th>ID</th>
+							<th>Nro PA</th>			
+							<th><div style="width: 180px">Centro de Costo</div></th>
+							<th>Confeccionó</th>
+							<th>Fecha Necesidad</th>	
+							<th>Urgente</th>
+							<th>Cantidad Requerida</th>
+							<th>Unidad<!-- de medida --></th>
+							<th>Articulo</th>
+							<th><div style="width: 100px;">Estado</div></th>
+							<th>Cant. Aprobada</th>
+							<th>Motivo Rechazo</th>
+							<th>Autorizó</th>
+							<th>Fecha Autorizado</th>							
+						</tr>
+			  		</thead>
+			  		<tbody id="tbodylisto">
+			  			{% for art in pa %}
+			  				<tr>
+								<td><input type="checkbox" class="chk form-control" name="chkItem" id="chkItem" title="Tilde para incluir en la generación de una nueva Orden de Compra" data-id="{{ art.id }}" value="{{ art.id }}"></td>
+								<td>{{ art.id }}</td>
+								<td>{{ art.nro_pa }}</td>
+								<td>{{ art.id_centrocosto_fk }} - {{ art.centrocostotxt }}</td>
+								<td>{{ art.confeccionotxt }}</td>
+								<td>{{ art.fecha_necf }}</td>
+								<td style="text-align: center;">{{ art.urgentetxt }}</td>
+								<td style="text-align: center;">{{ art.cantidad }}</td>
+								<td>{{ art.umedtxt }}</td>
+								<td>{{ art.articulotxt }}</td>
+	 							<td>{{ art.estado }}</td>
+	 							<td>{{ art.cantidad_aprobada }}</td>
+	 							<td>
+	 								{% if art.motivo_rechazo != '' %}
+	 									<span class="glyphicon glyphicon-info-sign" aria-hidden="true" title="{{ motivo_rechazo }}"></span>
+	 								{% endif %}
+	 							</td>
+	 							<td>{{ art.autorizotxt }}</td>
+	 							<td>{{ art.fecha_autorizadof }}</td>
+							</tr>
+						{% endfor %}
+			  		</tbody>
+			  		<input hidden name="cant_items" id="cant_items" value="0">
+				</table>
+			</div> 			
+		</div><!--div col xs12 -->
+	</div><!--div row -->
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/toastr.js"></script>
+<script type="text/javascript">
+	// $('#txtMotivo').limit('200','#charsLeftMotivo');
+	$(".datepicker").datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true,
+		language: 'es'
+	});
+
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	day = myDate.getDate();
+	if (day<10)
+		day = "0"+day;
+	month = myDate.getMonth()+1;
+	if (month<10)
+		month = "0"+month
+	Today = day + "/" + month + "/" + myDate.getFullYear();
+	PrimeroDeMes = "01/"+month+'/'+myDate.getFullYear();
+	// $("#fecha_desde").val(PrimeroDeMes);
+	// $("#fecha_hasta").val(Today);
+
+	if('localStorage' in window && window['localStorage'] !== null) {
+    	var objOC = localStorage.getItem('objOC');
+    	var objOC_parsed = JSON.parse(objOC);
+    	console.log(objOC_parsed.limpiar)
+    	if (objOC_parsed.limpiar == '1'){
+    		toastr.options = {
+			  	"closeButton": false,
+			  	"debug": false,
+			  	"newestOnTop": false,
+			  	"progressBar": true,
+			  	"positionClass": "toast-top-right",
+			  	"preventDuplicates": false,
+			  	"onclick": null,
+			  	"showDuration": "300",
+			  	"hideDuration": "1000",
+			  	"timeOut": "3000",
+			  	"extendedTimeOut": "1000",
+			  	"showEasing": "swing",
+			  	"hideEasing": "linear",
+			  	"showMethod": "fadeIn",
+			  	"hideMethod": "fadeOut"
+			}
+
+			toastr["success"]("La Orden de Compra ha sido creada con éxito.", "Confirmacion");
+
+    		localStorage.clear();
+
+    		var aItems = [];
+            var objOC = {
+                'limpiar': '0',
+                'aItems': aItems
+            }
+
+            var objOC_stringified = JSON.stringify(objOC);
+            // $("#objOC").val(objOC_stringified);
+            if (localStorage.length == 0){
+                localStorage.setItem('objOC', objOC_stringified);
+            }
+    	}
+    } else { 
+		alert('No soporta LocalStorage. Actualize el navegador !!'); 
+	}
+
+	$(function() {
+	    console.log( "ready!" );
+
+	    $(".chk").on("change", function(){
+		    if (this.checked) {
+		        var cant_items = $("#cant_items").val()
+		        var i_cant_items = parseInt(cant_items);
+		        i_cant_items = i_cant_items+1;
+		        $("#cant_items").val(i_cant_items);
+		    }else{
+		    	var cant_items = $("#cant_items").val()
+		        var i_cant_items = parseInt(cant_items);
+		        i_cant_items = i_cant_items-1;
+		        $("#cant_items").val(i_cant_items);
+		    }
+	    });
+
+	    $("#btnNuevaOrdenCompra").on("click", function (){
+	    	if('localStorage' in window && window['localStorage'] !== null) {
+
+				var items = $(".chk:checked").map(function() {
+				    return this.value;
+				}).get();
+				// get cantidad items from view/html
+				var cant_items = $("#cant_items").val()
+
+				var objOC = localStorage.getItem('objOC');
+				var objOC_parsed = JSON.parse(objOC);
+
+				// console.log(items.length)
+				// console.log(items)
+				if (items.length > 0){
+					aItems = items;
+					objOC_parsed.aItems = aItems;
+					var objOC_stringified = JSON.stringify(objOC_parsed);
+		            localStorage.setItem('objOC', objOC_stringified);
+		            window.location = "/ordencompra_alta/"+cant_items+"/"+aItems;
+				}else{
+					//error 'seleccione items' con MODAL !!
+				}
+	    	}
+	    });
+
+		// falta hacer que el boton "ayuda" limpie el modal con 
+		// $("#ayuda").on("click", function (){
+
+		// });
+
+
+		// falta hacer para bloquear los botones segun el estado de cada item
+	});
+
+
+</script>
+{% endblock %}

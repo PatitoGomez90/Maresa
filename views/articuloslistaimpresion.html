@@ -19,30 +19,30 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-				<table class="table table-striped">
-			  		<thead>
-			  			<tr>
-			  				<th>Opciones</th>
-							<th>ID</th>
-							<th>ID Articulo 1</th>
-							<th>Nombre Articulo 1</th>
-							<th>ID Articulo 2</th>
-							<th>Nombre Articulo 2</th>
+			<table class="table table-striped">
+		  		<thead>
+		  			<tr>
+		  				<th>Opciones</th>
+						<th>ID</th>
+						<th>ID Articulo 1</th>
+						<th>Nombre Articulo 1</th>
+						<th>ID Articulo 2</th>
+						<th>Nombre Articulo 2</th>
+					</tr>
+		  		</thead>
+		  		<tbody>
+		  			{% for et in etiquetas %}
+						<tr>
+							<td><a href='/articulosimmprimirborrarfila/{{ et.id }}' onclick="if (!confirm('¿Seguro desea eliminar esta fila?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
+							<td>{{ et.id }}</td>
+							<td>{{ et.id1 }}</td>
+							<td>{{ et.nombre1 }}</td>
+							<td>{{ et.id2 }}</td>
+							<td>{{ et.nombre2 }}</td>
 						</tr>
-			  		</thead>
-			  		<tbody>
-			  			{% for et in etiquetas %}
-							<tr>
-								<td><a href='/articulosimmprimirborrarfila/{{ et.id }}' onclick="if (!confirm('¿Seguro desea eliminar esta fila?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
-								<td>{{ et.id }}</td>
-								<td>{{ et.id1 }}</td>
-								<td>{{ et.nombre1 }}</td>
-								<td>{{ et.id2 }}</td>
-								<td>{{ et.nombre2 }}</td>
-							</tr>
-							{% endfor %}
-			  		</tbody>
-				  </table>				
+					{% endfor %}
+		  		</tbody>
+			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>
