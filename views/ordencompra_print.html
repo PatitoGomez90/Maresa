@@ -2,52 +2,167 @@
 <head>
 	<title>Impresion de Orden de Compra</title>
 	<link rel="icon" href="/uploads/maresa.jpg">
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="icon" href="/uploads/maresa.ico">
 </head>
-<body>
-<table border="1">
-	<!-- PRIMER RENGLON -->
-	<tr>	
-		<td>
-			<!-- COLUMNA DE LA IZQ -->
-			<table border="1">
-				<tr>
-					<td><img src="/uploads/maresagrande.jpg"></td>
-				</tr>
-				<tr>
-					<td>Direccion:</td>
-				</tr>
-				<tr>
-					<td>Tel:</td>
-				</tr>
-				<tr>
-					<td>Mail:</td>
-				</tr>
-			</table>
-		</td>
-		<td style="padding: 0px;" topMargin="0">
-			<!-- COLUMNA DE LA DERECHA -->
-			<table border="1" style="height: 100%;"  cellspacing="0" cellpadding="0" valign="top">
-				<tr>	
-					<td>ORDEN DE COMPRA</td>
-					<td>fecha<br>hora</td>
-				</tr>
-				<tr>
-					<td colspan="2">Nro</td>
-				</tr>
-				<tr>	
-					<td>Emitida: fecha</td>
-					<td>Entregada: fecha</td>
-				</tr>
-				<tr>	
-					<td>CUIT nro</td>
-					<td>iva</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2"></td>
-	</tr>
-</table>
+<body cellspacing="0" cellpadding="0">
+	<table border="1" style="width: 100%;">
+		<!-- PRIMER RENGLON - TABLA TITULO -->
+		<tr>	
+			<td style="width: 40%;">
+				<!-- COLUMNA DE LA IZQ -->
+				<div class="container">
+					<table border="0" style="width: 100%; ">
+						<tr>
+							<td><img src="/uploads/maresa.jpg"></td>
+							<td style="text-align: right;"><p style="text-align: center;">Grupo Mantenimientos Refractarios S.A.</p></td>
+						</tr>
+						<tr style="font-size: 12px;">
+							<td colspan="2">Direccion: Av. Del Libertador 6343 – Piso 12 depto. A (1428) CABA. </td>
+						</tr>
+						<tr style="font-size: 12px;">
+							<td colspan="2">Telefonos: (+54) 0336-4438652 / 03489-15543799</td>
+						</tr>
+						<tr style="font-size: 12px;">
+							<td colspan="2">Mail: info@grupomaresa.com.ar</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td style="padding: 0px; width: auto;" topMargin="0">
+				<!-- COLUMNA DE LA DERECHA -->
+				<div class="container">
+					<table border="0" style="width: 100%; height: 100%;" cellspacing="0" cellpadding="0" valign="top">
+						<!-- <tr>	
+							<td style="width: 250px;"><h3>ORDEN DE COMPRA</h3></td>
+							<td style="text-align: right;"><p id="fecha_hoy"></p><br><p id="hora_ahora"></p></td>
+						</tr> -->
+						<tr>
+							<td colspan="2">
+								<table style="width: 100%;" cellspacing="0" cellpadding="0">
+									<tr>
+										<td style="width: 250px;"><h3 style="margin-top: 0px;"><b>ORDEN DE COMPRA</b></h3></td>
+										<td style="text-align: right;"><p id="fecha_hoy"></p><p id="hora_ahora"></p></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">N° <b>{{ orden_compra.id }}</b></td>
+						</tr>
+						<tr>	
+							<td>Emitida: <b>{{ orden_compra.fecha_genf }}</b></td>
+							<td>Entregada: <b>{{ orden_compra.fecha_necf }}</b></td>
+						</tr>
+						<tr>	
+							<td style="font-size: 12px; width: 155px;">CUIT 33-71201747-9</td>
+							<td style="font-size: 12px;">I.V.A. RESPONSABLE INSCRIPTO</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<!-- TABLA DESTINO -->
+				<div class="container">
+					<table  border="0" style="width: 100%;">
+						<tr>
+							<td colspan="2" style="text-align: center;"><h4>DESTINO</h4></td>
+						</tr>
+						<tr>
+							<td>Proveedor: <b>{{ orden_compra.proveedortxt }}</b></td>
+							<td>Atencion: <b>{{ orden_compra.proveedor_contacto }}</b></td>
+						</tr>
+						<tr>
+							<td>Telefono/s: {{ orden_compra.proveedor_telefono }}</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Domicilio: {{ orden_compra.proveedor_domicilio }}</td>
+							<td>{{ orden_compra.proveedor_ciudad }} {{ orden_compra.proveedor_provincia }}</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<!-- TABLA DETALLE -->
+	<table border="1" style="width: 100%;">
+		<tr>
+			<td style="text-align: center;"><h4>DETALLE</h4></td>
+		</tr>
+		<tr>
+			<td>
+				<table style="width: 100%;">
+					<tr>
+						<td style="width: 15%;">&nbsp; Cod. Sist.</td>
+						<td style="width: 15%;">Cantidad</td>
+						<td style="width: 50%;">Denominacion</td>
+						<td style="width: 20%;">Precio Unitario</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table style="width: 100%;">
+					{% for a in pa %}
+						<tr>
+							<td style="width: 15%; text-align: center;">{{ a.id_articulo_fk }}</td>
+							<td style="width: 15%; text-align: center;">{{ a.cantidad_orden_compra }}</td>
+							<td style="width: 50%;">{{ a.articulotxt }}</td>
+							<td style="width: 20%; text-align: center;">$ {{ a.precio_unitario }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<!-- TABLA TOTALES -->
+	
+	<table border="1" style="width: 100%;">
+		<tr>
+			<td><div class="container">Total Articulos: {{ cant_art }}</div></td>
+			<td style="text-align: center;">Final: $ {{ valor_total }}</td>
+		</tr>
+	</table>
+	<br>
+	<table border="1" style="width: 100%;">
+		<tr>
+			<td colspan="3" style="text-align: center;"><h4>OBSERVACIONES</h4></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="text-align: center;"><br><span style="width:650px; word-wrap:break-word; display:inline-block;">{{ orden_compra.observaciones }}</span><br></td>
+		</tr>
+		<tr>
+			<td style="width: 33%; text-align: center;"><br><br><br>_ _ _ _ _ _ _ _ _ _ _ _<br>Emitió {{ orden_compra.emitiotxt }}</td>
+			<td style="width: 33%; text-align: center;"><br><br><br>_ _ _ _ _ _ _ _ _ _ _ _<br>Aprobó</td>
+			<td style="width: 33%; text-align: center;"><br><br><br>_ _ _ _ _ _ _ _ _ _ _ _<br>Recibió x {{ orden_compra.proveedortxt }}</td>
+		</tr>
+	</table>
+<script src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+	// poner la hora y fecha de hoy a los <p>
+	var myDate = new Date(); 
+	myDate.setFullYear(myDate.getFullYear());
+	day = myDate.getDate();
+	if (day<10)
+		day = "0"+day;
+	month = myDate.getMonth()+1;
+	if (month<10)
+		month = "0"+month
+	Today = day + "/" + month + "/" + myDate.getFullYear();
+	var time = myDate.getHours() +":"+ myDate.getMinutes() 
+	$("#fecha_hoy").text(Today);
+	$("#hora_ahora").text(time);
+	$(function() {
+		window.print();
+		
+		window.location='/ordencompra_lista_items'
+	});
+</script>
 </body>
 </html>

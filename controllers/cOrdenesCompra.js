@@ -145,14 +145,15 @@ function postAlta(req, res){
 					if (cant_desestimadas != cant_items){
 						// ACA EN VEZ DE REDIRIGIR A LA LISTA DE ITEMS NUEVAMENTE, DEBE IR A LA VISTA DE IMPRESION
 							// EN LA VISTA DE IMPRESION: ON_PAGE_LOADED = PRINT()
-						res.redirect("ordencompra_lista_items");
+						// res.redirect("ordencompra_lista_items");
+						res.redirect("ordencompra_print/"+ultimo_id_oc);
 					}else{
 						//error
 						mOrdenesCompra.del(ultimo_id_oc, function(){
-							// ACA EN VEZ DE REDIRIGIR A LA LISTA DE ITEMS NUEVAMENTE, DEBE IR A LA VISTA DE IMPRESION
-							// EN LA VISTA DE IMPRESION: ON_PAGE_LOADED = PRINT()
-							// res.redirect("ordencompra_lista_items");
-							res.redirect("ordencompra_print/"+ultimo_id_oc);
+							// ACA REDIRIJE A LA LISTA DE ITEMS LISTOS PARA INCLUIR EN ORDEN DE COMPRA XQ NO SE GUARDO LA ORDEN
+							// ENTONCES NO HAY NADA PARA IMPRIMIR
+							res.redirect("ordencompra_lista_items");
+							// res.redirect("ordencompra_print/"+ultimo_id_oc);
 						});
 					}				
 				});
@@ -164,14 +165,38 @@ function postAlta(req, res){
 function getPrint(req, res){
 	var params = req.params;
 	var id_oc = params.id_oc;
-
+	var cant_art = 0;
+	var valor_total = 0;
 	mOrdenesCompra.getById(id_oc, function (orden_compra){
 		mPA.getAllBy_oc_id(id_oc, function (pa){
-			res.render("ordencompra_print", {
-				pagename: "Imprimir Orden de Compra",
-				orden_compra: orden_compra[0],
-				pa: pa
-			});
+			// console.log(orden_compra)
+			// console.log(pa)
+
+			if (pa.length == 1){
+				cant_art = pa[0].cantidad_orden_compra;
+				valor_total = pa[0].cantidad_orden_compra*pa[0].precio_unitario;
+
+				res.render("ordencompra_print", {
+					pagename: "Imprimir Orden de Compra",
+					orden_compra: orden_compra[0],
+					pa: pa[0],
+					cant_art: cant_art,
+					valor_total: valor_total
+				});
+			}else{
+				for (var i = 0; i < pa.length; i++){
+					cant_art = cant_art + pa[i].cantidad_orden_compra;
+					valor_total = valor_total + (pa[i].cantidad_orden_compra*pa[i].precio_unitario);
+				}
+
+				res.render("ordencompra_print", {
+					pagename: "Imprimir Orden de Compra",
+					orden_compra: orden_compra[0],
+					pa: pa,
+					cant_art: cant_art,
+					valor_total: valor_total
+				});
+			}
 		});		
 	});
 }

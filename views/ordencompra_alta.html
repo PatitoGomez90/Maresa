@@ -65,8 +65,8 @@
 						<td>{{ art.fecha_necf }}</td>
 						<td><div style="text-align: center;">{{ art.urgentetxt }}</div></td>
 						<td><div style="text-align: center;">{{ art.cantidad_aprobada }}</div></td>
-						<td><input type="text" style="width:70px" class="form-control cant" name="cantidad_acomprar" id="cantidad_acomprar"></td>
-						<td><input type="text" style="width:70px" class="form-control" name="precio_unitario" id="precio_unitario"></td>
+						<td><input type="text" style="width:70px" class="form-control cant" name="cantidad_acomprar" id="cantidad_acomprar" onKeyPress="return soloNumeros(event)"></td>
+						<td><input type="text" style="width:70px" class="form-control" name="precio_unitario" id="precio_unitario" onkeypress="return Numy1Punto(event, this)"></td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -125,7 +125,7 @@
 					// bandera todos_vacios para muchos items
 					for (var i = 0; i < cants_acomprar.length; i++) {
 						console.log(cants_acomprar[i])
-						alert(cants_acomprar[i]);
+						// alert(cants_acomprar[i]);
 						if (cants_acomprar[i].trim() == '' || cants_acomprar[i].trim() == '0')
 							todos_vacios = true;
 						else{
