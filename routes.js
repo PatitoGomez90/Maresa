@@ -438,10 +438,14 @@ module.exports = function(app) {
 	app.get('/proveedoresborrar/:id', auth, cProveedores.getDel);
 	app.get('/proveedoresver/:id', auth, cProveedores.getVer);
 //ordenes de compra
-	app.get('/ordencompra_lista_items', auth, cOrdenesCompra.getLista);
+	app.get('/ordencompra_lista_items', auth, cOrdenesCompra.getLista_items);
 	app.get("/ordencompra_alta/:cant_items/:aItems", auth, cOrdenesCompra.getAlta);
 	app.post("/ordencompra_alta", auth, cOrdenesCompra.postAlta);
 	app.get("/ordencompra_print/:id_oc", auth, cOrdenesCompra.getPrint);
+	app.get("/ordencompra_lista", auth, cOrdenesCompra.getLista);
+	app.get("/filtraroc/:desde/:hasta", auth, cOrdenesCompra.getFiltrarOc);
+
+
 // ETC
 //pruebasql
 	app.get('/pruebasql', auth, cPruebaSQL.getPrueba);

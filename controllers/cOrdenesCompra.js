@@ -7,10 +7,12 @@ var async = require('async');
 var mysql = require('mysql');
 
 module.exports = {
-	getLista: getLista,
+	getLista_items: getLista_items,
 	getAlta: getAlta,
 	postAlta: postAlta,
-	getPrint: getPrint
+	getPrint: getPrint,
+	getLista: getLista,
+	getFiltrarOc: getFiltrarOc
 }
 
 function changeDate(date){
@@ -20,7 +22,7 @@ function changeDate(date){
 	// output: yyyy/mm/dd
 }
 
-function getLista(req, res) {
+function getLista_items(req, res) {
 	mPA.getItemsAprobadosSinOrden(function (pa){
 		res.render('ordencompra_lista_items', {
 	    	pagename: 'Lista de Items listos para incluir en Orden de Compra',
@@ -167,6 +169,7 @@ function getPrint(req, res){
 	var id_oc = params.id_oc;
 	var cant_art = 0;
 	var valor_total = 0;
+
 	mOrdenesCompra.getById(id_oc, function (orden_compra){
 		mPA.getAllBy_oc_id(id_oc, function (pa){
 			// console.log(orden_compra)
@@ -198,5 +201,25 @@ function getPrint(req, res){
 				});
 			}
 		});		
+	});
+}
+
+function getLista(req, res){
+	res.render("ordencompra_lista", {
+		pagename: "Lista de Ordenes de Compra"
+	});
+}
+
+function getFiltrarOc(req, res){
+	var params = req.params;
+	console.log(params);
+	var desde = params.desde;
+	var hasta = params.hasta;
+
+	desde = changeDate(desde);
+	hasta = changeDate(hasta);
+
+	mOrdenesCompra.FiltrarOc_DesdeHasta(desde, hasta, function (oc){
+		res.send(oc)
 	});
 }

@@ -39,33 +39,32 @@
 	<!-- end Modal -->
 	<div class="row">
 		<div class="col-xs-12">
-				<table class="table table-striped">
-			  		<thead>
-			  			<tr> 
-							<th>ID</th>
-							<th>Nombre</th>
-							<th>Activa</th>
+			<table class="table table-striped">
+		  		<thead>
+		  			<tr> 
+						<th>ID</th>
+						<th>Nombre</th>
+						<th>Activa</th>
+					</tr>
+		  		</thead>
+		  		<tbody>
+		  			{% for c in categorias %}
+						<tr>
+							<td>{{ c.id }}</td>
+							<td>{{ c.nombre }}</td>
+							{% if c.activa == 1 %}
+								<td><span>Activo</span></td>
+							{% else %}
+								<td><span>No activo</span></td>
+							{% endif %}
+							<td><a href="/categoriasmodificar/{{ c.id }}"><button class="btn btn-warning">Modificar</button></a></td>
+							<td><a href='/categoriasborrar/{{ c.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
 						</tr>
-			  		</thead>
-			  		<tbody>
-			  			{% for c in categorias %}
-							<tr>
-								<td>{{ c.id }}</td>
-								<td>{{ c.nombre }}</td>
-								{% if c.activa == 1 %}
-									<td><span>Activo</span></td>
-								{% else %}
-									<td><span>No activo</span></td>
-								{% endif %}
-								<td><a href="/categoriasmodificar/{{ c.id }}"><button class="btn btn-warning">Modificar</button></a></td>
-								<td><a href='/categoriasborrar/{{ c.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/></td>
-							</tr>
-							{% endfor %}
-			  		</tbody>
-				  </table>				
+					{% endfor %}
+		  		</tbody>
+			</table>				
 		</div><!--div col xs12 -->
 	</div><!--div row -->
-
 </div>
 
 {% endblock %}

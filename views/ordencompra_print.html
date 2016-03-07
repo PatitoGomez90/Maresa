@@ -113,7 +113,7 @@
 							<td style="width: 15%; text-align: center;">{{ a.id_articulo_fk }}</td>
 							<td style="width: 15%; text-align: center;">{{ a.cantidad_orden_compra }}</td>
 							<td style="width: 50%;">{{ a.articulotxt }}</td>
-							<td style="width: 20%; text-align: center;">$ {{ a.precio_unitario }}</td>
+							<td style="width: 20%; text-align: right;"><div class="container">$ {{ a.precio_unitario }}</div></td>
 						</tr>
 					{% endfor %}
 				</table>
@@ -126,7 +126,7 @@
 	<table border="1" style="width: 100%;">
 		<tr>
 			<td><div class="container">Total Articulos: {{ cant_art }}</div></td>
-			<td style="text-align: center;">Final: $ {{ valor_total }}</td>
+			<td style="text-align: right;"><div class="container">Final: $ {{ valor_total }}</div></td>
 		</tr>
 	</table>
 	<br>
@@ -158,10 +158,11 @@
 	var time = myDate.getHours() +":"+ myDate.getMinutes() 
 	$("#fecha_hoy").text(Today);
 	$("#hora_ahora").text(time);
+
 	$(function() {
 		window.print();
 		
-		window.location='/ordencompra_lista_items'
+		// window.location='/ordencompra_lista_items'
 	});
 </script>
 </body>
