@@ -41,7 +41,6 @@ const cPedidosAbastecimiento = require('./controllers/cPedidosAbastecimiento');
 const cProveedores           = require('./controllers/cProveedores');
 const cOrdenesCompra         = require('./controllers/cOrdenesCompra');
 
-
 const cPruebaSQL = require('./controllers/cPruebaSQL');
 const cRandom = require('./controllers/cRandom');
 
@@ -58,8 +57,8 @@ function logout (req, res) {
 	fecha = fecha.getFullYear() + "/"+month+"/"+day+" "+fecha.getHours()+":"+fecha.getMinutes()
 	mEventos.add(req.session.user.unica, fecha, "Logout", "", function(){
 	});
-	// req.session = null;
-	req.session.reset();
+	req.session = null;
+	// req.session.reset();
 	return res.redirect('/');
 }
 
@@ -81,6 +80,8 @@ function acceso (req, res, next){
 	const id_usuario = req.session.user.unica;
 	const id_menu = req.session.user.id_menu;
 	const accion = req.session.user.accion;
+
+	// console.log(req.session.user)
 
 	mAccesos.verificarAcceso(id_usuario, id_menu, accion, function (acceso){
 		var acceso = acceso[0].c;

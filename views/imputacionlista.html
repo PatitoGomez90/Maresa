@@ -21,67 +21,69 @@ Ej: Mecanicas (MEC), Electricas (ELEC), "ED", etc..
 
 	<div class="row">
 		<div class="col-xs-12">
-			<table class="table table-striped">
-		  		<thead>
-		  			<tr> 
-						<th>ID</th>
-						<th>Numero</th>
-						<th>Nombre</th>
-						<th>Sector</th>
-						<th>Lugar</th>
-						<th>Unidad de Medida</th>
-						<th>HS_STD</th>
-						<th>Contrato</th>
-						<th>Activo</th>
-						<th colspan="2">Opciones</th>
-					</tr>
-		  		</thead>
-		  		<tbody>
-		  			{% for i in items %}
-						<tr>
-							<td>{{ i.id }}</td>
-							<td>{{ i.numero }}</td>
-							<td>{{ i.nombre }}</td>
-							<td>
-								{% if i.id_sector_fk != 0 %}
-									{{ i.sectortxt }}
-								{% else %}
-								{% endif %}
-							</td>
-							<td>
-								{% if i.id_lugar_fk != 0 %}
-									{{ i.lugartxt }}
-								{% else %}
-								{% endif %}
-							</td>
-							<td>
-								{% if i.id_umed_fk != 0 %}
-									{{ i.umedtxt }}
-								{% else %}
-								{% endif %}
-							</td>
-							<td>{{ i.horas_standard }}</td>
-							<td>
-								{% if i.id_contrato_fk != 0 %}
-									{{ i.contratotxt }}
-								{% else %}
-								{% endif %}
-							</td>
-							{% if i.activa == 1 %}
-								<td><span>Activo</span></td>
-							{% else %}
-								<td><span>No activo</span></td>
-							{% endif %}
-							<td>
-								<a href="/imputacionmodificar/{{ i.id }}"><button class="btn btn-warning">Modificar</button></a>
-							</td>
-							<td>
-								<a href='/imputacionborrar/{{ i.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/>
-							</td>
+			<div id="mainHolder" style="overflow: scroll; max-height: 500px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+							<th>ID</th>
+							<th>Numero</th>
+							<th>Nombre</th>
+							<th>Sector</th>
+							<th>Lugar</th>
+							<th>Unidad de Medida</th>
+							<th>HS_STD</th>
+							<th>Contrato</th>
+							<th>Activo</th>
+							<th colspan="2">Opciones</th>
 						</tr>
-					{% endfor %}
-		  		</tbody>
-			</table>				
+			  		</thead>
+			  		<tbody>
+			  			{% for i in items %}
+							<tr>
+								<td>{{ i.id }}</td>
+								<td>{{ i.numero }}</td>
+								<td>{{ i.nombre }}</td>
+								<td>
+									{% if i.id_sector_fk != 0 %}
+										{{ i.sectortxt }}
+									{% else %}
+									{% endif %}
+								</td>
+								<td>
+									{% if i.id_lugar_fk != 0 %}
+										{{ i.lugartxt }}
+									{% else %}
+									{% endif %}
+								</td>
+								<td>
+									{% if i.id_umed_fk != 0 %}
+										{{ i.umedtxt }}
+									{% else %}
+									{% endif %}
+								</td>
+								<td>{{ i.horas_standard }}</td>
+								<td>
+									{% if i.id_contrato_fk != 0 %}
+										{{ i.contratotxt }}
+									{% else %}
+									{% endif %}
+								</td>
+								{% if i.activa == 1 %}
+									<td><span>Activo</span></td>
+								{% else %}
+									<td><span>No activo</span></td>
+								{% endif %}
+								<td>
+									<a href="/imputacionmodificar/{{ i.id }}"><button class="btn btn-warning">Modificar</button></a>
+								</td>
+								<td>
+									<a href='/imputacionborrar/{{ i.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/>
+								</td>
+							</tr>
+						{% endfor %}
+			  		</tbody>
+				</table>
+			</div>		
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>

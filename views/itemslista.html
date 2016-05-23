@@ -11,60 +11,61 @@
   	<div class="panel-heading">
   	<!-- Table -->
 		<table>
-		<tr>	
-			<td>
-				<a href="/"><button type="button" class="btn btn-primary">Atras</button></a>
-			</td>
-			<td>
-				<a href="/itemsalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a>
-			</td>
-		</tr>	
+			<tr>	
+				<td>
+					<a href="/"><button type="button" class="btn btn-primary">Atras</button></a>
+				</td>
+				<td>
+					<a href="/itemsalta"><button type="button" class="btn btn-success">Agregar Nuevo</button></a>
+				</td>
+			</tr>	
 		</table>
 	</div>
-
 	<div class="row">
 		<div class="col-xs-12">
-			<table class="table table-striped">
-		  		<thead>
-		  			<tr> 
-						<th>ID</th>
-						<th>Numero</th>
-						<th>Nombre</th>
-						<th>Sector</th>
-						<th>Lugar</th>
-						<th>Unidad de Medida</th>
-						<th>HS_STD</th>
-						<th>Contrato</th>
-						<th>Activo</th>
-						<th colspan="2">Opciones</th>
-					</tr>
-		  		</thead>
-		  		<tbody>
-		  			{% for i in items %}
-						<tr>
-							<td>{{ i.id }}</td>
-							<td>{{ i.numero }}</td>
-							<td>{{ i.nombre }}</td>
-							<td>{{ i.id_sector_fk }}</td>
-							<td>{{ i.id_lugar_fk }}</td>
-							<td>{{ i.id_umed_fk }}</td>
-							<td>{{ i.horas_standard }}</td>
-							<td>{{ i.id_contrato_fk }}</td>
-							{% if i.activa == 1 %}
-								<td><span>Activo</span></td>
-							{% else %}
-								<td><span>No activo</span></td>
-							{% endif %}
-							<td>
-								<a href="/itemsmodificar/{{ i.id }}"><button class="btn btn-warning">Modificar</button></a>
-							</td>
-							<td>
-								<a href='/itemsborrar/{{ i.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/>
-							</td>
+			<div id="mainHolder" style="overflow: scroll; max-height: 400px;">
+				<table class="table table-striped">
+			  		<thead>
+			  			<tr> 
+							<th>ID</th>
+							<th>Numero</th>
+							<th>Nombre</th>
+							<th>Sector</th>
+							<th>Lugar</th>
+							<th>Unidad de Medida</th>
+							<th>HS_STD</th>
+							<th>Contrato</th>
+							<th>Activo</th>
+							<th colspan="2">Opciones</th>
 						</tr>
-						{% endfor %}
-		  		</tbody>
-			</table>				
+			  		</thead>
+			  		<tbody>
+			  			{% for i in items %}
+							<tr>
+								<td>{{ i.id }}</td>
+								<td>{{ i.numero }}</td>
+								<td>{{ i.nombre }}</td>
+								<td>{{ i.id_sector_fk }}</td>
+								<td>{{ i.id_lugar_fk }}</td>
+								<td>{{ i.id_umed_fk }}</td>
+								<td>{{ i.horas_standard }}</td>
+								<td>{{ i.id_contrato_fk }}</td>
+								{% if i.activa == 1 %}
+									<td><span>Activo</span></td>
+								{% else %}
+									<td><span>No activo</span></td>
+								{% endif %}
+								<td>
+									<a href="/itemsmodificar/{{ i.id }}"><button class="btn btn-warning">Modificar</button></a>
+								</td>
+								<td>
+									<a href='/itemsborrar/{{ i.id }}' onclick="if (!confirm('¿Seguro desea eliminar?')) return false;"><button type="button" class="btn btn-danger">Eliminar</button><a/>
+								</td>
+							</tr>
+							{% endfor %}
+			  		</tbody>
+				</table>
+			</div>	
 		</div><!--div col xs12 -->
 	</div><!--div row -->
 </div>

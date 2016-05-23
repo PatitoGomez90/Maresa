@@ -93,11 +93,9 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">R.R.H.H.<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-submenu="">R.R.H.H.<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-
                         <li><a href="/sectoreslista" class="menu" data-idmenu="5" data-accion="c">Sectores [ABM]</a></li>
-
                         <li><a href="/lugareslista">Lugares [ABM]</a></li>
                         <li class="divider"></li>
                         <li><a href="/emplelista">Empleados [ABM]</a></li>
@@ -109,21 +107,51 @@
                         <li><a href="/relojeslista">Relojes [ABM]</a></li>
                         <li class="divider"></li>            
                         <li><a href="/partediario1lista">Partes Diarios [ABM]</a></li>
+                        
+                        <li class="dropdown-submenu" role="menu">
+                            <a tabindex="0">Tablas de Configuracion</a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="0" class="menu" href="/tipohoralista">Tipos de Hora [ABM]</a></li>
+                                <li><a tabindex="1" class="menu" href="/codigohoralista">Codigos de Hora [ABM]</a></li>
+                                <!-- //24/07/2015 - desde ahora "clasificacion horas " es "adicionales" -->
+                                <li><a tabindex="2" class="menu" href="/clasificacionlista">Adicionales [ABM]</a></li>
+                                <li><a tabindex="3" class="menu" href="/imputacionlista">Items [ABM]</a></li>
+                                <li><a tabindex="4" class="menu" href="/contratoslista">Contratos [ABM]</a></li>
+                                <li><a tabindex="5" class="menu" href="/turnoslista">Turnos [ABM]</a></li>
+                                <li><a tabindex="6" class="menu" href="/categoriaslista">Categorias [ABM]</a></li>
+                            </ul>
+                        </li>
                         <li><a href="/partediario1historial">Historial de Partes Diarios</a></li>
-                        <li class="dropdown-header">Tablas de Configuracion</li>
-                        <li><a href="/tipohoralista">Tipos de Hora [ABM]</a></li>
-                        <li><a href="/codigohoralista">Codigos de Hora [ABM]</a></li>
-                        <!-- //24/07/2015 - desde ahora "clasificacion horas " es "adicionales" -->
-                        <li><a href="/clasificacionlista">Adicionales [ABM]</a></li>
-                        <li><a href="/imputacionlista">Items [ABM]</a></li>
-                        <li><a href="/contratoslista">Contratos [ABM]</a></li>
-                        <li><a href="/turnoslista">Turnos [ABM]</a></li>
-                        <li><a href="/categoriaslista">Categorias [ABM]</a></li>
+                        <li><a href="/planti1lista">Plantillas</a></li>
+                        <li class="divider"></li>
                         <li><a href="/reportes">Reportes</a></li>
                         <li><a href="/resumeninicio">Resumen por dia</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/planti1lista">Plantillas</a></li>
-                        <!-- </li>  -->             
+                       <!--  
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-submenu="">Repuestos<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/repuestoslista" class="menu" data-idmenu="4" data-accion="c">* Repuestos [ABM]</a></li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0">Listados Consultas</a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="0" class="menu" data-idmenu="7" data-accion="c">- Completo</a></li>
+                                <li><a tabindex="1" class="menu" data-idmenu="8" data-accion="c">- Rubro 1</a></li>
+                                <li><a tabindex="2" class="menu" data-idmenu="9" data-accion="c">- Rubro 2</a></li>
+                                <li><a tabindex="3" class="menu" data-idmenu="10" data-accion="c">- Calle</a></li>
+                                <li><a tabindex="4" class="menu" data-idmenu="11" data-accion="c">- Modulo </a></li>
+                                <li><a tabindex="5" class="menu" data-idmenu="12" data-accion="c">- Estante</a></li>
+                                <li><a tabindex="6" class="menu" data-idmenu="13" data-accion="c">- Marcados con *</a></li>
+                                <li><a tabindex="7" class="menu" data-idmenu="14" data-accion="c">- Rubro resumido</a></li>
+                                <li><a tabindex="8" class="menu" data-idmenu="15" data-accion="c">- Faltantes</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/rubroslista" class="menu" data-idmenu="2" data-accion="c">* Rubros [ABM]</a></li>
+                        <li><a href="/rubrosgruposlista" class="menu" data-idmenu="3" data-accion="c">* Grupo de Rubros [ABM]</a></li>
+                        <li><a href="/inicio" class="menu" data-idmenu="6" data-accion="c">- Control de Stock</a></li>
+                        <li class="divider"></li> 
+                        <li><a href="/umedlista" class="menu" data-idmenu="5" data-accion="c">* Unidades de Medida [ABM]</a></li>
+                    </ul>
+                </li> -->             
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -160,13 +188,13 @@
 <script src="/js/main.js"></script>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
-<script src="/js/bootstrap-submenu.min.js"></script>
+<!-- <script src="/js/bootstrap-datepicker.js"></script> -->
+<script src="/js/bootstrap-submenu.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="/js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript">
-  $('.submenu').submenupicker();
-
+  // $('.submenu').submenupicker();
+  $('[data-submenu]').submenupicker();
   //btnNuevoPedidoDeAbastecimiento
   $(function() {
         $("#btnNuevoPedidoDeAbastecimiento").on("click", function(){
