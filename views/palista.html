@@ -6,6 +6,24 @@
 
 {% block content %}
 <h2>{{ pagename }}</h2>
+<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
+	      </div>
+	      <div class="modal-body" id="modal-body">
+	        {{ ayuda.texto }}
+	      </div>
+	      <div class="modal-footer" id="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Fin Modal -->
 <div class="panel panel-default">
   <!-- Default panel contents -->
   	<div class="panel-heading">
@@ -37,24 +55,6 @@
 		</tr>	
 		</table>
 	</div>
-	<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title" id="myModalLabel">{{ ayuda.titulo }}</h4>
-		      </div>
-		      <div class="modal-body" id="modal-body">
-		        {{ ayuda.texto }}
-		      </div>
-		      <div class="modal-footer" id="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	<!-- Fin Modal -->
 	<div class="row">
 		<div class="col-xs-12">
 			<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
@@ -152,7 +152,6 @@
 				  					</td>
 								(% endif %)
 
-
 								<td style="padding-left: 4px;">(( a.id ))</td>
 								<td>(( a.nro_pa ))</td>
 								<td>(( a.id_centrocosto_fk )) - (( a.centrocostotxt ))</td>
@@ -242,9 +241,7 @@
 				// Mustache.tags =['[[',']]'];
 				// var html = Mustache.to_html(template, data);
 				//console.log(html);
-
 				var output = parseSwig(template, data);
-
 				$('#tbodylisto').html(output);
 			}else{
 				//hacer que aca muestre error de que no se encontro nada en la busqueda

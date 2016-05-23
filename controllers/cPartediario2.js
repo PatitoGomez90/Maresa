@@ -1,15 +1,15 @@
-var mPartediario1 = require('../models/mPartediario1');
-var mPartediario2 = require('../models/mPartediario2');
-var mAyuda = require('../models/mAyuda');
-var mLugares = require('../models/mLugares');
-var mSectores = require('../models/mSectores');
-var mClasificacion = require('../models/mClasificacion')
-var mImputacion = require('../models/mImputacion');
-var mEmple = require('../models/mEmple');
-var mTipoHora = require('../models/mTipoHora');
-var mCodigohora = require('../models/mCodigoHora');
-var mFichadas = require('../models/mFichadas');
-var async = require('async');
+const mPartediario1  = require('../models/mPartediario1');
+const mPartediario2  = require('../models/mPartediario2');
+const mAyuda         = require('../models/mAyuda');
+const mLugares       = require('../models/mLugares');
+const mSectores      = require('../models/mSectores');
+const mClasificacion = require('../models/mClasificacion')
+const mImputacion    = require('../models/mImputacion');
+const mEmple         = require('../models/mEmple');
+const mTipoHora      = require('../models/mTipoHora');
+const mCodigohora    = require('../models/mCodigoHora');
+const mFichadas      = require('../models/mFichadas');
+const async          = require('async');
 
 module.exports = {
 	getLista: getLista,
@@ -142,10 +142,10 @@ function getAlta(req, res){
 }
 
 function postAlta(req, res){
-	console.time('controlador')
-	params = req.body;
-	idempleado = params.empleado;
-	idpartediario1 = params.idpartediario1;
+	// console.time('controlador')
+	const params = req.body;
+	const idempleado = params.empleado;
+	const idpartediario1 = params.idpartediario1;
 
 	//acá corregir para que agrege bien el Numero de empleado en el PArte Diario
 	//se va a agregar el campo numero en la funcion insertNewEmpleado
@@ -154,7 +154,7 @@ function postAlta(req, res){
 		console.log(idpartediario1+".2");
 		mPartediario2.getLastNumerobyPd1(idpartediario1, function (lastnumero){
 			// console.log(idpartediario1+".3");
-			lastnumero = lastnumero[0].ultnumero;
+			const lastnumero = lastnumero[0].ultnumero;
 			// console.log(idpartediario1+".4");
 			if (lastnumero != null){
 				lastnumeroInt = parseInt(lastnumero);
@@ -175,7 +175,7 @@ function postAlta(req, res){
 		res.redirect('partediario2lista/'+idpartediario1);
 		// console.log("22");
 	}
-	console.timeEnd('controlador')
+	// console.timeEnd('controlador')
 }
 
 function getModificar(req, res){

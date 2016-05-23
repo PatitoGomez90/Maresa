@@ -1,51 +1,51 @@
-var cIndex = require('./controllers/cIndex');
-var cUsuario = require('./controllers/cUsuario');
-var cAdmin = require('./controllers/cAdmin');
-var cEmple = require('./controllers/cEmple');
-var cAccesos = require('./controllers/cAccesos');
-var cCargos = require('./controllers/cCargos');
-var cUmed = require('./controllers/cUmed');
-var cSectores = require('./controllers/cSectores');
-var cMaquinarias = require('./controllers/cMaquinarias');
-var cFamilia = require('./controllers/cFamilia');
-var cArticulos = require('./controllers/cArticulos');
-var cVales = require('./controllers/cVale');
-var test = require('./controllers/cTest');
-var cChk1 = require('./controllers/cChk1');
-var cChk2 = require('./controllers/cChk2');
-var mEventos = require('./models/mEventos');
-var cOt = require('./controllers/cOt');
-var cEquipos = require('./controllers/cEquipos');
-var cTipoEquipo = require('./controllers/cTipoEquipo');
-var cEtiquetas = require('./controllers/cEtiquetas');
-var cTipoTarea = require('./controllers/cTipoTarea');
-var cModeloM1 = require('./controllers/cModeloMantenimiento');
-var cModeloM2 = require('./controllers/cModeloMantenimientoDetalle');
-var cItems = require('./controllers/cItems');
-var cTipoHora = require('./controllers/cTipoHora');
-var cCodigoHora = require('./controllers/cCodigoHora');
-var cRelojes = require('./controllers/cRelojes');
-var cLugares = require('./controllers/cLugares');
-var cClasificacion = require('./controllers/cClasificacion');
-var cImputacion = require('./controllers/cImputacion');
-var cParteDiario1 = require('./controllers/cPartediario1');
-var cParteDiario2 = require('./controllers/cPartediario2');
-var cFichadas = require('./controllers/cFichadas');
-var cContratos = require('./controllers/cContratos');
-var cTurnos = require('./controllers/cTurnos');
-var cCategorias = require('./controllers/cCategorias');
-var cReportes = require('./controllers/cReportes');
-var cPlanti = require('./controllers/cPlantillas');
-var cCentrosCostos = require('./controllers/cCentrosCosto');
-var cPedidosAbastecimiento = require('./controllers/cPedidosAbastecimiento');
-var cProveedores = require('./controllers/cProveedores');
-var cOrdenesCompra = require('./controllers/cOrdenesCompra');
+const cIndex                 = require('./controllers/cIndex');
+const cUsuario               = require('./controllers/cUsuario');
+const cAdmin                 = require('./controllers/cAdmin');
+const cEmple                 = require('./controllers/cEmple');
+const cAccesos               = require('./controllers/cAccesos');
+const cCargos                = require('./controllers/cCargos');
+const cUmed                  = require('./controllers/cUmed');
+const cSectores              = require('./controllers/cSectores');
+const cMaquinarias           = require('./controllers/cMaquinarias');
+const cFamilia               = require('./controllers/cFamilia');
+const cArticulos             = require('./controllers/cArticulos');
+const cVales                 = require('./controllers/cVale');
+const test                   = require('./controllers/cTest');
+const cChk1                  = require('./controllers/cChk1');
+const cChk2                  = require('./controllers/cChk2');
+const mEventos               = require('./models/mEventos');
+const cOt                    = require('./controllers/cOt');
+const cEquipos               = require('./controllers/cEquipos');
+const cTipoEquipo            = require('./controllers/cTipoEquipo');
+const cEtiquetas             = require('./controllers/cEtiquetas');
+const cTipoTarea             = require('./controllers/cTipoTarea');
+const cModeloM1              = require('./controllers/cModeloMantenimiento');
+const cModeloM2              = require('./controllers/cModeloMantenimientoDetalle');
+const cItems                 = require('./controllers/cItems');
+const cTipoHora              = require('./controllers/cTipoHora');
+const cCodigoHora            = require('./controllers/cCodigoHora');
+const cRelojes               = require('./controllers/cRelojes');
+const cLugares               = require('./controllers/cLugares');
+const cClasificacion         = require('./controllers/cClasificacion');
+const cImputacion            = require('./controllers/cImputacion');
+const cParteDiario1          = require('./controllers/cPartediario1');
+const cParteDiario2          = require('./controllers/cPartediario2');
+const cFichadas              = require('./controllers/cFichadas');
+const cContratos             = require('./controllers/cContratos');
+const cTurnos                = require('./controllers/cTurnos');
+const cCategorias            = require('./controllers/cCategorias');
+const cReportes              = require('./controllers/cReportes');
+const cPlanti                = require('./controllers/cPlantillas');
+const cCentrosCostos         = require('./controllers/cCentrosCosto');
+const cPedidosAbastecimiento = require('./controllers/cPedidosAbastecimiento');
+const cProveedores           = require('./controllers/cProveedores');
+const cOrdenesCompra         = require('./controllers/cOrdenesCompra');
 
 
-var cPruebaSQL = require('./controllers/cPruebaSQL');
-var cRandom = require('./controllers/cRandom');
+const cPruebaSQL = require('./controllers/cPruebaSQL');
+const cRandom = require('./controllers/cRandom');
 
-var mAccesos = require('./models/mAccesos');
+const mAccesos = require('./models/mAccesos');
 
 function logout (req, res) {
 	fecha = new Date();
@@ -58,7 +58,8 @@ function logout (req, res) {
 	fecha = fecha.getFullYear() + "/"+month+"/"+day+" "+fecha.getHours()+":"+fecha.getMinutes()
 	mEventos.add(req.session.user.unica, fecha, "Logout", "", function(){
 	});
-	req.session = null;
+	// req.session = null;
+	req.session.reset();
 	return res.redirect('/');
 }
 
@@ -77,9 +78,9 @@ function acceso (req, res, next){
 	// puede ser que se envien parametros con req y res, o que envie parametros comunes, más el NEXT
 	// se me ocurre hacer una sola funcion con parametro 'accion' o sino hacer 4 funciones, una para cada uno a,b,m,c
 	// console.log(req.session.user)
-	var id_usuario = req.session.user.unica;
-	var id_menu = req.session.user.id_menu;
-	var accion = req.session.user.accion;
+	const id_usuario = req.session.user.unica;
+	const id_menu = req.session.user.id_menu;
+	const accion = req.session.user.accion;
 
 	mAccesos.verificarAcceso(id_usuario, id_menu, accion, function (acceso){
 		var acceso = acceso[0].c;
@@ -122,6 +123,7 @@ module.exports = function(app) {
 	app.get('/inicio', auth, cIndex.getInicio);
 	app.get('/error', cIndex.getError);
 	app.post('/updatemenuinfo/:id_menu/:accion', auth, cIndex.updateMenuInfo);
+	
 //ayuda
 	app.get('/ayuda', cIndex.getAyuda);
 	app.get('/ayudaver/:id', cIndex.AyudaVer);

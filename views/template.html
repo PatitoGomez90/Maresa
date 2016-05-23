@@ -229,6 +229,17 @@
             console.log(xhr)
         });
     });
+
+    $(document).on("click",".menu",function(){ 
+        var id_menu = $(this).data("idmenu");
+        var accion = $(this).data("accion");
+        $.post("/updatemenuinfo/"+id_menu+"/"+accion, function(data, textStatus, xhr) {
+            /*optional stuff to do after success */
+            console.log(data)
+            console.log(textStatus)
+            console.log(xhr)
+        });
+    });
 </script>
 </body>
 </html>

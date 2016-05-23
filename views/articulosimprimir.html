@@ -24,42 +24,42 @@
 			</tr>
 		{% endfor %}
 	</table>
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/JsBarcode.js"></script>
-	<script src="/js/CODE128.js"></script>
-	<script type="text/javascript">
-		options = {
-		    width:  1.3,
-		    height: 60,
-		    quite: 10,
-		    format: "CODE128",
-		    displayValue: true,
-		    font: "monospace",
-		    textAlign: "center",
-		    fontSize: 15,
-		    backgroundColor: "",
-		    lineColor: "#000"
-		}
-		//ids = $(".id").val();
-		var ids= $(".id").map(function() {
-		   return $(this).val();
-		}).get();
-		// console.log(ids);
-		etlength = $("#etlength").val();
-		// console.log(etlength)
-		for (i = 0; i < ids.length; i += 2) {
-			id_1 = ids[i];
-		 	id_2 = ids[i+1];
-			if (id_2 == 0){
-				cod1 = $("#codigo"+id_1).val();
-				$("#barcode"+id_1).JsBarcode(cod1, options);
-			}else{
-				cod1 = $("#codigo"+id_1).val();
-			 	cod2 = $("#codigo"+id_2).val();
-			 	$("#barcode"+id_1).JsBarcode(cod1, options);
-			 	$("#barcode"+id_2).JsBarcode(cod2, options);
-			 }
-		}
-	</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/JsBarcode.js"></script>
+<script src="/js/CODE128.js"></script>
+<script type="text/javascript">
+	options = {
+	    width:  1.3,
+	    height: 60,
+	    quite: 10,
+	    format: "CODE128",
+	    displayValue: true,
+	    font: "monospace",
+	    textAlign: "center",
+	    fontSize: 15,
+	    backgroundColor: "",
+	    lineColor: "#000"
+	}
+	//ids = $(".id").val();
+	var ids= $(".id").map(function() {
+	   return $(this).val();
+	}).get();
+	// console.log(ids);
+	etlength = $("#etlength").val();
+	// console.log(etlength)
+	for (i = 0; i < ids.length; i += 2) {
+		id_1 = ids[i];
+	 	id_2 = ids[i+1];
+		if (id_2 == 0){
+			cod1 = $("#codigo"+id_1).val();
+			$("#barcode"+id_1).JsBarcode(cod1, options);
+		}else{
+			cod1 = $("#codigo"+id_1).val();
+		 	cod2 = $("#codigo"+id_2).val();
+		 	$("#barcode"+id_1).JsBarcode(cod1, options);
+		 	$("#barcode"+id_2).JsBarcode(cod2, options);
+		 }
+	}
+</script>
 </body>
 </html>

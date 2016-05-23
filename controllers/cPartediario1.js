@@ -99,7 +99,6 @@ function updateFichadas(cb){
 			//connection.end();
 		});//end mF getlatestficsql
 	});
-
 }
 
 function getLista(req, res) {
@@ -137,7 +136,6 @@ function getAlta(req, res){
 }
 
 function postAlta(req, res){
-
 	params = req.body;
 	fecha = params.fecha;
 	fecha = changeDate(fecha);

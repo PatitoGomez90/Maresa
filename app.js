@@ -10,6 +10,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var methodoverride = require('method-override');
 var validator = require("validator");
+// var crypto = require('crypto');
+var uuid = require('node-uuid');
 
 app.use(logfmt.requestLogger());
 app.engine('html', cons.swig);
@@ -19,8 +21,23 @@ app.use(bodyParser());
 // app.use(bodyParser.json());
 app.use(methodoverride());
 app.use(cookieParser('algodificil'));
+
+
+// var generate_key = function() {
+//     var sha = crypto.createHash('sha256');
+//     sha.update(Math.random().toString());
+//     return sha.digest('hex');
+// };
+// const uui = uuid.v4();
+
 app.use(session({
-	secret: 'algodificil'
+	genid: function(req) {
+    return genuuid() // use UUIDs for session IDs
+  },
+	secret: 'algodificil',
+	duration: 30 * 60 * 1000,
+  	activeDuration: 5 * 60 * 1000,
+  	ephemeral: true
 }));
 
 app.use(function(req, res, next) {
