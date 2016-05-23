@@ -272,7 +272,7 @@
 			{% if partediario1.id_imputacion12_fk != 0 %}
 				<tr>
 					<td>{{ partediario1.imputacion12txt }} - {% for i in items%}{% if partediario1.id_imputacion12_fk == i.id %}{{ i.nombre }}{% endif %}{% endfor %}:</td>
-					<td><input type="text" id="item12_n" name="item12_n" value="{{ partediario2.item12_n }}" required class="form-control" onkeypress='validate(event)'></td>
+					<td><input type="text" id="item12_n" name="item12_n" value="{{ partediario2.item12_n }}"required class="form-control" onkeypress='validate(event)'></td>
 					<td><input type="text" id="item12_50" name="item12_50" value="{{ partediario2.item12_50 }}" required class="form-control" onkeypress='validate(event)'></td>
 					<td><input type="text" id="item12_100" name="item12_100" value="{{ partediario2.item12_100 }}" required class="form-control" onkeypress='validate(event)'></td>
 				</tr>
@@ -317,10 +317,7 @@
 	  	return hrss+':'+mins;
 	}
 
-	//aceria id 4
-	//- Calorías = HS x 0.75
-	//- Peligrosas = HS x 0.25
-	//- polución = HS
+
 	$(".hr_tot").on("change", function(){
 		var id_sector = $("#id_sector").val();
 		if (id_sector == 4){
@@ -357,20 +354,6 @@
 			$("#adicional3_100").val(hrs_100);
 		}
 	});
-
-	// $(".hr_tot").on("change", function(){
-	// 	var total = $("#total").val();
-	// 	var hr_total_n = $("#hr_total_n").val();
-	// 	var hr_total_50 = $("#hr_total_50").val();
-	// 	var hr_total_100 = $("#hr_total_100").val();
-	// 	// if ( total.length > 0 && hr_total_n != 0 && hr_total_50 != 0 && hr_total_100 != 0 ){
-	// 	 	var hr_total_n_int = parseInt(hr_total_n);	
-
-	// 	 	res = convertToHHMM(hr_total_n_int)
-	// 		console.log(res)
-	// 		console
-	// });
-	
 
 	//REHACER con las condicionales actualizadas segun feriados, etc q tengo explicado en la planilla
 	// $("#formty").submit(function(e){
@@ -420,7 +403,7 @@
 	//         $("#form").submit();
 	//         return true;
 	//     }
- // 	});
+	// 	});
 
 	function changeDate(date){
 		// input: dd/mm/yyyy
@@ -701,13 +684,13 @@
 
 	function refresh(){
 		console.log(":P");
-		tarjeta = $("#tarjeta").val();
-		fecha_hoy = $("#fechapartediario1").val();
+		const tarjeta = $("#tarjeta").val();
+		var fecha_hoy = $("#fechapartediario1").val();
 		fecha_hoy = changeDate(fecha_hoy);
-		diahoy = fecha_hoy.substring(8,10);
-		diahoyInt = parseInt(diahoy);
+		const diahoy = fecha_hoy.substring(8,10);
+		var diahoyInt = parseInt(diahoy);
 		var diamanInt = diahoyInt +1;
-		fecha_maniana = fecha_hoy.substring(0, 4) + '/' + fecha_hoy.substring(5, 7) + '/' + diamanInt ;
+		var fecha_maniana = fecha_hoy.substring(0, 4) + '/' + fecha_hoy.substring(5, 7) + '/' + diamanInt ;
 		//consulta sql
 		fecha_hoy = encodeURIComponent(fecha_hoy);
 		fecha_maniana = encodeURIComponent(fecha_maniana);
@@ -753,6 +736,39 @@
 			}
 		});
 	}
+
+	$(function() {
+    	const hr_entrada = $("#entrada").val();
+    	const hr_salida = $("#salida").val();
+
+    	if (hr_entrada.length == 5 && hr_salida.length == 5){
+    		const tarjeta = $("#tarjeta").val();
+			var fecha_hoy = $("#fechapartediario1").val();
+			fecha_hoy = changeDate(fecha_hoy);
+			const diahoy = fecha_hoy.substring(8,10);
+			var diahoyInt = parseInt(diahoy);
+			var diamanInt = diahoyInt +1;
+			var fecha_maniana = fecha_hoy.substring(0, 4) + '/' + fecha_hoy.substring(5, 7) + '/' + diamanInt ;
+			//consulta sql
+			fecha_hoy = encodeURIComponent(fecha_hoy);
+			fecha_maniana = encodeURIComponent(fecha_maniana);
+    		$.getJSON('/getbytarjetayfechas/'+tarjeta+'/'+fecha_hoy+'/'+fecha_maniana, function (fichadas){
+    			for (var i = 0; i < fichadas.length ; i++){
+    				if (fichadas[i].fic_entsal == 'E'){
+    					if (fichadas[i].fic_hora == hr_entrada){
+    						$("#lblEntrada").text(fichadas[i].fic_fechaf);
+    					}
+    				}else if(fichadas[i].fic_entsal == 'S'){
+    					if (fichadas[i].fic_hora == hr_salida){
+    						$("#lblSalida").text(fichadas[i].fic_fechaf);
+    					}
+    				}else{
+    					console.log("asdasd")
+    				}
+    			}
+    		});
+    	}
+	});
 
 </script>
 {% endblock %}

@@ -174,7 +174,7 @@
 	</form>
 </div> <!-- Cierre de div class="panel panel-default"-->	
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script type="text/javascript">
 	$('.cmbArt').on('change', function(){
 		traerCostou($(this).val());
@@ -268,9 +268,7 @@
 	});
 
 	$(".datepicker").datepicker({
-		format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'es'
+		dateFormat: 'dd/mm/yy'
 	});
 
 	// $('#articulo').on('change', function() {

@@ -5,6 +5,7 @@ var mSectores = require('../models/mSectores');
 var mRelojes = require('../models/mRelojes');
 var async = require('async');
 var nodeExcel = require('excel-export');
+var mysql = require('mysql');
 
 module.exports = {
 	getLista: getLista,
@@ -53,8 +54,8 @@ function getLista(req, res) {
 }
 
 function getFichadas(req, res){
-	params = req.params;
-	fecha= params.fecha;
+	const params = req.params;
+	var fecha= params.fecha;
 	fecha = changeDate(fecha);
 
 	mFichadas.getFichadasFromSQL(fecha, function (fichadas){
@@ -64,8 +65,8 @@ function getFichadas(req, res){
 }
 
 function getAyuda(req, res){
-	params = req.params;
-	id = params.id;
+	const params = req.params;
+	const id = params.id;
 
 	mAyuda.getAyuda(id, function (ayuda){
 		res.send(ayuda);
@@ -73,10 +74,10 @@ function getAyuda(req, res){
 }
 
 function getVer(req, res){
-	params = req.params;
-	reloj = params.reloj;
-	fecha = params.fecha;
-	fecha = changeDate(fecha);
+	const params = req.params;
+	const reloj = params.reloj;
+	var fecha = params.fecha;
+    fecha = changeDate(fecha);
 
 	mFichadas.getFichada(reloj, fecha, function (fichada){
 		mEmple.getAllActivos(function (emples){	
@@ -97,8 +98,8 @@ function getVer(req, res){
 
 //el update q corre antes de cargar las fichadas
 function updateFichadas(cb){
-	var mysql = require('mysql');
-
+	// console.log("fichadas 37")
+	// updateFichadas37()
 	var connection = mysql.createConnection({
 		user: 'root',
 		password: '',
@@ -160,23 +161,81 @@ function updateFichadas(cb){
 			//connection.end();
 		});//end mF getlatestficsql
 	});
-
 }
 
-//estas 5 funcioens son para el ajax de fichadaslista
+// function updateFichadas37(cb){
+// 	// getFichadasReloj37_since03_2016
+// 	var connection = mysql.createConnection({
+// 		user: 'root',
+// 		password: '',
+// 		host: '127.0.0.1',
+// 		port: '3306',
+// 		database: 'Maresa',
+// 		dateStrings : true
+// 	});
+
+// 	var lastficid = 0;
+// 	// mFichadas.getFic37MySql(function (fic37_Mysql){
+// 		// if (fic37_Mysql.length = 0)
+// 		mFichadas.getFichadasReloj37_since03_2016(function (fic37_SQL){
+// 			console.log("lengthhhhh")
+// 			console.log(fic37_SQL.length)
+// 			//traigo las fichadas
+// 			//comparo si son el mismo lengt = no hago nada
+// 			//si fic_mysql es mejor hay que actualizar
+// 			// if (fic37_Mysql.length < fic37_SQL.length){
+// 			// 	//actualizo
+// 			// 	connection.connect();
+// 			// 	async.eachSeries(fic37_SQL, function (fic, callback) {
+// 			// 		query = "INSERT INTO fichadas(fic_id, leg_legajo, fic_tarjeta, fic_fecha, fic_hora, fic_entsal, fic_reloj, "+
+// 			// 		"fic_origen, fic_novedad, fic_equipo, fic_notas) VALUES ("+fic.FIC_ID+", 0, "+fic.FIC_TARJETA+
+// 			// 		", '"+fic.fic_fechafmysql+"', '"+fic.FIC_HORA+"', '"+fic.FIC_ENTSAL+"', "+fic.FIC_RELOJ+", '"+fic.FIC_ORIGEN+
+// 			// 		"', "+fic.FIC_NOVEDAD+", '"+fic.FIC_EQUIPO+"', '"+fic.FIC_NOTAS+"')";
+
+// 			// 		connection.query(query, function (err, rows, fields) {
+// 			// 			if (err){
+// 			// 				throw err;
+// 			// 				console.log(err)
+// 			// 			}else{
+// 			// 				console.log("No errors in the query.")
+// 			// 			}
+// 			// 		});
+
+// 			// 	}, function (err) {
+// 			// 		//Esta parte se sejecuta cuando termina de recorrer el array
+// 			// 		// acomode la funcion "callback" de Async, ya que sino nos queda el callback
+// 			// 		// de 	mFichadas.MySqlInsert dando vueltas
+// 			// 		if (err) { throw err; }
+// 			// 		return cb();
+// 			// 	});
+// 			// 	//connection.end();
+
+// 			// }else{
+// 			// 	if (fic37_Mysql.length == fic37_SQL.length){
+// 			// 		//iguales!!
+// 			// 	}else{
+// 			// 		// no puede seeeeeeeeer
+// 			// 	}
+// 			// }
+
+// 		});
+// 	// });
+// }
+
+//estas 5 funciones son para el ajax de fichadaslista
 function getFichadasByQuery(req, res){
-	params = req.params;
-	id_sector = params.sector;
-	id_emple = params.id_emple;
-	fecha_desde = params.desde;
-	fecha_hasta = params.hasta;
+	const params = req.params;
+	const id_sector = params.sector;
+	const id_emple = params.id_emple;
+	var fecha_desde = params.desde;
+	var fecha_hasta = params.hasta;
 
 	fecha_desde = decodeURIComponent(fecha_desde);
 	fecha_hasta = decodeURIComponent(fecha_hasta);
 	fecha_desde = changeDate(fecha_desde);
 	fecha_hasta = changeDate(fecha_hasta);
 
-	query = "select fichadas.*, DATE_FORMAT(fichadas.fic_fecha, '%d/%m/%Y') as fic_fechaf, "+ 
+	var query = "select fichadas.*, DATE_FORMAT(fichadas.fic_fecha, '%d/%m/%Y') as fic_fechaf, "+ 
 	"relojes.descripcion as relojtxt, "+
 	"sectores.nombre as sectortxt, "+
 	"ifnull(emple.nombre, 'No existe legajo') as empletxt, "+
@@ -207,10 +266,10 @@ function getFichadasByQuery(req, res){
 
 //para partediario2modificar
 	function getByTarjetayFechas(req, res){
-		params = req.params;
-		tarjeta = params.tarjeta;
-		fecha_hoy = params.fecha_hoy;
-		fecha_maniana = params.fecha_maniana;
+		const params = req.params;
+		const tarjeta = params.tarjeta;
+		const fecha_hoy = params.fecha_hoy;
+		const fecha_maniana = params.fecha_maniana;
 
 		mFichadas.getByTarjetayFechas(tarjeta, fecha_hoy, fecha_maniana, function (fichadas){
 			res.send(fichadas);
@@ -227,8 +286,8 @@ function getFichadasByQuery(req, res){
 	}
 
 	function getSelectCountByFechaGroupBySector(req, res){
-		params = req.params;
-		fecha = params.fecha;
+		const params = req.params;
+		var fecha = params.fecha;
 
 		fecha = changeDate(fecha);
 		var fichadasf = [];
@@ -282,22 +341,20 @@ function getFichadasByQuery(req, res){
 	}
 
 function getFichadasExport(req, res){
-
 	//  VERIFICAR QUE LA CONSULTA TRAIGA ALGO
-
-	params = req.params;
-	console.log(params)
-	id_sector = params.id_sector;
-	id_emple = params.id_emple;
-	fecha_desde = params.fecha_desde;
-	fecha_hasta = params.fecha_hasta;
+	const params = req.params;
+	// console.log(params)
+	const id_sector = params.id_sector;
+	const id_emple = params.id_emple;
+	var fecha_desde = params.fecha_desde;
+	var fecha_hasta = params.fecha_hasta;
 
 	fecha_desde = decodeURIComponent(fecha_desde);
 	fecha_hasta = decodeURIComponent(fecha_hasta);
 	fecha_desde = changeDate(fecha_desde);
 	fecha_hasta = changeDate(fecha_hasta);
 
-	query = "select fichadas.*, DATE_FORMAT(fichadas.fic_fecha, '%d/%m/%Y') as fic_fechaf, "+ 
+	var query = "select fichadas.*, DATE_FORMAT(fichadas.fic_fecha, '%d/%m/%Y') as fic_fechaf, "+ 
 	"relojes.descripcion as relojtxt, "+
 	"sectores.nombre as sectortxt, "+
 	"ifnull(emple.nombre, 'No existe legajo') as empletxt, "+

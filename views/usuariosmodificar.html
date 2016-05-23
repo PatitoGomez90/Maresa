@@ -54,13 +54,11 @@
 	</div>
 </form>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script type="text/javascript">
-	$('.datepicker').datepicker({
-		format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'es'
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
 	});
 	$('#usuario').limit('20','#charsLeftUsuario');
 	$('#clave').limit('20','#charsLeftClave');

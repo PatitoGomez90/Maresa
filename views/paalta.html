@@ -79,9 +79,13 @@
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/toastr.js"></script>
 <script type="text/javascript">
+
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
 
 	$("#addArt").on("click", function (){
 		window.location = '/paaltaart/';

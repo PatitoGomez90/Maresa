@@ -46,7 +46,7 @@
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script type="text/javascript">
 	$('#usuario').limit('20','#charsLeftUsuario');
@@ -55,9 +55,7 @@
 	$('#mail').limit('80','#charsLeftMail');
 	$('#niveles').limit('200','#charsLeftNiveles');
 	$(".datepicker").datepicker({
-		format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'es'
+		dateFormat: 'dd/mm/yy'
 	});
 	
 	var myDate = new Date(); 

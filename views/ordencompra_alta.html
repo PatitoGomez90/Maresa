@@ -84,15 +84,13 @@
 	</div>
 </form>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/toastr.js"></script>
 <script type="text/javascript">
 
 	$(".datepicker").datepicker({
-	    format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'ES'
-	});	
+		dateFormat: 'dd/mm/yy'
+	});
 
 	$(function() {
 	    console.log( "doc ready!" );
@@ -174,7 +172,7 @@
                 if (storage.length == 0){
                     storage.setItem('aItems', aItems_stringified);
                 }
-                window.location = '/ordencompra_alta';
+                window.location = '/ordencompra_lista_items';
             }           
 	    });
 	});

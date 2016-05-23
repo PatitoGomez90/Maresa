@@ -12,7 +12,8 @@ module.exports = {
 	SQLifIDexists: SQLifIDexists,
 	getByQueryFromMySql: getByQueryFromMySql,
 	getByTarjetayFechas: getByTarjetayFechas,
-	getFichadasPorSector: getFichadasPorSector
+	getFichadasPorSector: getFichadasPorSector,
+	getFichadasReloj37_since03_2016: getFichadasReloj37_since03_2016
 	// getAllFromMySql: getAllFromMySql,
 	// getAllByDesdeFromMySql: getAllByDesdeFromMySql,
 	// getAllByHastaFromMySql: getAllByHastaFromMySql,
@@ -49,7 +50,7 @@ function getLastFicIdMySql(cb){
 function getLatestFicSQL(lastficid, cb){
 	SQLconn("select fichada.*, convert(varchar, fichada.fic_fecha, 111) as fic_fechafmysql "+
 		"from fichada "+
-		"where fic_reloj in (33, 34, 35, 36) "+
+		"where fic_reloj in (33, 34, 35, 36, 37) "+
 		"and leg_legajo > 0 "+
 		"and fic_id > "+lastficid+" "+
 		"and fic_fecha >= '2015-07-01' "+
@@ -57,13 +58,20 @@ function getLatestFicSQL(lastficid, cb){
 }
 
 function SQLinsert(latestfic, cb){
-	SQLconn("INSERT INTO `fichada`(`fic_id`, `leg_legajo`, `fic_tarjeta`, `fic_fecha`, `fic_hora`, `fic_entsal`, `fic_reloj`, `fic_origen`, `fic_novedad`, `fic_equipo`, `fic_notas`) VALUES ("+latestfic[0].fic_id+", "+latestfic[0].leg_legajo+", "+latestfic[0].fic_tarjeta+", '"+latestfic[0].fic_fecha+"', '"+latestfic[0].fic_hora+"', '"+latestfic[0].fic_entsal+"', "+latestfic[0].fic_reloj+", '"+latestfic[0].fic_origen+"', "+latestfic[0].fic_novedad+", '"+latestfic[0].fic_equipo+"', '"+latestfic[0].fic_notas+"')", cb)
+	SQLconn("INSERT INTO `fichada`(`fic_id`, `leg_legajo`, `fic_tarjeta`, `fic_fecha`, `fic_hora`, `fic_entsal`, `fic_reloj`, "+
+		"`fic_origen`, `fic_novedad`, `fic_equipo`, `fic_notas`) VALUES ("+latestfic[0].fic_id+", "+latestfic[0].leg_legajo+
+		", "+latestfic[0].fic_tarjeta+", '"+latestfic[0].fic_fecha+"', '"+latestfic[0].fic_hora+"', '"+latestfic[0].fic_entsal+
+		"', "+latestfic[0].fic_reloj+", '"+latestfic[0].fic_origen+"', "+latestfic[0].fic_novedad+", '"+latestfic[0].fic_equipo+
+		"', '"+latestfic[0].fic_notas+"')", cb)
 }
 
 function MySqlInsert(latestfic, cb){
 	//console.log("- - Asi recibo el obj para insertar a mysql:");
 	//console.log(latestfic)
-	conn("INSERT INTO `fichadas`(`fic_id`, `leg_legajo`, `fic_tarjeta`, `fic_fecha`, `fic_hora`, `fic_entsal`, `fic_reloj`, `fic_origen`, `fic_novedad`, `fic_equipo`, `fic_notas`) VALUES ("+latestfic.FIC_ID+", 0, "+latestfic.FIC_TARJETA+", '"+latestfic.fic_fechafmysql+"', '"+latestfic.FIC_HORA+"', '"+latestfic.FIC_ENTSAL+"', "+latestfic.FIC_RELOJ+", '"+latestfic.FIC_ORIGEN+"', "+latestfic.FIC_NOVEDAD+", '"+latestfic.FIC_EQUIPO+"', '"+latestfic.FIC_NOTAS+"')", cb)
+	conn("INSERT INTO `fichadas`(`fic_id`, `leg_legajo`, `fic_tarjeta`, `fic_fecha`, `fic_hora`, `fic_entsal`, `fic_reloj`, "+
+		"`fic_origen`, `fic_novedad`, `fic_equipo`, `fic_notas`) VALUES ("+latestfic.FIC_ID+", 0, "+latestfic.FIC_TARJETA+
+		", '"+latestfic.fic_fechafmysql+"', '"+latestfic.FIC_HORA+"', '"+latestfic.FIC_ENTSAL+"', "+latestfic.FIC_RELOJ+
+		", '"+latestfic.FIC_ORIGEN+"', "+latestfic.FIC_NOVEDAD+", '"+latestfic.FIC_EQUIPO+"', '"+latestfic.FIC_NOTAS+"')", cb)
 }
 
 function SQLifIDexists(newerficid, cb){
@@ -78,7 +86,8 @@ function SQLifIDexists(newerficid, cb){
 //para partediario2modificar
 	function getByTarjetayFechas(tarjeta, hoy, maniana, cb){
 		////
-		conn("SELECT fic_id, fic_reloj, fic_entsal, DATE_FORMAT(fichadas.fic_fecha, '%d/%m/%Y') as fic_fechaf, fic_hora FROM fichadas where fic_tarjeta = "+tarjeta+" and fic_fecha in ('"+hoy+"', '"+maniana+"') order by fic_id ", cb);
+		conn("SELECT fic_id, fic_reloj, fic_entsal, DATE_FORMAT(fichadas.fic_fecha, '%d/%m/%Y') as fic_fechaf, fic_hora "+
+			"FROM fichadas where fic_tarjeta = "+tarjeta+" and fic_fecha in ('"+hoy+"', '"+maniana+"') order by fic_id ", cb);
 	}
 
 //para fichadas por sector
@@ -89,3 +98,12 @@ function SQLifIDexists(newerficid, cb){
 			"left join sectores on sectores.id = relojes.id_sector_fk "+
 			"where fichadas.fic_fecha='"+fecha+"' and fic_entsal = 'E' and sectores.nombre != '' group by relojes.id_sector_fk", cb)
 	}
+
+function getFichadasReloj37_since03_2016(cb){
+	SQLconn("select fichada.*, convert(varchar, fichada.fic_fecha, 111) as fic_fechafmysql "+
+		"from fichada "+
+		"where fic_reloj = 37 "+
+		"and leg_legajo > 0 "+
+		"and fic_fecha >= '2016-03-01' "+
+		"order by leg_legajo", cb);
+}

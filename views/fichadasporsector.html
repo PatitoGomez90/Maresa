@@ -22,7 +22,7 @@
                         	<span class="input-group-btn"><button type="button" id="btnSave" class="btn btn-default"><span class="glyphicon glyphicon-save"></span></button></span>
 					      	<span class="input-group-btn"><button type="button" id="btnAyuda" name="btnAyuda" class="btn btn-default" data-toggle="modal" data-target="#myModal">Ayuda</button></span>
 						  	<span class="input-group-addon" id="basic-addon1">Seleccione una fecha:</span>
-						  	<input type="text" id="fecha" name="fecha" class="datepicker form-control" placeholder="" aria-describedby="basic-addon1">
+						  	<input type="text" id="fecha" name="fecha" class="datepicker form-control" readonly>
 						  	<span class="input-group-btn"><button type="button" id="btnBuscar" name="btnBuscar" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button></span>
 						</div>
                     </div>
@@ -92,7 +92,8 @@
 	<!--</div>div col xs12 -->
 </div><!--div row -->
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
+<!-- <script src="/js/bootstrap-datepicker.js"></script> -->
 <script type="text/javascript" src="/js/mustache.js"></script>
 <script type="text/javascript" src="/js/mustache-wax.js"></script>
 <script type="text/javascript">
@@ -127,9 +128,7 @@
 	});
 
 	$(".datepicker").datepicker({
-		format: 'dd/mm/yyyy',
-		language: 'es',
-		autoclose: true
+		dateFormat: 'dd/mm/yy'
 	});
 
 	$("#btnBuscar").on("click", function() {

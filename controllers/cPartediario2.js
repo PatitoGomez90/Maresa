@@ -154,7 +154,7 @@ function postAlta(req, res){
 		console.log(idpartediario1+".2");
 		mPartediario2.getLastNumerobyPd1(idpartediario1, function (lastnumero){
 			// console.log(idpartediario1+".3");
-			const lastnumero = lastnumero[0].ultnumero;
+			lastnumero = lastnumero[0].ultnumero;
 			// console.log(idpartediario1+".4");
 			if (lastnumero != null){
 				lastnumeroInt = parseInt(lastnumero);
