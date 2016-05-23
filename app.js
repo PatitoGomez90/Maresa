@@ -10,7 +10,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var methodoverride = require('method-override');
 var validator = require("validator");
-// var crypto = require('crypto');
+var crypto = require('crypto');
 var uuid = require('node-uuid');
 
 app.use(logfmt.requestLogger());
@@ -32,7 +32,7 @@ app.use(cookieParser('algodificil'));
 
 app.use(session({
 	genid: function(req) {
-    return genuuid() // use UUIDs for session IDs
+    return uuid.v4(); // use UUIDs for session IDs
   },
 	secret: 'algodificil',
 	duration: 30 * 60 * 1000,
