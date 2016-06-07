@@ -183,15 +183,31 @@
 	</form>
 </div>
 <script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/jquery-ui-1.10.4.js"></script>
 <script src="/js/jquery.limit-1.2.js"></script>
 <script type="text/javascript">
 	$('#nombre').limit('30','#charsLeftNombre');
 	$('#cuil').limit('13','#charsLeftCuil');
-	$('.datepicker').datepicker({
-		format: 'dd/mm/yyyy',
-		autoclose: true,
-		language: 'es'
+	
+	$(".datepicker").datepicker({
+		dateFormat: 'dd/mm/yy'
+	});
+	
+
+	$(function() {
+	    fbaja = $("#fbaja").val();
+	    if (fbaja == ''){
+	    	var myDate = new Date(); 
+			myDate.setFullYear(myDate.getFullYear() + 10);
+			day = myDate.getDate();
+			if (day<10)
+				day = "0"+day;
+			month = myDate.getMonth()+1;
+			if (month<10)
+				month = "0"+month
+			myDate = day + "/" + month + "/" + myDate.getFullYear();
+			$("#fbaja").val(myDate);
+	    }
 	});
 
 	$("#sector").on("change", function(){

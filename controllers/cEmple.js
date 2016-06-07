@@ -214,7 +214,8 @@ function postModificar(req, res){
 	else
 		activo=0;
 	falta = changeDate(falta);
-	fbaja = changeDate(fbaja);
+	if (fbaja != '')
+		fbaja = changeDate(fbaja);
 	fnac = changeDate(fnac);
 	//nuevos campos
 	categoria = params.categoria;
