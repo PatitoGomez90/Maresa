@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<link href="/css/cargosalta.css" rel="stylesheet">
+<!-- <link href="/css/cargosalta.css" rel="stylesheet"> -->
 <h2>{{ pagename }}</h2>
 <p>Reporte de todos los empleados generado con informacion de los Partes Diarios recopilada desde el dia <label id="desde">{{ fechadesde }}</label> hasta el dia <label id="hasta">{{ fechahasta }}</label>.<br>
 El reporte muestra la informacion de {{ cantidad }} empleados</p>
@@ -19,9 +19,8 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 		</tr>	
 		</table>
 	</div>	
-	<div id="mainHolder" style="overflow: scroll; max-height: 600px;">
-
-		<table align="center" class="table table-striped">
+	<div id="mainHolder" style="overflow: scroll; max-height: 450px;">
+		<table align="center" class="table table-striped" style="margin: 0px;">
 			<tr>
 				<th style="text-align: center;">LEGAJO</th>
 				<th style="text-align: center;">NOMBRE</th>
@@ -31,147 +30,91 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 				<th style="text-align: center;">N 50</th>
 				<th style="text-align: center;">N 100</th>
 				<th style="text-align: center;">F T</th>
-				<th style="text-align: center;">F No T</th>
-				<th style="text-align: center;">Ausentimos</th>
-				<th style="text-align: center;">Compensatorios</th>
-				<!-- <th style="text-align: center;">Hrs capacitacion</th> -->
-				<th style="text-align: center;">Emergencias</th>
-				<th style="text-align: center;">Hrs donacion sangre</th>
-				<th style="text-align: center;">Hrs familiar enfermo</th>
-				<th style="text-align: center;">Hrs citacion judicial</th>
-				<th style="text-align: center;">Hrs lic fallecimiento</th>
-				<th style="text-align: center;">Hrs lic nacimiento</th>
-				<th style="text-align: center;">Hrs lic examen</th>
-				<th style="text-align: center;">Hrs lic accidente</th>
-				<th style="text-align: center;">Hrs lic mudanza</th>
-				<th style="text-align: center;">Hrs lic matrimonio</th>
-				<th style="text-align: center;">Hrs lic inundacion</th>
-				<th style="text-align: center;">Hrs examen medico</th>
-				<th style="text-align: center;">Enfermedades</th>
-				<th style="text-align: center;">Horas reconocimiento</th>
-				<th style="text-align: center;">Permisos gremiales</th>
+				<th style="text-align: center; width:80px !important;">F No T</th>
+				<!-- nocturnas -->
+				<th style="text-align: center;">NOC N</th>
+				<th style="text-align: center;">NOC 100</th>
+				<th style="text-align: center;">NOC F</th>
+				<!-- caloria -->
 				<th style="text-align: center;">CAL N</th>
 				<th style="text-align: center;">CAL 50</th>
 				<th style="text-align: center;">CAL 100</th>
 				<th style="text-align: center;">CAL F</th>
-				<th style="text-align: center;">PEL N</th>
-				<th style="text-align: center;">PEL 50</th>
-				<th style="text-align: center;">PEL 100</th>
-				<th style="text-align: center;">PEL F</th>
-				<th style="text-align: center;">POL N</th>
-<!-- 				<th style="text-align: center;">POL 50</th>
-				<th style="text-align: center;">POL 100</th> -->
-				<th style="text-align: center;">POL F</th>
-				<th style="text-align: center;">TER N</th>
-<!-- 				<th style="text-align: center;">TER 50</th>
-				<th style="text-align: center;">TER 100</th> -->
-				<th style="text-align: center;">TER F</th>
+				<!-- insalubridad -->
 				<th style="text-align: center;">INSA N</th>
 				<th style="text-align: center;">INSA 50</th>
 				<th style="text-align: center;">INSA 100</th>
 				<th style="text-align: center;">INSA F</th>
-				<th style="text-align: center;">NOC N</th>
-				<th style="text-align: center;">NOC 100</th>
-				<th style="text-align: center;">NOC F</th>
-			<!-- <th colspan="3" style="text-align: center;">
-				<table border="1" style="text-align: center; width: 100%;">
-					<tr><td colspan="3" style="text-align: center;">Normales</td></tr>
-					<tr>
-						<td style="text-align: center;">N</td>
-						<td style="text-align: center;">50</td>
-						<td style="text-align: center;">100</td>
-					</tr>
-				</table>	
-			</th>
-			<th colspan="2" style="text-align: center;">
-				<table border="1" style="text-align: center; width:100px;">
-					<tr><td colspan="2" style="width:100px;">Feriados</td></tr>
-					<tr>
-						<td style="text-align: center;">Trab.</td>
-						<td style="width: 80px; text-align: center;">No Trab.</td>
-					</tr>
-				</table>	
-			</th>
-			<th style="text-align: center;" colspan="4">
-				<table border="1">
-					<tr>
-						<td colspan="4" style="text-align: center;">Calorias</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">Norm.</td>
-						<td style="text-align: center;">50</td>
-						<td style="text-align: center;">100</td>
-						<td style="text-align: center;">Fer.</td>
-					</tr>
-				</table>
-			</th>
-			<th style="text-align: center;" colspan="4">
-				<table border="1">
-					<tr>
-						<td colspan="4" style="text-align: center;">Peligrosas</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">Norm.</td>
-						<td style="text-align: center;">50</td>
-						<td style="text-align: center;">100</td>
-						<td style="text-align: center;">Fer.</td>
-					</tr>
-				</table>
-			</th>
-			<th style="text-align: center;" colspan="4">
-				<table border="1">
-					<tr>
-						<td colspan="4" style="text-align: center;">Polucion</td>
-					</tr>
-					<tr>	
-						<td style="text-align: center;">Norm.</td>
-						<td style="text-align: center;">50</td>
-						<td style="text-align: center;">100</td>
-						<td style="text-align: center;">Fer.</td>
-					</tr>
-				</table>
-			</th>
-			<th style="text-align: center;" colspan="4">
-				<table border="1">
-					<tr>	
-						<td colspan="4" style="text-align: center;">Termo.</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">Norm.</td>
-						<td style="text-align: center;">50</td>
-						<td style="text-align: center;">100</td>
-						<td style="text-align: center;">Fer.</td>
-					</tr>
-				</table>
-			</th>
-			<th style="text-align: center;" colspan="4">
-				<table border="1">
-					<tr>	
-						<td colspan="4" style="text-align: center;">Insalubres</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">Norm.</td>
-						<td style="text-align: center;">50</td>
-						<td style="text-align: center;">100</td>
-						<td style="text-align: center;">Fer.</td>
-					</tr>
-				</table>
-			</th>
-			<th style="text-align: center;" colspan="3">
-				<table border="1">
-					<tr>	
-						<td colspan="3" style="text-align: center;">Nocturnas</td>
-					</tr>
-					<tr>
-						<td style="text-align: center;">Norm.</td>
-						<td style="text-align: center;">100</td>
-						<td style="text-align: center;">Fer.</td>
-					</tr>
-				</table>
-			</th> -->
-				<th style="text-align: center;">HRS_EMER</th>
+				<!-- tareas peligrosas -->
+				<th style="text-align: center;">PEL N</th>
+				<th style="text-align: center;">PEL 50</th>
+				<th style="text-align: center;">PEL 100</th>
+				<th style="text-align: center;">PEL F</th>
+				<!-- adicional polucion -->
+				<th style="text-align: center;">POL N</th>
+				<th style="text-align: center;">POL F</th>
+				<!-- adicional termo -->
+				<th style="text-align: center;">TER N</th>
+				<!-- <th style="text-align: center;">TER F</th>-->
+				<!-- 'adicional' (emerg) celda AB4 -->
+				<th style="text-align: center;">Emergencias</th>
+				<!-- presentismo -->
+				<th style="text-align:center;">PRESENTISMO</th>
+				<!-- reconocimiento - RECONOCIMIENTO POR CAMBIO DE DIAGRAMA EN EL TURNO, COD. 23  -->
+				<th style="text-align: center;">Horas reconocimiento</th>
+				<!-- enfermedad -->
+				<th style="text-align: center;">Enfermedades</th>
+				<!-- retrib. SE REFIERE A PAGO DE COMPENSATORIO, COD. 3 -->
+				<th style="text-align: center;">Compensatorios (Retrib.)</th>
+				<!-- 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22- -->
 				<th style="text-align: center;">HRS_REC</th>
-				<th style="text-align: center;">TURN.</th>
+				<!-- ADIC TALLER - POR AHORA ES UN CAMPO QUE DEBE QUEDAR SIN COMPLETAR, LO RESUELVE LA OF. DE RRHH -->
+				<th style="text-align:center;">ADIC. TALLER</th>
+				<!-- PERMISO -->
+				<th style="text-align: center;">Permisos gremiales</th>
+				<!-- HS DONACION -->
+				<th style="text-align: center;">Hrs donacion sangre</th>
+				<!-- HS FAMILIAR -->
+				<th style="text-align: center;">Hrs familiar enfermo</th>
+				<!-- HRS CITACION -->
+				<th style="text-align: center;">Hrs citacion judicial</th>
+				<!-- 'HS LIC'. LIC. POR FALLECIMIENTO- ES COD. 9   -->
+				<th style="text-align: center;">Hrs lic fallecimiento</th>
+				<!-- 'HS LIC.' LIC. POR NACIMIENTO – ES COD. 10 -->
+				<th style="text-align: center;">Hrs lic nacimiento</th>
+				<!-- HS. (celda AO4)- LIC. POR HS. EXAMENEN DE ESTUDIO, COD. 11 -->
+				<th style="text-align: center;">Hrs lic examen</th>
+				<!-- accidente -->
+				<th style="text-align: center;">Hrs lic accidente</th>
+				<!-- LICENCIA (celda AQ4) – LIC. POR MUDANZA , YA ESTA EN SISTEMA NUEVO COD. 13 -->
+				<th style="text-align: center;">Hrs lic mudanza</th>
+				<!-- LICENCIA (celda AR4)-  LIC. POR MATRIMONIO . YA ESTA EN SISTEMA NUEVO COD. 14 -->
+				<th style="text-align: center;">Hrs lic matrimonio</th>
+				<!-- LICENCIA (celda AS4) – LIC. POR INUNDACIÓN . YA ESTA EN SISTEMA NUEVO COD. 15 -->
+				<th style="text-align: center;">Hrs lic inundacion</th>
+				<!-- -RECONOC.—HS. DE RECONOCIMIENTO POR EXAMEN MÉDICO- YA ESTA EN SISTEMA NUEVO ES COD. 16 -->
+				<th style="text-align: center;">Hrs examen medico</th>
+				<!-- PRESTACION-  ES UN CAMPO QUE DEBE QUEDAR SIN COMPLETAR. LO RESUELVE LA OFIC. DE RRHH. -->
+				<th style="text-align:center;">PRESTACION</th>
+				<!-- turnicidad -->
+				<th style="text-align: center;">TURNICIDAD</th>
+				<!-- JORNADA- ES UN VALOR MENSUAL VA SOLO EN LAS 2°)QUINCENA, ESTE CAMPO LO RESUELVE RRHH -->
+				<th style="text-align: center;">JORNADA</th>
+				<!-- GUARDIAS- ES UN VALOR MENSUAL VA SOLO EN LA 2°)QUINCENA, ESTE CAMPO LO RESUELVE RRHH -->
+				<th style="text-align: center;">GUARDIAS</th>
+				<!-- TITULO- ES UN VALOR MENSUAL FIJO, SOLO DEBEMOS TENER LA COLUMNA POR ALGUN CAMBIO. LO RESULVE RRHH. -->
+				<th style="text-align: center;">TITULO</th>
+				<!-- RETENCION DE FARMACIA, ES UN VALOR MENSUAL FIJO, SOLO DEBEMOS TENER LA COLUMNA POR ALGUN CAMBIO. -->
+				<th style="text-align: center;">RETENCION</th>
+				<!-- COLECTA SOLIDARIA, ES UN DESCUENTO INDIVIDUAL Y PERSONAL, LA COLECTA SOLIDARIA, VARIA EL IMPORTE Y LA COLECTA DE FALLECIMIENTO, ES UN VALOR FIJO, TAMBIEN ES UN CAMPO QUE DEBE COMPLETAR RRHH. -->
+				<th style="text-align: center;">COLECTA</th>
+				<!-- -DESCUENTO, SON DESCUENTOS DE ANTICIPOR PERSONALES, DICHO CAMPO LO COMPLETA RRHH. -->
+				<th style="text-align: center;">DESCUENTO</th>
+				<!-- observaciones -->
+				<th style="text-align: center;">OBSERVACIONES</th>
+				<!-- 89-34= 55 -->  
+				<!-- <th style="text-align: center;">Ausentimos</th>
+				<th style="text-align: center;">HRS_EMER</th> -->
 			</tr>
 			{% for e in emples %}
 				<tr>
@@ -184,51 +127,89 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 					<td style="text-align: center;">{{ e.hrs_al100 }}</td>
 					<td style="text-align: center;">{{ e.hrs_feriado_trabajado }}</td>
 					<td style="text-align: center;">{{ e.hrs_feriado_no_trabajado }}</td>
-					<td style="text-align: center;">{{ e.ausentismo }}</td>
-					<td style="text-align: center;">{{ e.compensatorio }}</td>
-					<!-- <td style="text-align: center;">{{ e.capacitacion }}</td> -->
-					<td style="text-align: center;">{{ e.emergencias }}</td>
-					<td style="text-align: center;">{{ e.donacion_sangre }}</td>
-					<td style="text-align: center;">{{ e.familiar_enfermo }}</td>
-					<td style="text-align: center;">{{ e.citacion_judicial }}</td>
-					<td style="text-align: center;">{{ e.lic_fallecimiento }}</td>
-					<td style="text-align: center;">{{ e.lic_nacimiento }}</td>
-					<td style="text-align: center;">{{ e.lic_examen }}</td>
-					<td style="text-align: center;">{{ e.lic_accidente }}</td>
-					<td style="text-align: center;">{{ e.lic_mudanza }}</td>
-					<td style="text-align: center;">{{ e.lic_matrimonio }}</td>
-					<td style="text-align: center;">{{ e.lic_inundacion }}</td>
-					<td style="text-align: center;">{{ e.examen_medico }}</td>
-					<td style="text-align: center;">{{ e.enfermedad }}</td>
-					<td style="text-align: center;">{{ e.horas_reconocimiento }}</td>
-					<td style="text-align: center;">{{ e.permiso_gremial }}</td>					
+					<!-- nocturnas -->
+					<td style="text-align: center;">{{ e.hrs_nocturnas_normales }}</td>				
+					<td style="text-align: center;">{{ e.hrs_nocturnas_100 }}</td>
+					<td style="text-align: center;">{{ e.hrs_nocturnas_feriado }}
+					<!-- caloria -->
 					<td style="text-align: center;">{{ e.calorias_n }}</td>
 					<td style="text-align: center;">{{ e.calorias_50 }}</td>
 					<td style="text-align: center;">{{ e.calorias_100 }}</td>
 					<td style="text-align: center;">{{ e.calorias_fer }}</td>
-					<td style="text-align: center;">{{ e.peligrosas_n }}</td>
-					<td style="text-align: center;">{{ e.peligrosas_50 }}</td>
-					<td style="text-align: center;">{{ e.peligrosas_100 }}</td>
-					<td style="text-align: center;">{{ e.peligrosas_fer }}</td>
-					<td style="text-align: center;">{{ e.polucion_n }}</td>
-					<!-- <td style="text-align: center;">{{ e.polucion_50 }}</td>
-					<td style="text-align: center;">{{ e.polucion_100 }}</td> -->
-					<td style="text-align: center;">{{ e.polucion_fer }}</td>
-					<td style="text-align: center;">{{ e.termo_n }}</td>
-					<!-- <td style="text-align: center;">{{ e.termo_50 }}</td>
-					<td style="text-align: center;">{{ e.termo_100 }}</td> -->
-					<td style="text-align: center;">{{ e.termo_fer }}</td>
+					<!-- insalubridad -->
 					<td style="text-align: center;">{{ e.insalubres_n }}</td>
 					<td style="text-align: center;">{{ e.insalubres_50 }}</td>
 					<td style="text-align: center;">{{ e.insalubres_100 }}</td>
 					<td style="text-align: center;">{{ e.insalubres_fer }}</td>
-					<td style="text-align: center;">{{ e.hrs_nocturnas_normales }}</td>				
-					<td style="text-align: center;">{{ e.hrs_nocturnas_100 }}</td>
-					<td style="text-align: center;">{{ e.hrs_nocturnas_feriado }}
+					<!-- tareas peligrosas -->
+					<td style="text-align: center;">{{ e.peligrosas_n }}</td>
+					<td style="text-align: center;">{{ e.peligrosas_50 }}</td>
+					<td style="text-align: center;">{{ e.peligrosas_100 }}</td>
+					<td style="text-align: center;">{{ e.peligrosas_fer }}</td>
+					<!-- adicional polucion -->
+					<td style="text-align: center;">{{ e.polucion_n }}</td>
+					<td style="text-align: center;">{{ e.polucion_fer }}</td>
+					<!-- adicional termo -->
+					<td style="text-align: center;">{{ e.termo_n }}</td>
+					<!-- <td style="text-align: center;">{{ e.termo_fer }}</td> -->
+					<!-- 'adicional' (emerg) celda AB4 -->
 					<td style="text-align: center;">{{ e.emergencias }}</td>
+					<!-- presentismo -->
+					<td style="text-align: center;"></td>
+					<!-- reconocimiento - RECONOCIMIENTO POR CAMBIO DE DIAGRAMA EN EL TURNO, COD. 23  -->
 					<td style="text-align: center;">{{ e.hrs_reconocimiento }}</td>
+					<!-- enfermedad -->
+					<td style="text-align: center;">{{ e.enfermedad }}</td>
+					<!-- retrib. SE REFIERE A PAGO DE COMPENSATORIO, COD. 3 -->
+					<td style="text-align: center;">{{ e.compensatorio }}</td>
+					<!-- 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22- -->
+					<td style="text-align: center;">{{ e.horas_reconocimiento }}</td>
+					<!-- ADIC TALLER - POR AHORA ES UN CAMPO QUE DEBE QUEDAR SIN COMPLETAR, LO RESUELVE LA OF. DE RRHH -->
+					<td style="text-align: center;"></td>
+					<!-- PERMISO -->
+					<td style="text-align: center;">{{ e.permiso_gremial }}</td>	
+					<!-- HS DONACION -->
+					<td style="text-align: center;">{{ e.donacion_sangre }}</td>
+					<!-- HS FAMILIAR -->
+					<td style="text-align: center;">{{ e.familiar_enfermo }}</td>
+					<!-- HRS CITACION -->
+					<td style="text-align: center;">{{ e.citacion_judicial }}</td>
+					<!-- 'HS LIC'. LIC. POR FALLECIMIENTO- ES COD. 9   -->
+					<td style="text-align: center;">{{ e.lic_fallecimiento }}</td>
+					<!-- 'HS LIC.' LIC. POR NACIMIENTO – ES COD. 10 -->
+					<td style="text-align: center;">{{ e.lic_nacimiento }}</td>
+					<!-- HS. (celda AO4)- LIC. POR HS. EXAMENEN DE ESTUDIO, COD. 11 -->
+					<td style="text-align: center;">{{ e.lic_examen }}</td>
+					<!-- accidente -->
+					<td style="text-align: center;">{{ e.lic_accidente }}</td>
+					<!-- LICENCIA (celda AQ4) – LIC. POR MUDANZA , YA ESTA EN SISTEMA NUEVO COD. 13 -->
+					<td style="text-align: center;">{{ e.lic_mudanza }}</td>
+					<!-- LICENCIA (celda AR4)-  LIC. POR MATRIMONIO . YA ESTA EN SISTEMA NUEVO COD. 14 -->
+					<td style="text-align: center;">{{ e.lic_matrimonio }}</td>
+					<!-- LICENCIA (celda AS4) – LIC. POR INUNDACIÓN . YA ESTA EN SISTEMA NUEVO COD. 15 -->
+					<td style="text-align: center;">{{ e.lic_inundacion }}</td>
+					<!-- -RECONOC.—HS. DE RECONOCIMIENTO POR EXAMEN MÉDICO- YA ESTA EN SISTEMA NUEVO ES COD. 16 -->
+					<td style="text-align: center;">{{ e.examen_medico }}</td>
+					<!-- PRESTACION-  ES UN CAMPO QUE DEBE QUEDAR SIN COMPLETAR. LO RESUELVE LA OFIC. DE RRHH. -->
+					<td style="text-align: center;"></td>
+					<!-- turnicidad -->
 					<td style="text-align: center;">{{ e.turnicidad }}</td>
-						<!-- <label id="lblTotal{{i.itemnum}}"><input hidden class="total" data-itemnum="{{i.itemnum}}" id="total{{i.itemnum}}" value="{{ i.normal + i.Al50 + i.Al100 }}"> -->
+					<!-- JORNADA- ES UN VALOR MENSUAL VA SOLO EN LAS 2°)QUINCENA, ESTE CAMPO LO RESUELVE RRHH -->
+					<td style="text-align: center;"></td>
+					<!-- GUARDIAS- ES UN VALOR MENSUAL VA SOLO EN LA 2°)QUINCENA, ESTE CAMPO LO RESUELVE RRHH -->
+					<td style="text-align: center;"></td>
+					<!-- TITULO- ES UN VALOR MENSUAL FIJO, SOLO DEBEMOS TENER LA COLUMNA POR ALGUN CAMBIO. LO RESULVE RRHH. -->
+					<td style="text-align: center;"></td>
+					<!-- RETENCION DE FARMACIA, ES UN VALOR MENSUAL FIJO, SOLO DEBEMOS TENER LA COLUMNA POR ALGUN CAMBIO. -->
+					<td style="text-align: center;"></td>
+					<!-- COLECTA SOLIDARIA, ES UN DESCUENTO INDIVIDUAL Y PERSONAL, LA COLECTA SOLIDARIA, VARIA EL IMPORTE Y LA COLECTA DE FALLECIMIENTO, ES UN VALOR FIJO, TAMBIEN ES UN CAMPO QUE DEBE COMPLETAR RRHH. -->
+					<td style="text-align: center;"></td>
+					<!-- -DESCUENTO, SON DESCUENTOS DE ANTICIPOR PERSONALES, DICHO CAMPO LO COMPLETA RRHH. -->
+					<td style="text-align: center;"></td>
+					<!-- observaciones -->
+					<td style="text-align: center;"></td>
+					<!-- 89-34=55-->
+					<!-- <td style="text-align: center;">{{ e.ausentismo }}</td> -->
 				</tr>
 			{% endfor %}
 		</table>

@@ -87,8 +87,8 @@ function getItemsExport(req, res){
 		//console.log(items)
 		var conf = {};
 			//este tiene una url acá pero en el server es otra....
-			conf.stylesXmlFile = "C:/Users/leandro/Documents/Maresa-master/style.xml";
-				//conf.stylesXmlFile = "C:/Users/Administrador/Documents/Proyectos/Maresa/style.xml";
+			// conf.stylesXmlFile = "C:/Users/leandro/Documents/Maresa-master/style.xml";
+				conf.stylesXmlFile = "D:/Proyectos/Maresa/style.xml";
 		/*ITEM	
 		DESCRIPCION	
 		HS NORMALES	
@@ -148,8 +148,8 @@ function getEmplesExport(req, res){
 		//console.log(items)
 		var conf = {};
 			//este tiene una url acá pero en el server es otra....
-			conf.stylesXmlFile = "C:/Users/leandro/Documents/Maresa-master/style.xml";
-			//onf.stylesXmlFile = "C:/Users/Administrador/Documents/Proyectos/Maresa/style.xml";
+			// conf.stylesXmlFile = "C:/Users/leandro/Documents/Maresa-master/style.xml";
+			conf.stylesXmlFile = "D:/Proyectos/Maresa/style.xml";
 	    conf.cols = [{caption:'Legajo', type:'number'},
 		    {caption:'Nombre', type:'string'},
 		    {caption:'Sector', type:'string'},
@@ -159,12 +159,34 @@ function getEmplesExport(req, res){
 		    {caption:'Hrs al 100', type:'number'},
 		    {caption:'Feriados Trabajado', type:'number'},
 		    {caption:'Feriados No Trabajado', type:'number'},
-
-		    {caption:'Ausentismos', type:'number'},
-		    {caption:'Compensatorios', type:'number'},
-		    {caption:'Hrs Capacitacion', type:'number'},
-		    {caption:'Emergencias', type:'number'},
-			{caption:'Hrs Donacion Sangre', type:'number'},
+			{caption:'Hrs Nocturnas Normales', type:'number'},
+		    {caption:'Hrs Nocturnas al 100', type:'number'},
+		    {caption:'Hrs Nocturnas Feriado', type:'number'},
+			{caption:'Hrs Calorias Normales', type:'number'},
+		    {caption:'Hrs Calorias al 50', type:'number'},
+		    {caption:'Hrs Calorias al 100', type:'number'},
+		    {caption:'Hrs Calorias Feriado', type:'number'},
+ 			{caption:'Hrs Insalubres Normales', type:'number'},
+		    {caption:'Hrs Insalubres al 50', type:'number'},
+		    {caption:'Hrs Insalubres al 100', type:'number'},
+		    {caption:'Hrs Insalubres Feriado', type:'number'},
+			{caption:'Hrs Peligrosas Normales', type:'number'},
+		    {caption:'Hrs Peligrosas al 50', type:'number'},
+		    {caption:'Hrs Peligrosas al 100', type:'number'},
+		    {caption:'Hrs Peligrosas Feriado', type:'number'},
+		    {caption:'Hrs Polucion Normales', type:'number'},
+		    {caption:'Hrs Polucion Feriado', type:'number'},
+		    {caption:'Hrs Termo Normales', type:'number'},
+		    // {caption:'Hrs Termo Feriado', type:'number'},		    
+		    {caption:'Emergencias', type:'number'},//ADICIONAL emerg
+		    {caption:'Presentismo', type:'number'}, //va vacio
+		   	{caption:'Hrs Rec. por Diagrama', type:'number'},// reconocimiento - RECONOCIMIENTO POR CAMBIO DE DIAGRAMA EN EL TURNO, COD. 23 
+		   	{caption:'Enfermedades', type:'number'},
+		   	{caption:'Compensatorios', type:'number'},		   	
+		   	{caption:'Hrs Reconocimiento', type:'number'},//HS. 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22-
+		   	{caption:'Adic. Taller', type:'number'}, //va vacio
+		   	{caption:'Permisos Gremiales', type:'number'},
+		   	{caption:'Hrs Donacion Sangre', type:'number'},
 			{caption:'Hrs Familiar Enfermo', type:'number'},
 			{caption:'Hrs Citacion Judicial', type:'number'},
 			{caption:'Hrs Lic. Fallecimiento', type:'number'},
@@ -175,31 +197,19 @@ function getEmplesExport(req, res){
 			{caption:'Hrs Lic. Matrimonio', type:'number'},
 			{caption:'Hrs Lic. Inundacion', type:'number'},
 			{caption:'Hrs Examen Medico', type:'number'},
-			{caption:'Enfermedades', type:'number'},
-			{caption:'Hrs Reconocimiento', type:'number'},
-			{caption:'Permisos Gremiales', type:'number'},
-		    {caption:'Hrs Calorias Normales', type:'number'},
-		    {caption:'Hrs Calorias al 50', type:'number'},
-		    {caption:'Hrs Calorias al 100', type:'number'},
-		    {caption:'Hrs Calorias Feriado', type:'number'},
-		    {caption:'Hrs Peligrosas Normales', type:'number'},
-		    {caption:'Hrs Peligrosas al 50', type:'number'},
-		    {caption:'Hrs Peligrosas al 100', type:'number'},
-		    {caption:'Hrs Peligrosas Feriado', type:'number'},
-		    {caption:'Hrs Polucion Normales', type:'number'},
-		    {caption:'Hrs Polucion Feriado', type:'number'},
-		    {caption:'Hrs Termo Normales', type:'number'},
-		    {caption:'Hrs Termo Feriado', type:'number'},
-		    {caption:'Hrs Insalubres Normales', type:'number'},
-		    {caption:'Hrs Insalubres al 50', type:'number'},
-		    {caption:'Hrs Insalubres al 100', type:'number'},
-		    {caption:'Hrs Insalubres Feriado', type:'number'},
-		    {caption:'Hrs Nocturnas Normales', type:'number'},
-		    {caption:'Hrs Nocturnas al 100', type:'number'},
-		    {caption:'Hrs Nocturnas Feriado', type:'number'},
-		    {caption:'Hrs Emergencia', type:'number'},
-		    {caption:'Hrs Rec. por Diagrama', type:'number'},
-			{caption:'Turnicidad', type:'number'}];
+			{caption:'Prestacion', type:'number'}, //va vacio
+			{caption:'Turnicidad', type:'number'},
+			{caption:'Jornada', type:'number'}, //va vacio
+			{caption:'Guardias', type:'number'}, //va vacio
+			{caption:'Titulo', type:'number'}, //va vacio
+			{caption:'Ret. Farmacia', type:'number'}, //va vacio
+			{caption:'Colecta solidaria', type:'number'}, //va vacio
+			{caption:'Descuentos', type:'number'}, //va vacio
+			{caption:'Observaciones', type:'text'}, //va vacio
+		    // {caption:'Ausentismos', type:'number'},
+		    // {caption:'Hrs Capacitacion', type:'number'},				    
+		    // {caption:'Hrs Emergencia', type:'number'}, //se deja
+			];//55
 	
 		var arrEmples = [];
 
@@ -213,11 +223,33 @@ function getEmplesExport(req, res){
 			hrs_al100 = emples[x].hrs_al100;
 			hrs_feriado_trabajado = emples[x].hrs_feriado_trabajado;
 			hrs_feriado_no_trabajado = emples[x].hrs_feriado_no_trabajado;
-
-			ausentismo = emples[x].ausentismo;
+			hrs_nocturnas_normales = emples[x].hrs_nocturnas_normales;				
+			hrs_nocturnas_100 = emples[x].hrs_nocturnas_100;
+			hrs_nocturnas_feriado = emples[x].hrs_nocturnas_feriado;
+			calorias_n = emples[x].calorias_n;
+			calorias_50 = emples[x].calorias_50;
+			calorias_100 = emples[x].calorias_100;
+			calorias_fer = emples[x].calorias_fer;
+ 			insalubres_n = emples[x].insalubres_n;
+			insalubres_50 = emples[x].insalubres_50;
+			insalubres_100 = emples[x].insalubres_100;
+			insalubres_fer = emples[x].insalubres_fer;
+			peligrosas_n = emples[x].peligrosas_n;
+			peligrosas_50 = emples[x].peligrosas_50;
+			peligrosas_100 = emples[x].peligrosas_100;
+			peligrosas_fer = emples[x].peligrosas_fer;
+		 	polucion_n = emples[x].polucion_n;
+			polucion_fer = emples[x].polucion_fer;
+		 	termo_n = emples[x].termo_n;
+			// termo_fer = emples[x].termo_fer;
+		 	emergencias = emples[x].emergencias; //ADICIONAL emerg		 	
+		 	presentismo = ''; // {caption:'Presentismo', type:'number'}, //va vacio
+		 	hrs_reconocimiento = emples[x].hrs_reconocimiento;	// {caption:'Hrs Reconocimiento', type:'number'},  
+		 	enfermedad = emples[x].enfermedad;
 			compensatorio = emples[x].compensatorio;
-			capacitacion = emples[x].capacitacion;
-			emergencias = emples[x].emergencias;
+		 	horas_reconocimiento = emples[x].horas_reconocimiento;//HS. 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22-		 	
+		 	adicional_taller = '';// {caption:'Adic. Taller', type:'number'}, //va vacio
+			permiso_gremial = emples[x].permiso_gremial;
 			donacion_sangre = emples[x].donacion_sangre;
 			familiar_enfermo = emples[x].familiar_enfermo;
 			citacion_judicial = emples[x].citacion_judicial;
@@ -228,34 +260,18 @@ function getEmplesExport(req, res){
 			lic_mudanza = emples[x].lic_mudanza;
 			lic_matrimonio = emples[x].lic_matrimonio;
 			lic_inundacion = emples[x].lic_inundacion;
-			examen_medico = emples[x].examen_medico;
-			enfermedad = emples[x].enfermedad;
-			horas_reconocimiento = emples[x].horas_reconocimiento;
-			permiso_gremial = emples[x].permiso_gremial;
-
-			calorias_n = emples[x].calorias_n;
-			calorias_50 = emples[x].calorias_50;
-			calorias_100 = emples[x].calorias_100;
-			calorias_fer = emples[x].calorias_fer;
-			peligrosas_n = emples[x].peligrosas_n;
-			peligrosas_50 = emples[x].peligrosas_50;
-			peligrosas_100 = emples[x].peligrosas_100;
-			peligrosas_fer = emples[x].peligrosas_fer;
-			polucion_n = emples[x].polucion_n;
-			polucion_fer = emples[x].polucion_fer;
-			termo_n = emples[x].termo_n;
-			termo_fer = emples[x].termo_fer;
-			insalubres_n = emples[x].insalubres_n;
-			insalubres_50 = emples[x].insalubres_50;
-			insalubres_100 = emples[x].insalubres_100;
-			insalubres_fer = emples[x].insalubres_fer;
-			hrs_nocturnas_normales = emples[x].hrs_nocturnas_normales;				
-			hrs_nocturnas_100 = emples[x].hrs_nocturnas_100;
-			hrs_nocturnas_feriado = emples[x].hrs_nocturnas_feriado;
-			emergencias = emples[x].emergencias;
-			hrs_reconocimiento = emples[x].hrs_reconocimiento;
-			turnicidad = emples[x].turnicidad;
-	    	
+			examen_medico = emples[x].examen_medico;			
+			prestacion = ''; // {caption:'Prestacion', type:'number'}, //va vacio			
+			turnicidad = emples[x].turnicidad; // {caption:'Turnicidad', type:'number'},			
+			jornada = ''; // {caption:'Jornada', type:'number'}, //va vacio			
+			guardias = ''; // {caption:'Guardias', type:'number'}, //va vacio			
+			titulo = ''; // {caption:'Titulo', type:'number'}, //va vacio			
+			ret_farmacia = ''; // {caption:'Ret. Farmacia', type:'number'}, //va vacio			
+			colecta_solidaria = ''; // {caption:'Colecta solidaria', type:'number'}, //va vacio			
+			descuentos = '';// {caption:'Descuentos', type:'number'}, //va vacio
+			observaciones = '';
+		 	// ausentismo = emples[x].ausentismo;
+	    	//55
 	    	var emples2 = [];
 
 	    	emples2.push(legajo);
@@ -267,46 +283,55 @@ function getEmplesExport(req, res){
 	    	emples2.push(hrs_al100);
 	    	emples2.push(hrs_feriado_trabajado);
 	    	emples2.push(hrs_feriado_no_trabajado);
-	    	emples2.push(ausentismo);
-	    	emples2.push(compensatorio);
-	    	emples2.push(capacitacion);
-	    	emples2.push(emergencias);
-	    	emples2.push(donacion_sangre);
-	    	emples2.push(familiar_enfermo);
-	    	emples2.push(citacion_judicial);
-	    	emples2.push(lic_fallecimiento);
-	    	emples2.push(lic_nacimiento);
-	    	emples2.push(lic_examen);
-	    	emples2.push(lic_accidente);
-	    	emples2.push(lic_mudanza);
-	    	emples2.push(lic_matrimonio);
-	    	emples2.push(lic_inundacion);
-	    	emples2.push(examen_medico);
-	    	emples2.push(enfermedad);
-	    	emples2.push(horas_reconocimiento);
-	    	emples2.push(permiso_gremial);
-	    	emples2.push(calorias_n);
-	    	emples2.push(calorias_50);
-	    	emples2.push(calorias_100);
-	    	emples2.push(calorias_fer);
-	    	emples2.push(peligrosas_n);
-	    	emples2.push(peligrosas_50);
-	    	emples2.push(peligrosas_100);
-	    	emples2.push(peligrosas_fer);
-	    	emples2.push(polucion_n);
-	    	emples2.push(polucion_fer);
-	    	emples2.push(termo_n);
-	    	emples2.push(termo_fer);
-	    	emples2.push(insalubres_n);
-	    	emples2.push(insalubres_50);
-	    	emples2.push(insalubres_100);
-	    	emples2.push(insalubres_fer);
 	    	emples2.push(hrs_nocturnas_normales);
-	    	emples2.push(hrs_nocturnas_100);
-	    	emples2.push(hrs_nocturnas_feriado);
-	    	emples2.push(emergencias);
-	    	emples2.push(hrs_reconocimiento);
-	    	emples2.push(turnicidad);
+			emples2.push(hrs_nocturnas_100);
+			emples2.push(hrs_nocturnas_feriado);
+			emples2.push(calorias_n);
+			emples2.push(calorias_50);
+			emples2.push(calorias_100);
+			emples2.push(calorias_fer);
+ 			emples2.push(insalubres_n);
+			emples2.push(insalubres_50);
+			emples2.push(insalubres_100);
+			emples2.push(insalubres_fer);
+			emples2.push(peligrosas_n);
+			emples2.push(peligrosas_50);
+			emples2.push(peligrosas_100);
+			emples2.push(peligrosas_fer);
+		 	emples2.push(polucion_n);
+			emples2.push(polucion_fer);
+		 	emples2.push(termo_n);
+			// emples2.push(termo_fer);
+			emples2.push(emergencias);
+		 	emples2.push(presentismo);
+		 	emples2.push(hrs_reconocimiento);
+		 	emples2.push(enfermedad);
+			emples2.push(compensatorio);
+			emples2.push(horas_reconocimiento);
+		 	emples2.push(adicional_taller);
+			emples2.push(permiso_gremial);
+			emples2.push(donacion_sangre);
+			emples2.push(familiar_enfermo);
+			emples2.push(citacion_judicial);
+			emples2.push(lic_fallecimiento);
+			emples2.push(lic_nacimiento);
+			emples2.push(lic_examen);
+			emples2.push(lic_accidente);
+			emples2.push(lic_mudanza);
+			emples2.push(lic_matrimonio);
+			emples2.push(lic_inundacion);
+			emples2.push(examen_medico);
+			emples2.push(prestacion);
+			emples2.push(turnicidad);
+			emples2.push(jornada);
+			emples2.push(guardias);
+			emples2.push(titulo);
+			emples2.push(ret_farmacia);
+			emples2.push(colecta_solidaria);
+			emples2.push(descuentos);
+			emples2.push(observaciones);	    	
+	    	// emples2.push(ausentismo);
+	    	// emples2.push(capacitacion);
 
 	    	arrEmples.push(emples2);
 	    }
@@ -318,8 +343,7 @@ function getEmplesExport(req, res){
 	    res.end(result, 'binary');
 	});
 	
-    
-    console.log("finished")
+    console.log("finished");
 }
 
 function getResumenInicio(req, res){
@@ -452,8 +476,8 @@ function getResumenDownload(req, res){
 			//console.log(items)
 			var conf = {};
 			//este tiene una url acá pero en el server es otra....
-			conf.stylesXmlFile = "C:/Users/leandro/Documents/Maresa-master/style.xml";
-			//conf.stylesXmlFile = "C:/Users/Administrador/Documents/Proyectos/Maresa/style.xml";
+			// conf.stylesXmlFile = "C:/Users/leandro/Documents/Maresa-master/style.xml";
+			conf.stylesXmlFile = "D:/Proyectos/Maresa/style.xml";
 
 		    conf.cols = [{caption:'Fecha', type:'string'},
 		    	{caption:'Dia', type:'string'},
@@ -476,7 +500,7 @@ function getResumenDownload(req, res){
 				{caption:'POL Norm.', type:'number'},
 				{caption:'POL F', type:'number'},
 				{caption:'TERMO Norm.', type:'number'},
-				{caption:'TERMO F', type:'number'},
+				// {caption:'TERMO F', type:'number'},
 				{caption:'NOC Norm.', type:'number'},
 				{caption:'NOC 100.', type:'number'},
 				{caption:'NOC F', type:'number'},
@@ -528,7 +552,7 @@ function getResumenDownload(req, res){
 				var polucion_n = emples[x].polucion_n;
 				var polucion_fer = emples[x].polucion_fer;
 				var termo_n = emples[x].termo_n;
-				var termo_fer = emples[x].termo_fer;
+				// var termo_fer = emples[x].termo_fer;
 				var hrs_nocturnas_normales = emples[x].hrs_nocturnas_normales;
 				var hrs_nocturnas_100 = emples[x].hrs_nocturnas_100;
 				var hrs_nocturnas_feriado = emples[x].hrs_nocturnas_feriado;
@@ -578,7 +602,7 @@ function getResumenDownload(req, res){
 		    	emples2.push(polucion_n);
 		    	emples2.push(polucion_fer);
 		    	emples2.push(termo_n);
-		    	emples2.push(termo_fer);
+		    	// emples2.push(termo_fer);
 		    	emples2.push(hrs_nocturnas_normales);
 		    	emples2.push(hrs_nocturnas_100);
 		    	emples2.push(hrs_nocturnas_feriado);
@@ -633,7 +657,7 @@ function getResumenDownload(req, res){
 				emples2.push(sumatorias.sum_Pol_Normal);
 				emples2.push(sumatorias.sum_Pol_Feriado);
 				emples2.push(sumatorias.sum_Termo_Normal);
-				emples2.push(sumatorias.sum_Termo_Feriado);
+				// emples2.push(sumatorias.sum_Termo_Feriado);
 				emples2.push(sumatorias.sum_Noc_N);
 				emples2.push(sumatorias.sum_Noc_100);
 				emples2.push(sumatorias.sum_Noc_f);
