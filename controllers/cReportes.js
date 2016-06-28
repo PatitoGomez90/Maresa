@@ -175,15 +175,13 @@ function getEmplesExport(req, res){
 		    {caption:'Hrs Peligrosas al 100', type:'number'},
 		    {caption:'Hrs Peligrosas Feriado', type:'number'},
 		    {caption:'Hrs Polucion Normales', type:'number'},
-		    {caption:'Hrs Polucion Feriado', type:'number'},
 		    {caption:'Hrs Termo Normales', type:'number'},
-		    // {caption:'Hrs Termo Feriado', type:'number'},		    
 		    {caption:'Emergencias', type:'number'},//ADICIONAL emerg
 		    {caption:'Presentismo', type:'number'}, //va vacio
-		   	{caption:'Hrs Rec. por Diagrama', type:'number'},// reconocimiento - RECONOCIMIENTO POR CAMBIO DE DIAGRAMA EN EL TURNO, COD. 23 
+		   	{caption:'Hrs Reconocimiento', type:'number'},//HS. 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22-
 		   	{caption:'Enfermedades', type:'number'},
 		   	{caption:'Compensatorios', type:'number'},		   	
-		   	{caption:'Hrs Reconocimiento', type:'number'},//HS. 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22-
+		   	{caption:'Hrs Rec. por Diagrama', type:'number'},// reconocimiento - RECONOCIMIENTO POR CAMBIO DE DIAGRAMA EN EL TURNO, COD. 23
 		   	{caption:'Adic. Taller', type:'number'}, //va vacio
 		   	{caption:'Permisos Gremiales', type:'number'},
 		   	{caption:'Hrs Donacion Sangre', type:'number'},
@@ -206,10 +204,8 @@ function getEmplesExport(req, res){
 			{caption:'Colecta solidaria', type:'number'}, //va vacio
 			{caption:'Descuentos', type:'number'}, //va vacio
 			{caption:'Observaciones', type:'text'}, //va vacio
-		    // {caption:'Ausentismos', type:'number'},
-		    // {caption:'Hrs Capacitacion', type:'number'},				    
-		    // {caption:'Hrs Emergencia', type:'number'}, //se deja
-			];//55
+		    // {caption:'Hrs Capacitacion', type:'number'},
+			];//53
 	
 		var arrEmples = [];
 
@@ -239,15 +235,13 @@ function getEmplesExport(req, res){
 			peligrosas_100 = emples[x].peligrosas_100;
 			peligrosas_fer = emples[x].peligrosas_fer;
 		 	polucion_n = emples[x].polucion_n;
-			polucion_fer = emples[x].polucion_fer;
 		 	termo_n = emples[x].termo_n;
-			// termo_fer = emples[x].termo_fer;
 		 	emergencias = emples[x].emergencias; //ADICIONAL emerg		 	
-		 	presentismo = ''; // {caption:'Presentismo', type:'number'}, //va vacio
-		 	hrs_reconocimiento = emples[x].hrs_reconocimiento;	// {caption:'Hrs Reconocimiento', type:'number'},  
+		 	presentismo = ''; //va vacio
+		 	horas_reconocimiento = emples[x].horas_reconocimiento;	// cod 22
 		 	enfermedad = emples[x].enfermedad;
 			compensatorio = emples[x].compensatorio;
-		 	horas_reconocimiento = emples[x].horas_reconocimiento;//HS. 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22-		 	
+		 	hrs_reconocimiento = emples[x].hrs_reconocimiento;//HS. cod 23		 	
 		 	adicional_taller = '';// {caption:'Adic. Taller', type:'number'}, //va vacio
 			permiso_gremial = emples[x].permiso_gremial;
 			donacion_sangre = emples[x].donacion_sangre;
@@ -270,8 +264,7 @@ function getEmplesExport(req, res){
 			colecta_solidaria = ''; // {caption:'Colecta solidaria', type:'number'}, //va vacio			
 			descuentos = '';// {caption:'Descuentos', type:'number'}, //va vacio
 			observaciones = '';
-		 	// ausentismo = emples[x].ausentismo;
-	    	//55
+	    	//53
 	    	var emples2 = [];
 
 	    	emples2.push(legajo);
@@ -299,15 +292,13 @@ function getEmplesExport(req, res){
 			emples2.push(peligrosas_100);
 			emples2.push(peligrosas_fer);
 		 	emples2.push(polucion_n);
-			emples2.push(polucion_fer);
 		 	emples2.push(termo_n);
-			// emples2.push(termo_fer);
 			emples2.push(emergencias);
 		 	emples2.push(presentismo);
-		 	emples2.push(hrs_reconocimiento);
+		 	emples2.push(horas_reconocimiento);
 		 	emples2.push(enfermedad);
 			emples2.push(compensatorio);
-			emples2.push(horas_reconocimiento);
+			emples2.push(hrs_reconocimiento);
 		 	emples2.push(adicional_taller);
 			emples2.push(permiso_gremial);
 			emples2.push(donacion_sangre);
@@ -329,9 +320,8 @@ function getEmplesExport(req, res){
 			emples2.push(ret_farmacia);
 			emples2.push(colecta_solidaria);
 			emples2.push(descuentos);
-			emples2.push(observaciones);	    	
-	    	// emples2.push(ausentismo);
-	    	// emples2.push(capacitacion);
+			emples2.push(observaciones);
+			//53
 
 	    	arrEmples.push(emples2);
 	    }
@@ -498,9 +488,7 @@ function getResumenDownload(req, res){
 				{caption:'PEL 100', type:'number'},
 				{caption:'PEL F', type:'number'},
 				{caption:'POL Norm.', type:'number'},
-				{caption:'POL F', type:'number'},
 				{caption:'TERMO Norm.', type:'number'},
-				// {caption:'TERMO F', type:'number'},
 				{caption:'NOC Norm.', type:'number'},
 				{caption:'NOC 100.', type:'number'},
 				{caption:'NOC F', type:'number'},
@@ -550,9 +538,7 @@ function getResumenDownload(req, res){
 				var peligrosas_100 = emples[x].peligrosas_100;
 				var peligrosas_fer = emples[x].peligrosas_fer;
 				var polucion_n = emples[x].polucion_n;
-				var polucion_fer = emples[x].polucion_fer;
 				var termo_n = emples[x].termo_n;
-				// var termo_fer = emples[x].termo_fer;
 				var hrs_nocturnas_normales = emples[x].hrs_nocturnas_normales;
 				var hrs_nocturnas_100 = emples[x].hrs_nocturnas_100;
 				var hrs_nocturnas_feriado = emples[x].hrs_nocturnas_feriado;

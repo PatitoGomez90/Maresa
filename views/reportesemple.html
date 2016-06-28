@@ -23,7 +23,7 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 		<table align="center" class="table table-striped" style="margin: 0px;">
 			<tr>
 				<th style="text-align: center;">LEGAJO</th>
-				<th style="text-align: center;">NOMBRE</th>
+				<th style="text-align: center;"><div style="width: 130px;">NOMBRE</div></th>
 				<th style="text-align: center;">SECTOR</th>
 				<th style="text-align: center;">CAT.</th>
 				<th style="text-align: center;">N N</th>
@@ -52,10 +52,8 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 				<th style="text-align: center;">PEL F</th>
 				<!-- adicional polucion -->
 				<th style="text-align: center;">POL N</th>
-				<th style="text-align: center;">POL F</th>
 				<!-- adicional termo -->
 				<th style="text-align: center;">TER N</th>
-				<!-- <th style="text-align: center;">TER F</th>-->
 				<!-- 'adicional' (emerg) celda AB4 -->
 				<th style="text-align: center;">Emergencias</th>
 				<!-- presentismo -->
@@ -67,7 +65,7 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 				<!-- retrib. SE REFIERE A PAGO DE COMPENSATORIO, COD. 3 -->
 				<th style="text-align: center;">Compensatorios (Retrib.)</th>
 				<!-- 'HS' SE REFIERE AL PAGO DE HS. POR RECONOCIMIENTO, COD. 22- -->
-				<th style="text-align: center;">HRS_REC</th>
+				<th style="text-align: center;">Hrs Rec. Diag.</th>
 				<!-- ADIC TALLER - POR AHORA ES UN CAMPO QUE DEBE QUEDAR SIN COMPLETAR, LO RESUELVE LA OF. DE RRHH -->
 				<th style="text-align:center;">ADIC. TALLER</th>
 				<!-- PERMISO -->
@@ -148,10 +146,8 @@ El reporte muestra la informacion de {{ cantidad }} empleados</p>
 					<td style="text-align: center;">{{ e.peligrosas_fer }}</td>
 					<!-- adicional polucion -->
 					<td style="text-align: center;">{{ e.polucion_n }}</td>
-					<td style="text-align: center;">{{ e.polucion_fer }}</td>
 					<!-- adicional termo -->
 					<td style="text-align: center;">{{ e.termo_n }}</td>
-					<!-- <td style="text-align: center;">{{ e.termo_fer }}</td> -->
 					<!-- 'adicional' (emerg) celda AB4 -->
 					<td style="text-align: center;">{{ e.emergencias }}</td>
 					<!-- presentismo -->
