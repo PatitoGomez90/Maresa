@@ -60,13 +60,7 @@ function postLogin(req, res){
 							req.session.user.horaLogin = date;
 
 							mEventos.add(req.session.user.unica, date, "Login", "", function(){
-								mNovedades.getLast(function(novedad){
-									res.render('inicio', {
-										usuario: req.session.user,
-										novedades: novedad[0]
-									});
-									return;
-								});
+									res.redirect('/inicio')
 							});
 						}else{
 							res.redirect('/')

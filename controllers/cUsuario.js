@@ -158,7 +158,7 @@ function putUsuario(req, res){
                                             if (err) { 
                                                 throw err; 
                                             }else{
-                                                res.send("finished");
+                                                // res.send("finished");
                                                 connection.end();
                                                 res.redirect('/usuarioslista');
                                                 // return cb();
