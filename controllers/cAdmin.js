@@ -79,7 +79,7 @@ function postLogin(req, res){
 				});
 				// req.session.errors = 'Usuario o Contraseña incorrectos.';
 				// console.log("sarasa")
-				// return res.redirect('/');
+				// return res.redireect('/');
 			}
 		});
 	} else {
